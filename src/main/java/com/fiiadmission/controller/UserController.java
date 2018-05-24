@@ -6,8 +6,12 @@ import org.springframework.web.bind.annotation.*;
 import utils.AdmissionStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import com.fiiadmission.domain.EmptyJsonResponse;
 import com.fiiadmission.domain.Role;
 import com.fiiadmission.domain.User;
 import com.fiiadmission.repository.RoleRepository;
@@ -66,8 +70,16 @@ public class UserController {
         return userService.findByName(firstName, lastName);
     }
 
+    @GetMapping(value ="/user/{username}")
+    public ResponseEntity getUser(@PathVariable("username") String username){
+        User user= userService.findByUsername(username);
+        if (user!=null) return new ResponseEntity<User>(user, HttpStatus.OK);
+        else {
+            return new ResponseEntity(new EmptyJsonResponse(), HttpStatus.OK);
+        }
+    }
+    
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN_USER')")
     public List<User> getUsers(){
         return userService.findAllUsers();
     }

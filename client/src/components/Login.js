@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 const API = 'https://localhost:8085/oauth/token'
 const base64 = require('base-64');
 var qs = require('qs');
+var sha256 = require('sha256');
 
 function refreshToken(username,password,code){
 
@@ -28,6 +29,15 @@ let config = {
     }
 
 
+function proceedWithToken(username,password,code)
+{var token =localStorage.getItem('token');
+    if(token == 'undefined')
+    refreshToken(username,password,code);
+    token =  localStorage.getItem('token');
+    console.log(token);
+    if(token == 'undefined')
+      ReactDOM.render(<h1>Login failed</h1>, document.getElementById('thirdStep'));
+}
 
 class Login extends Component {
 
@@ -40,32 +50,43 @@ class Login extends Component {
 
      this.state = { firstStepState: 'shown' };
   }
+
+  checkUser(){
+  const GETAPI = 'https://localhost:8085/users/user/'+this.uname.value;
+      let config = {
+      method: 'GET',
+      }
+
+    fetch(GETAPI, config)
+   .then(response =>
+      response.json()) .then((data) => { 
+        if(data.id=='undefined'){
+          this.secondFieldset.className='hidden';
+            this.thirdFieldset.className='';
+            ReactDOM.render(<h3>Bad credentials</h3>, document.getElementById('thirdStep'));
+          }
+        if(data.password != sha256(this.password.value)){
+            this.secondFieldset.className='hidden';
+            this.thirdFieldset.className='';
+            ReactDOM.render(<h3>Bad credentials</h3>, document.getElementById('thirdStep'));
+        }
+        else
+          {console.log('allgood');
+           this.firstFieldset.className='hidden';
+           this.secondFieldset.className='';}
+})
+}
+
     
     handleSubmit(e){
 
     this.secondFieldset.className='hidden';
-    this.qr.className='hidden';
     this.thirdFieldset.className='';
     e.preventDefault();
     var username = this.uname.value;
     var password = this.password.value;
     var code = this.code.value;
-
-    var token =localStorage.getItem('token');
-    if(token == 'undefined')
-    refreshToken(username,password,code);
-    token =  localStorage.getItem('token');
-    console.log(token);
-    if(token == 'undefined')
-      ReactDOM.render(<h1>Login failed</h1>, document.getElementById('thirdStep'));
- }
-
-    requestQr(e){
-      var username = this.uname.value;
-      var password = this.password.value;
-      this.firstFieldset.className='hidden';
-      this.secondFieldset.className='';
-  
+    proceedWithToken(username,password,code);
  }
 
 
@@ -80,7 +101,7 @@ class Login extends Component {
 <legend><span class="number">1</span> Candidate Info</legend>
 <input type="text" ref={(ref) => this.uname = ref} name="field1" placeholder="Username*"/>
 <input type="password" ref={(ref) => this.password = ref} name="field2" placeholder="Password *"/>
-<input type="button" class="next" value="Next"  onClick={this.requestQr.bind(this)}/>
+<input type="button" class="next" value="Next" onClick={this.checkUser.bind(this)}/>
 </fieldset>
 <fieldset id="QRCode" ref={(ref) => this.qr = ref}>
     </fieldset>
@@ -90,7 +111,6 @@ class Login extends Component {
         <input type="submit" onClick={this.handleSubmit.bind(this)} value="Apply" />
            </fieldset>
         <fieldset id="thirdStep" class='hidden' ref={(ref) => this.thirdFieldset = ref}>
-        <h3>You have logged in!</h3>
     </fieldset>
 
 
