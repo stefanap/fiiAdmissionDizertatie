@@ -7,6 +7,7 @@
   import Register from "./Register";
   import Login from "./Login";
   import Contact from "./Contact";
+  import Profile from "./Profile";
   import "./Menu.css";
   import fii from '../fii.png';
   require('react-bootstrap');
@@ -60,7 +61,7 @@
                                 </div>
                         </NavLink>
                 </li>
-                <li class="var_nav">
+                <li class="var_nav"><NavLink to="/profile">
                         <div class="link_bg"></div>
                         <div class="link_title">
                                 <div class="icon"> 
@@ -68,6 +69,7 @@
                                 </div>
                                 <a href="#"><span>Coming soon</span></a>
                         </div>
+                        </NavLink>
                 </li>
         </ul>
 
@@ -76,6 +78,7 @@
                 <Route exact path="/" component={Register}/>
                 <Route path="/login" component={Login}/>
                 <Route path="/contact" component={Contact}/>
+                 <Route path="/profile" component={Profile}/>
         </div>
         </div>
 

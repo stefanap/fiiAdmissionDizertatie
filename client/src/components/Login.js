@@ -8,6 +8,8 @@ const base64 = require('base-64');
 var qs = require('qs');
 var sha256 = require('sha256');
 
+
+
 function refreshToken(username,password,code){
 
 let config = {
@@ -34,7 +36,6 @@ function proceedWithToken(username,password,code)
     if(token == 'undefined')
     refreshToken(username,password,code);
     token =  localStorage.getItem('token');
-    console.log(token);
     if(token == 'undefined')
       ReactDOM.render(<h1>Login failed</h1>, document.getElementById('thirdStep'));
 }
@@ -65,15 +66,16 @@ class Login extends Component {
             this.thirdFieldset.className='';
             ReactDOM.render(<h3>Bad credentials</h3>, document.getElementById('thirdStep'));
           }
-        if(data.password != sha256(this.password.value)){
+        if(data.password !== sha256(this.password.value)){
             this.secondFieldset.className='hidden';
             this.thirdFieldset.className='';
             ReactDOM.render(<h3>Bad credentials</h3>, document.getElementById('thirdStep'));
         }
         else
-          {console.log('allgood');
+          {
            this.firstFieldset.className='hidden';
-           this.secondFieldset.className='';}
+           this.secondFieldset.className='';
+           localStorage.setItem('role',data.roles[0].roleName)}
 })
 }
 
@@ -87,6 +89,9 @@ class Login extends Component {
     var password = this.password.value;
     var code = this.code.value;
     proceedWithToken(username,password,code);
+    localStorage.setItem('username', username);
+    localStorage.setItem('password', password);
+    localStorage.setItem('code', code);
  }
 
 

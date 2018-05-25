@@ -42,7 +42,7 @@ public class PopulateDb implements ApplicationRunner {
         }
 
         if(userRepository.count() == 0){
-            this.createUser("John", "Doe", "jwtpass", "john.doe", Arrays.asList(standardRole), "PENDING", "john.doe@mail.com");
+            this.createUser("John", "Doe", "jwtpass", "johndoe", Arrays.asList(standardRole), "PENDING", "john.doe@mail.com");
             this.createUser("Andrei", "Popa", "jwtpass", "andrei.popa", Arrays.asList(standardRole),"PENDING", "andrei.popa@mail.com");
             this.createUser("Admin", "Admin", "jwtpass", "admin.admin", Arrays.asList(adminRole), "", "admin.admin@mail.com");
         }

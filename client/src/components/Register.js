@@ -31,7 +31,6 @@ let config = {
       method: 'POST',
       headers: { 'Content-Type':'application/json'},
       body: JSON.stringify({
-    "id": 100,
     "username": username,
     "password": password,
     "firstName": firstname,
@@ -40,11 +39,6 @@ let config = {
     "admissionStatus": null,
     "secret": "K3WAGWHIGNZKZCDN",
     "roles": [
-        {
-            "id": 1,
-            "roleName": "STANDARD_USER",
-            "description": "Standard User - Has no admin rights"
-        }
     ]
       })
     }
@@ -91,14 +85,13 @@ class Register extends Component {
 
  handleSubmit(e){
 
-     e.preventDefault();
+      this.registerForm.className='hidden';
+      e.preventDefault();
  	 var username = this.uname.value;
  	 var firstname = this.firstname.value;
      var lastname = this.lastname.value;
      var password = this.password.value;
      var email = this.email.value;
-     console.log(username);
-
      register(username,firstname,lastname,password,email);
 
     // var token =localStorage.getItem('token');
@@ -137,7 +130,7 @@ class Register extends Component {
     	<div>
       <Form>
   {formApi => (
-    <form class="form-style-5">
+    <form class="form-style-5" ref={(ref) => this.registerForm = ref}>
    
 <fieldset>
 <legend><span class="number">1</span> Candidate Info</legend>

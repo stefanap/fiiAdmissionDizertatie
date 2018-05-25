@@ -41,7 +41,9 @@ public class UserController {
     //@PreAuthorize("hasAuthority('ADMIN_USER') or hasAuthority('STANDARD_USER')")
     public @ResponseBody User response(@RequestBody User user) {
         //encode the password
-    	user.setRoles(Arrays.asList(roleRepository.findByRoleName("STANDARD_USER")));
+    	if(user.getRoles()==null||(user.getRoles().size()==0)) {
+    		user.setRoles(Arrays.asList(roleRepository.findByRoleName("STANDARD_USER")));
+    	}
         user.setPassword(passwordEncoder.encodePassword(user.getPassword(), ""));
         return userService.save(user);
     }
