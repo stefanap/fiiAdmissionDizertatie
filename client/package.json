@@ -18,6 +18,7 @@
     "react-modal": "^3.4.4",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
+    "redirect": "^0.2.0",
     "sha256": "^0.2.0",
     "simple-react-forms": "^1.5.0"
   },

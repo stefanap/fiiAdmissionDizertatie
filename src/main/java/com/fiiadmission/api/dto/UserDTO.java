@@ -2,6 +2,9 @@ package com.fiiadmission.api.dto;
 
 
 import java.sql.Timestamp;
+import java.util.List;
+
+import com.fiiadmission.domain.Role;
 
 public class UserDTO {
 
@@ -22,6 +25,8 @@ public class UserDTO {
     private Timestamp registerDate;
 
     private Long registerNumber;
+    
+    private List<Role> roles;
 
     public Long getId() {
         return id;
@@ -94,4 +99,14 @@ public class UserDTO {
     public void setRegisterNumber(Long registerNumber) {
         this.registerNumber = registerNumber;
     }
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+    
+    
 }

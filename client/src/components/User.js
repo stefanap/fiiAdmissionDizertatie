@@ -11,7 +11,8 @@
           email : this.props.email,
           admissionStatus: this.props.admissionStatus,
           registerDate : this.props.registerDate,
-          registerNumber: this.props.registerNumber
+          registerNumber: this.props.registerNumber,
+          roles: this.props.roles
     };
   }
 

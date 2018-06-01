@@ -67,7 +67,7 @@
                                 <div class="icon"> 
                                         <i class="icon-briefcase icon-2x"></i>
                                 </div>
-                                <a href="#"><span>Coming soon</span></a>
+                                <a href="#"><span>User profile</span></a>
                         </div>
                         </NavLink>
                 </li>

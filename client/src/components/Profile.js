@@ -1,105 +1,93 @@
 import React, { Component } from "react";
+import { Redirect } from 'react-router';
 import { Form, Text } from 'react-form';
 import "./Profile.css";
 var qs = require('qs');
 
-function refreshToken(username,password,code){
+// function refreshToken(username,password,code){
 
-  let config = {
-    method: 'POST',
-    headers: { 'Content-Type':'application/x-www-form-urlencoded', 'Authorization': 'Basic '+btoa('testjwtclientid:XY7kmzoNzl100')},
-    body: qs.stringify({
-      'grant_type': 'password',
-      'username': username,
-      'password': password,
-      'verificationCode': code
-    })
-  }
+//   let config = {
+//     method: 'POST',
+//     headers: { 'Content-Type':'application/x-www-form-urlencoded', 'Authorization': 'Basic '+btoa('testjwtclientid:XY7kmzoNzl100')},
+//     body: qs.stringify({
+//       'grant_type': 'password',
+//       'username': username,
+//       'password': password,
+//       'verificationCode': code
+//     })
+//   }
 
-  const tokenAPI = 'https://localhost:8085/oauth/token'
+//   const tokenAPI = 'https://localhost:8085/oauth/token'
 
-  fetch(tokenAPI, config)
-  .then(response =>
-    response.json()) .then((data) => { 
-      console.log(data); localStorage.setItem('token', data.access_token)})     
+//   fetch(tokenAPI, config)
+//   .then(response =>
+//     response.json()) .then((data) => { 
+//       console.log(data); localStorage.setItem('token', data.access_token)})     
 
-  }
+//   }
 
+    class Profile extends Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+      descriptionText: 'Please confirm your admission status below',
+      user: JSON.parse(localStorage.getItem('user'))
+    };
 
-  function register(data,token){
-    console.log('register')
-    console.log(token);
+    //var buttonStyle = {'background-color':'blue'};
+      }
+
+   updateStatus(user,token){
     let config = {
       method: 'PUT',
       headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token},
-      body: JSON.stringify(data)
+      body: JSON.stringify(user)
     }
     const API='https://localhost:8085/users'
     fetch(API, config)
     .then(response =>
       response.json()) .then((data) => { 
         {
-          console.log(data)
+          this.submitButton.disabled='disabled';
+          //this.buttonStyle = {'background-color':'gray'};
         }
-
-
       })
     }
-    class Profile extends Component {
-      constructor(props) {
-        super(props);
-        this.state = {
-      descriptionText: 'Please confirm your admission status below'
-    };
-      }
 
       handleSubmit(e){
         e.preventDefault();
         var token =localStorage.getItem('token');
         if(token=='undefined'||token==null)
-          refreshToken(localStorage.getItem('username'),localStorage.getItem('password'),localStorage.getItem('code'));
+          return <Redirect to='/login'/>;
         token =  localStorage.getItem('token');
         var newStatus;
         if(this.status.value==1) newStatus='Confirmed';
         if(this.status.value==2) newStatus='Withdrawal';
-        console.log(newStatus);
-        if(typeof newStatus!=="undefined"){
-        const GETAPI = 'https://localhost:8085/users/user/'+localStorage.getItem('username');
-        let config = {
-          method: 'GET',
-        }
-
-        fetch(GETAPI, config)
-        .then(response =>
-          response.json()) .then((data) => { 
-            data.status=newStatus;
-            var userdata=data;
-            register(userdata,token);
-          })
-
-        }
-      }
+        if(typeof newStatus!="undefined"){
+          this.updateStatus(this.state.user,token);
+      }}
 
         render() {
-          return (
+          if (typeof this.state.user=='undefined')  return <Redirect to='/login'/>; //???
+          else return (
   <div>
-  <h1 class="title-pen"> User Profile</h1>
   <div class="user-profile">
   <img class="avatar" src="https://cdn2.iconfinder.com/data/icons/reading/512/round-level-phd-avatar-university-student-512.png" alt="Ash" />
-  <div class="username">{localStorage.getItem('username')}</div>
+  <div class="username">username: {this.state.user.username}</div>
+  <div class="standardField">name: {this.state.user.firstName}{' '}{this.state.user.lastName}</div>
+  <div class="standardField">email: {this.state.user.email}</div>
   <div class="bio">
-  {localStorage.getItem('role')}
+  {this.state.user.roles[0].roleName}
   </div>
   <div class="description">{this.state.descriptionText}
   </div>
   <Form>
-  <form id="statusForm">
+  <form class="statusForm">
   <select ref={(ref) => this.status = ref}>
-  <option value="0">Select admission status:</option>
-  <option value="1">Confirmed</option>
-  <option value="2">Withdrawal</option>
+  <option value="0">Confirmed</option>
+  <option value="1">Withdrawal</option>
   </select>
-  <button type="submit" onClick={this.handleSubmit.bind(this)} className="btn btn-primary">
+  <button type="submit" ref={(ref) => this.submitButton = ref} onClick={this.handleSubmit.bind(this)} className="btn btn-primary">
   Submit
   </button>
   </form>

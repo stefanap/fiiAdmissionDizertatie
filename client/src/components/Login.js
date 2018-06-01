@@ -9,6 +9,25 @@ const base64 = require('base-64');
 var qs = require('qs');
 var sha256 = require('sha256');
 
+function getUser(token){
+  const API = 'https://localhost:8085/fii/users/principal';
+      let config = {
+      method: 'GET',
+      headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token},
+      }
+    fetch(API, config)
+   .then(response =>
+      response.json()) .then((data) => { 
+     if (typeof data.statusCode == 'undefined')
+        {
+             console.log(data);
+             var user= new User(data);
+             console.log(JSON.stringify(user.state));
+             localStorage.setItem('user',JSON.stringify(user.state));
+        }
+})
+}
+
 // function proceedWithToken(username,password,code)
 // {var token =localStorage.getItem('token');
 //     if(typeof token == 'undefined')
@@ -64,21 +83,7 @@ export default class Login extends Component {
 // })
 // }
 
-getUser(){
-  const API = 'https://localhost:8085/fii/users/principal';
-      let config = {
-      method: 'GET',
-      }
-    fetch(GETAPI, config)
-   .then(response =>
-      response.json()) .then((data) => { 
-     if (typeof data.statusCode == 'undefined')
-        {
-             var user= new User(data);
-             localStorage.setItem('user',data.user);
-        }
-})
-}
+
 
     getToken(username,password,code){
 
@@ -100,7 +105,7 @@ let config = {
         if(typeof data.access_token!= 'undefined')
         {
           localStorage.setItem('token', sha256(data.access_token));
-          getUser();
+          getUser(data.access_token);
           this.firstFieldset.className='hidden';
           this.secondFieldset.className='hidden';
           ReactDOM.render(<h1>Login successfull</h1>, document.getElementById('thirdStep'));

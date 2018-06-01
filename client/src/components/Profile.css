@@ -11,17 +11,18 @@ body {
   padding: 2.23em;
 }
 
-.title-pen {
+/*.title-pen {
   color: #333;
   font-family: "Coda", sans-serif;
   text-align: center;
-}
-.title-pen span {
+}*/
+/*.title-pen span {
   color: #55acee;
-}
+}*/
 
 .user-profile {
-  margin: auto;
+  margin:auto;
+  margin-top: 5px;
 	width: 25em; 
   height: 18em;
   background: #fff;
@@ -37,6 +38,16 @@ body {
   font-family: "Coda", sans-serif;
   font-weight: bold;
 }
+
+.user-profile  .standardField {
+  margin: auto;
+  margin-left: 8.80em;
+  color: #658585;
+  font-size: 1.00em;
+  font-family: "Coda", sans-serif;
+  font-weight: bold;
+}
+
 .user-profile  .bio {
   margin: auto;
   display: inline-block;
@@ -47,8 +58,7 @@ body {
 }
 .user-profile > .description {
   margin: auto;
-  margin-top: 1.35em;
-  margin-right: 15.43em;
+  margin-right: 6.43em;
   width: 14em;
   color: #c0c5c5; 
   font-size: .87em;
@@ -89,4 +99,11 @@ body {
   color: #daebea;
 }
 
+.statusForm{
+  margin-left:130px;
+}
+
+select{
+  height:40px;
+}
 

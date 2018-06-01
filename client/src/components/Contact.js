@@ -25,6 +25,20 @@ class Contact extends Component {
   
   handleCloseModal () {
     this.setState({ showModal: false });
+    var token = localStorage.getItem('token');
+    let config = {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token},
+      body: {}
+    }
+    const API='https://localhost:8085/users'
+    fetch(API, config)
+    .then(response =>
+      response.json()) .then((data) => { 
+        {
+
+        }
+      })
   }
   
 
@@ -65,8 +79,8 @@ class Contact extends Component {
               }
             }}
         >
-           <textarea name="comment">
-           Enter announcement here...</textarea>
+           <textarea name="comment" placeholder=
+           "Enter announcement here..."></textarea>
           <button onClick={this.handleCloseModal}>Close Modal</button>
         </Modal>
       </div>
