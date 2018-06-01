@@ -37,7 +37,7 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
 
         //Let the authentication continue
         final Authentication result = super.authenticate(auth);
-        return new UsernamePasswordAuthenticationToken(user, result.getCredentials(), result.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(user.getUsername(), result.getCredentials(), result.getAuthorities());
     }
 
     private boolean isValidLong(String code) {

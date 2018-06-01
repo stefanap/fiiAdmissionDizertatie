@@ -20,6 +20,7 @@ import com.fiiadmission.repository.RoleRepository;
 import com.fiiadmission.service.UserService;
 
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -68,5 +69,12 @@ public class UserController {
     @GetMapping
     public List<UserDTO> getUsers(){
         return UserMapper.INSTANCE.toUserDTOs(userService.findAllUsers());
+    }
+
+    @GetMapping(value = "/principal")
+    public UserDTO getCurrentUser(Principal principal){
+        String username = principal.getName();
+        User user = userService.findByUsername(username);
+        return UserMapper.INSTANCE.toUserDTO(user);
     }
 }
