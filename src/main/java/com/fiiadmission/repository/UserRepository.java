@@ -22,4 +22,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	List<User> findByAdmissionStatus(String admissionStatus);
 
 	User findById(Long id);
+
+	User findByEmail(String email);
 }

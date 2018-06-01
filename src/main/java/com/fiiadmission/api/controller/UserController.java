@@ -30,28 +30,13 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private UserService userService;
-    
-    @Autowired
-    private RoleService roleService;
 
     @Autowired
     ShaPasswordEncoder passwordEncoder;
-
-    @PostMapping
-    @ResponseStatus(value = HttpStatus.CREATED)
-    //@PreAuthorize("hasAuthority('ADMIN_USER') or hasAuthority('STANDARD_USER')")
-    public @ResponseBody UserDTO createUser(@RequestBody UserDTO userDTO) {
-        //encode the password
-        User user = UserMapper.INSTANCE.toUser(userDTO);
-        user.setRoles(Arrays.asList(roleService.findByRoleName(Constants.STANDARD_USER)));
-        user.setPassword(passwordEncoder.encodePassword(userDTO.getPassword(), Constants.APP_SALT));
-        user.setAdmissionStatus(Constants.ADMISION_STATUS_PENDING);
-        return UserMapper.INSTANCE.toUserDTO(userService.save(user));
-    }
     
     @PutMapping("/{id}")
     //@PreAuthorize("hasAuthority('ADMIN_USER')")
-    public @ResponseBody UserDTO updateUser(@RequestBody UserDTO userDTO,@PathVariable("id") Long id) throws BadRequestException, NotFoundException {
+    public @ResponseBody UserDTO updateUser(@RequestBody UserDTO userDTO, @PathVariable("id") Long id) throws BadRequestException, NotFoundException {
         if(userDTO.getId() != id){
             throw new BadRequestException("Path id and user id do not match");
         }
@@ -83,18 +68,5 @@ public class UserController {
     @GetMapping
     public List<UserDTO> getUsers(){
         return UserMapper.INSTANCE.toUserDTOs(userService.findAllUsers());
-    }
-
-    @GetMapping(value = "/{id}/qr-code")
-    //@PreAuthorize("hasAuthority('ADMIN_USER') or hasAuthority('STANDARD_USER')")
-    public String qrCodeLink(@PathVariable("id") Long id){
-        User user = this.userService.findById(id);
-        String url = "";
-        try {
-            url = userService.generateQRUrl(user);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return url;
     }
 }
