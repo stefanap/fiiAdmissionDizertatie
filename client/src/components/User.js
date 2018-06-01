@@ -1,19 +1,19 @@
-import { field } from "form-for";
-import { bindBootstrapFieldComponents } from "form-for-bootstrap-components";
+  import React, { Component } from "react";
+  export default class user extends Component {
+  constructor(props) {
+  	super(props);
+  	this.state = {
+          userName : this.props.username,
+          firstName : this.props.firstName,
+          lastName : this.props.lastName,
+          password : this.props.password, 
+          email : this.props.email
+    };
+  }
 
-export default class User {
-  @field name;
-  @field surname;
-
-  @field({ type: "tel" })
-  phone;
-
-  @field({ type: "email" })
-  email;
-
-  @field({ type: "select", required: true, options: ['guest', 'admin'] })
-  access;
-
-  bindBootstrapFieldComponents();
+  render() { 
+   return null; 
 }
+}
+
 
