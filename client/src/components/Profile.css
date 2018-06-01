@@ -48,7 +48,7 @@ body {
 .user-profile > .description {
   margin: auto;
   margin-top: 1.35em;
-  margin-right: 4.43em;
+  margin-right: 15.43em;
   width: 14em;
   color: #c0c5c5; 
   font-size: .87em;
@@ -89,17 +89,4 @@ body {
   color: #daebea;
 }
 
-footer > h1 {
-  display: block;
-  text-align: center;
-  clear: both;
-  font-family: "Coda", sans-serif;
-  color: #343f3d;
-  line-height: 6;
-  font-size: 1.6em;
-}
-footer > h1 a {
-  text-decoration: none;
-  color: #ea4c89;
-}
 

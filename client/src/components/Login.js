@@ -33,10 +33,10 @@ let config = {
 
 function proceedWithToken(username,password,code)
 {var token =localStorage.getItem('token');
-    if(token == 'undefined')
+    if(typeof token == 'undefined')
     refreshToken(username,password,code);
     token =  localStorage.getItem('token');
-    if(token == 'undefined')
+    if(typeof token == 'undefined')
       ReactDOM.render(<h1>Login failed</h1>, document.getElementById('thirdStep'));
 }
 
@@ -76,6 +76,7 @@ class Login extends Component {
            this.firstFieldset.className='hidden';
            this.secondFieldset.className='';
            localStorage.setItem('role',data.roles[0].roleName)}
+           ReactDOM.render(<h3>Login successfull</h3>, document.getElementById('thirdStep'));
 })
 }
 

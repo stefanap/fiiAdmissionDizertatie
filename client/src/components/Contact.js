@@ -1,17 +1,32 @@
 import React, { Component } from "react";
 import { Form, Text } from 'react-form';
 import "./Announcements.css";
-
+import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
 
 
 class Contact extends Component {
+
+
  constructor(props) {
     super(props);
     this.state = {
-      announcements: []
+      announcements: [],
+      showModal: false
     };
       this.getAnnouncements();
+       this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
   }
+  
+  handleOpenModal () {
+    this.setState({ showModal: true });
+  }
+  
+  handleCloseModal () {
+    this.setState({ showModal: false });
+  }
+  
 
   getAnnouncements()
     {
@@ -37,9 +52,29 @@ class Contact extends Component {
        return <li class="announcement" key={i}>{announcement.info}</li>
      })}
    </ul>
+  <div>
+        <button onClick={this.handleOpenModal}>Trigger Modal</button>
+        <Modal
+           isOpen={this.state.showModal}
+           contentLabel="Modal"
+           style={{
+              content: {
+                width: '300px',
+                height:'300px',
+                left: '700px'
+              }
+            }}
+        >
+           <textarea name="comment">
+           Enter announcement here...</textarea>
+          <button onClick={this.handleCloseModal}>Close Modal</button>
+        </Modal>
+      </div>
 </div>
     )
   }
 }
+
+
  
 export default Contact;
