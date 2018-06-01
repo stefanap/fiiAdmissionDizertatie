@@ -1,13 +1,6 @@
 package com.fiiadmission.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "highschools")
@@ -18,8 +11,12 @@ public class Highschool {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "name",length=30)
+	@Column(name = "name",length=100)
 	private String highSchoolName;
+
+	@ManyToOne
+	@JoinColumn(name = "region_id")
+	private Region region;
 
 	public Long getId() {
 		return id;
@@ -36,5 +33,12 @@ public class Highschool {
 	public void setHighSchoolName(String highSchoolName) {
 		this.highSchoolName = highSchoolName;
 	}
-	
+
+	public Region getRegion() {
+		return region;
+	}
+
+	public void setRegion(Region region) {
+		this.region = region;
+	}
 }

@@ -1,11 +1,7 @@
 package com.fiiadmission.db;
 
-import com.fiiadmission.domain.Announcement;
-import com.fiiadmission.domain.Role;
-import com.fiiadmission.domain.User;
-import com.fiiadmission.repository.AnnouncementRepository;
-import com.fiiadmission.repository.RoleRepository;
-import com.fiiadmission.repository.UserRepository;
+import com.fiiadmission.domain.*;
+import com.fiiadmission.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -33,6 +29,18 @@ public class PopulateDb implements ApplicationRunner {
     @Autowired
     private AnnouncementRepository announcementRepository;
 
+    @Autowired
+    private CountryRepository countryRepository;
+
+    @Autowired
+    private RegionRepository regionRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
+
+    @Autowired
+    private HighSchoolRepository highSchoolRepository;
+
     public void run(ApplicationArguments args) {
         Role standardRole = null;
         Role adminRole = null;
@@ -51,6 +59,17 @@ public class PopulateDb implements ApplicationRunner {
             this.createAnnouncement("Examenul se sustine pe 21 iulie la ora 11");
             this.createAnnouncement("Rezultatele vor fi postate pe site o saptamana mai tarziu");
             this.createAnnouncement("Locurile trebuiesc confirmate");
+        }
+
+        if(countryRepository.count() == 0){
+            Country romania = this.createCountry("Romania");
+            Region iasiR = this.createRegion("Iasi", romania);
+            City pascani = this.createCity("Pascani", iasiR);
+            this.createHighschool("Colegiul Pascani", iasiR);
+
+            Region botosaniR = this.createRegion("Botosani", romania);
+            City botosaniC = this.createCity("Botosani", botosaniR);
+            this.createHighschool("Colegiul National Mihai Eminescu", botosaniR);
         }
     }
 
@@ -77,5 +96,32 @@ public class PopulateDb implements ApplicationRunner {
         Announcement announcement = new Announcement();
         announcement.setInfo(info);
         announcementRepository.save(announcement);
+    }
+
+    private Country createCountry(String name){
+        Country country = new Country();
+        country.setCountry(name);
+        return countryRepository.save(country);
+    }
+
+    private Region createRegion(String name, Country country){
+        Region region = new Region();
+        region.setRegion(name);
+        region.setCountry(country);
+        return regionRepository.save(region);
+    }
+
+    private City createCity(String name, Region region){
+        City city = new City();
+        city.setCity(name);
+        city.setRegion(region);
+        return cityRepository.save((city));
+    }
+
+    private Highschool createHighschool(String name, Region region){
+        Highschool highschool = new Highschool();
+        highschool.setHighSchoolName(name);
+        highschool.setRegion(region);
+        return highSchoolRepository.save(highschool);
     }
 }

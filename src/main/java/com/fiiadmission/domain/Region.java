@@ -1,13 +1,7 @@
 package com.fiiadmission.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "regions")
@@ -20,6 +14,16 @@ public class Region {
 
 	@Column(name = "region",length=30)
 	private String region;
+
+	@OneToMany(mappedBy = "region")
+	private List<City> cities;
+
+	@OneToMany(mappedBy = "region")
+	private List<Highschool> highschools;
+
+	@ManyToOne
+	@JoinColumn(name = "country_id")
+	private Country country;
 
 	public Long getId() {
 		return id;
@@ -36,6 +40,28 @@ public class Region {
 	public void setRegion(String region) {
 		this.region = region;
 	}
-	
-	
+
+	public List<City> getCities() {
+		return cities;
+	}
+
+	public void setCities(List<City> cities) {
+		this.cities = cities;
+	}
+
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
+	public List<Highschool> getHighschools() {
+		return highschools;
+	}
+
+	public void setHighschools(List<Highschool> highschools) {
+		this.highschools = highschools;
+	}
 }
