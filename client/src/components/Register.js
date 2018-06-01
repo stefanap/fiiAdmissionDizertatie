@@ -3,56 +3,36 @@
   import "./Register.css";
   import ReactDOM from 'react-dom';
   import User from './user.js'
-  const API = 'https://localhost:8085/users'
+  const API = 'https://localhost:8085/register'
   const base64 = require('base-64');
   var qs = require('qs');
 
     function register(user){
+      console.log(JSON.stringify(user.state));
   let config = {
       method: 'POST',
       headers: { 'Content-Type':'application/json'},
-      body: JSON.stringify(user.state)//JSON.stringify(user)//({
-    // "username": username,
-    // "password": password,
-    // "firstName": firstname,
-    // "lastName": lastname,
-    // "email": email,
-    // "admissionStatus": null,
-    // "secret": "K3WAGWHIGNZKZCDN",
-    // "roles": [
-    // ]
-       //})
+      body: JSON.stringify(user.state)
     }
 
      fetch(API, config)
     .then(response =>
-      response.json()) .then((data) => { 
-      	console.log(data);
-          //if (response.ok)
+      response.text()) .then((data) => { 
+          if (typeof data.statusCode == 'undefined')
           {
-            var id= data.id;
-            console.log(id)
-          	getQR(id)
+             ReactDOM.render(<h1><img id='qr' src={data}></img></h1>, document.getElementById('QRCode'));
           }
-
+          else if(data.statusCode == '400')
+          {
+            ReactDOM.render(<p>{data.message}</p>, document.getElementById('messageResult'));
+          }
+         else
+          {
+            ReactDOM.render(<p>Something went wrong, please try again</p>, document.getElementById('messageResult'));
+          }
 
     })
   }
-
-
-  function getQR(id)
-    {
-      const QRAPI = 'https://localhost:8085/users/'+id+'/qr-code'
-      let config = {
-      method: 'GET',
-      }
-
-    fetch(QRAPI, config)
-   .then(response =>
-      response.text()) .then((data) => { 
-         ReactDOM.render(<h1><img id='qr' src={data}></img></h1>, document.getElementById('QRCode'))}) 
-
-    }
 
   class Register extends Component {
 
@@ -77,6 +57,8 @@
      props.lastName = lastname;
      props.password = password;
      props.email = email;
+     console.log('test');
+     console.log(props);
      var user= new User(props);
      register(user);
   }
@@ -84,8 +66,8 @@
 keyUpHandler(refName, e) {
         var password = this.password.value;
         var checkpassword= this.checkpassword.value;
-        var goodColor = "#85AD33";
-        var badColor = "#DB4D4D";
+        //var goodColor = "#85AD33";
+        //var badColor = "#DB4D4D";
         if(password === checkpassword){
         //checkpassword.style.backgroundColor = goodColor;
         //message.style.color = goodColor;
@@ -119,6 +101,7 @@ keyUpHandler(refName, e) {
     </form>
   )}
   </Form>
+  <span id="messageResult"></span> 
   <div id="QRCode" ref={(ref) => this.qr = ref}>
     </div>
     </div>
