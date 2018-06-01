@@ -20,7 +20,6 @@ public interface UserMapper {
 
     @Mapping(target="id", ignore = true)
     @Mapping(target="password", ignore = true)
-    @Mapping(target="username", ignore = true)
     @Mapping(target="registerDate", ignore = true)
     @Mapping(target="registerNumber", ignore = true)
     User toUser(UserDTO userDTO);
