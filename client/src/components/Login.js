@@ -3,10 +3,12 @@ import { Form, Text } from 'react-form';
 import "./Register.css";
 import "./Login.css";
 import ReactDOM from 'react-dom';
+import User from './user.js'
 const API = 'https://localhost:8085/oauth/token'
 const base64 = require('base-64');
 var qs = require('qs');
 var sha256 = require('sha256');
+
 
 
 
@@ -61,12 +63,14 @@ class Login extends Component {
     fetch(GETAPI, config)
    .then(response =>
       response.json()) .then((data) => { 
+        var user= new User(data);
         if(data.id=='undefined'){
+           console.log('undefined id');
           this.secondFieldset.className='hidden';
             this.thirdFieldset.className='';
             ReactDOM.render(<h3>Bad credentials</h3>, document.getElementById('thirdStep'));
           }
-        if(data.password !== sha256(this.password.value)){
+        else if(user.state.password != sha256(this.password.value)){
             this.secondFieldset.className='hidden';
             this.thirdFieldset.className='';
             ReactDOM.render(<h3>Bad credentials</h3>, document.getElementById('thirdStep'));
@@ -75,14 +79,13 @@ class Login extends Component {
           {
            this.firstFieldset.className='hidden';
            this.secondFieldset.className='';
-           localStorage.setItem('role',data.roles[0].roleName)}
-           ReactDOM.render(<h3>Login successfull</h3>, document.getElementById('thirdStep'));
+           localStorage.setItem('role',data.roles[0].roleName)
+         }
 })
 }
 
     
     handleSubmit(e){
-
     this.secondFieldset.className='hidden';
     this.thirdFieldset.className='';
     e.preventDefault();
@@ -117,18 +120,7 @@ class Login extends Component {
         <input type="submit" onClick={this.handleSubmit.bind(this)} value="Apply" />
            </fieldset>
         <fieldset id="thirdStep" class='hidden' ref={(ref) => this.thirdFieldset = ref}>
-    </fieldset>
-
-
-
-
-
-
-
-
-
-
-      
+    </fieldset>      
     </form>
   )}
 </Form>

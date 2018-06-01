@@ -1,46 +1,27 @@
-import React, { Component } from "react";
-import { Form, Text } from 'react-form';
-import "./Register.css";
-import ReactDOM from 'react-dom';
-const API = 'https://localhost:8085/users'
-const base64 = require('base-64');
-var qs = require('qs');
+  import React, { Component } from "react";
+  import { Form, Text } from 'react-form';
+  import "./Register.css";
+  import ReactDOM from 'react-dom';
+  import User from './user.js'
+  const API = 'https://localhost:8085/users'
+  const base64 = require('base-64');
+  var qs = require('qs');
 
-// function refreshToken(){
-// let config = {
-//       method: 'POST',
-//       headers: { 'Content-Type':'application/x-www-form-urlencoded', 'Authorization': 'Basic '+btoa('testjwtclientid:XY7kmzoNzl100')},
-//       body: qs.stringify({
-//         'grant_type': 'password',
-//         'username': 'admin.admin',
-//         'password': 'jwtpass'
-//       })
-//     }
-
-//      fetch(API, config)
-//     .then(response =>
-//       response.json()) .then((data) => { 
-//           localStorage.setItem('token', data.access_token)})     
-
-//     }
-    
-
-    function register(username,firstname,lastname,password,email){
-    	console.log('register')
-let config = {
+    function register(user){
+  let config = {
       method: 'POST',
       headers: { 'Content-Type':'application/json'},
-      body: JSON.stringify({
-    "username": username,
-    "password": password,
-    "firstName": firstname,
-    "lastName": lastname,
-    "email": email,
-    "admissionStatus": null,
-    "secret": "K3WAGWHIGNZKZCDN",
-    "roles": [
-    ]
-      })
+      body: JSON.stringify(user.state)//JSON.stringify(user)//({
+    // "username": username,
+    // "password": password,
+    // "firstName": firstname,
+    // "lastName": lastname,
+    // "email": email,
+    // "admissionStatus": null,
+    // "secret": "K3WAGWHIGNZKZCDN",
+    // "roles": [
+    // ]
+       //})
     }
 
      fetch(API, config)
@@ -56,10 +37,10 @@ let config = {
 
 
     })
-}
+  }
 
 
-function getQR(id)
+  function getQR(id)
     {
       const QRAPI = 'https://localhost:8085/users/'+id+'/qr-code'
       let config = {
@@ -73,56 +54,48 @@ function getQR(id)
 
     }
 
-class Register extends Component {
+  class Register extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      users: [], data: []
-    };
+    this.handlePassKeyUp = this.keyUpHandler.bind(this, 'checkPassword');
+    this.state = {};
   }
 
- handleSubmit(e){
+  handleSubmit(e){
 
       this.registerForm.className='hidden';
       e.preventDefault();
- 	 var username = this.uname.value;
- 	 var firstname = this.firstname.value;
+  	 var username = this.uname.value;
+  	 var firstname = this.firstname.value;
      var lastname = this.lastname.value;
      var password = this.password.value;
      var email = this.email.value;
-     register(username,firstname,lastname,password,email);
+     var props ={}
+     props.username = username;
+     props.firstName = firstname;
+     props.lastName = lastname;
+     props.password = password;
+     props.email = email;
+     var user= new User(props);
+     register(user);
+  }
 
-    // var token =localStorage.getItem('token');
-    // if(token==null)
-    //   refreshToken();
-    // token =  localStorage.getItem('token');
-
-
-
-    // let config = {
-    //   method: 'POST',
-    //   headers: { 'Content-Type':'application/json', 'Authorization': 'Bearer ${localStorage.getItem('token')}')},
-    //   body: qs.stringify({
-    //     'grant_type': 'password',
-    //     'username': 'admin.admin',
-    //     'password': 'jwtpass'
-    //   })
-    // }
-
-
-    // fetch(API, config)
-    // .then(response =>
-    //   response.json()) .then((data) => { 
-    //     if(data.access_token !=null) {
-    //       localStorage.setItem('token', data.access_token);
-    //     this.setState( { data });}
-    //     else
-    //     {
-
-    //     })
- }
+keyUpHandler(refName, e) {
+        var password = this.password.value;
+        var checkpassword= this.checkpassword.value;
+        var goodColor = "#85AD33";
+        var badColor = "#DB4D4D";
+        if(password === checkpassword){
+        //checkpassword.style.backgroundColor = goodColor;
+        //message.style.color = goodColor;
+        ReactDOM.render(<p>Paswords match</p>, document.getElementById('passwordValidation'));
+    }else{
+        //checkpassword.style.backgroundColor = badColor;
+        //message.style.color = badColor;
+        ReactDOM.render(<p>Passwords don't match</p>, document.getElementById('passwordValidation'));
+    }
+    }
 
   render() {
 
@@ -132,34 +105,26 @@ class Register extends Component {
   {formApi => (
     <form class="form-style-5" ref={(ref) => this.registerForm = ref}>
    
-<fieldset>
-<legend><span class="number">1</span> Candidate Info</legend>
-<input type="text" ref={(ref) => this.firstname = ref} name="field1" placeholder="First Name *"/>
-<input type="text" ref={(ref) => this.lastname = ref} name="field2" placeholder="Last Name *"/>
-<input type="email" ref={(ref) => this.email = ref} name="field3" placeholder="Email *"/>
-<input type="text" ref={(ref) => this.uname = ref} name="field4" placeholder="Username*"/>
-<input type="password" ref={(ref) => this.password = ref} name="field5" placeholder="Password *"/>
-</fieldset>
-<input type="submit" onClick={this.handleSubmit.bind(this)} value="Apply" />
-
-
-
-
-
-
-
-
-
-      
+  <fieldset>
+  <legend><span class="number">1</span> Candidate Info</legend>
+  <input type="text" ref={(ref) => this.firstname = ref} name="field1" placeholder="First Name *" required/>
+  <input type="text" ref={(ref) => this.lastname = ref} name="field2" placeholder="Last Name *" required/>
+  <input type="email" ref={(ref) => this.email = ref} name="field3" placeholder="Email *" required/>
+  <input type="text" ref={(ref) => this.uname = ref} name="field4" placeholder="Username*" required/>
+  <input type="password" ref={(ref) => this.password = ref} name="field5" placeholder="Password *" required/>
+  <input id="checkpassword" ref={(ref) => this.checkpassword = ref} type="password" name="field6" placeholder="Retype Password *" onKeyUp={this.handlePassKeyUp} required/> 
+  <span id="passwordValidation"></span> 
+  </fieldset>
+  <input type="submit" onClick={this.handleSubmit.bind(this)} value="Apply" />      
     </form>
   )}
-</Form>
-<div id="QRCode" ref={(ref) => this.qr = ref}>
+  </Form>
+  <div id="QRCode" ref={(ref) => this.qr = ref}>
     </div>
     </div>
     );
   }
-}
- 
-export default Register;
+  }
+
+  export default Register;
 
