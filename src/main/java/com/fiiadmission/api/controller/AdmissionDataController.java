@@ -1,4 +1,4 @@
-package com.fiiadmission.controller;
+package com.fiiadmission.api.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +16,6 @@ import com.fiiadmission.service.AdmissionDataService;
 
 @RestController
 @RequestMapping("/fii/admission")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AdmissionDataController {
 
 	@Autowired

@@ -7,6 +7,7 @@ import org.jboss.aerogear.security.otp.api.Base32;
 import javax.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 
@@ -16,6 +17,7 @@ public class User {
 	
     public User() {
         this.secret=Base32.random();
+        this.registerDate = new Timestamp(new Date().getTime());
     }
     
     @Id
