@@ -7,5 +7,5 @@ import com.fiiadmission.domain.Role;
 
 public interface RoleRepository extends CrudRepository<Role, Long> {
 	
-	public Role findByRoleName(String roleName);
+	Role findByRoleName(String roleName);
 }

@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
     private UserRepository userRepository;
 
-    @Override
+	@Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
@@ -65,6 +65,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User findById(Long id) {
 		return userRepository.findById(id);
+	}
+
+	@Override
+	public User findByEmail(String email){
+		return userRepository.findByEmail(email);
 	}
 
 	@Override
