@@ -3,6 +3,7 @@ package com.fiiadmission.api.dto.mappers;
 import com.fiiadmission.api.dto.RegionDTO;
 import com.fiiadmission.domain.Region;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.factory.Mappers;
 
@@ -15,4 +16,6 @@ public interface RegionMapper {
     RegionDTO toRegionDto(Region region);
 
     List<RegionDTO> toRegionDtoList(List<Region> regions);
+
+    Region toRegion(RegionDTO regionDTO);
 }

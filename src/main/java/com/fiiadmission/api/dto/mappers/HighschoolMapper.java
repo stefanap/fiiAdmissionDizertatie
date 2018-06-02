@@ -17,4 +17,6 @@ public interface HighschoolMapper {
     HighschoolDTO toHighschoolDto(Highschool highschool);
 
     List<HighschoolDTO> toHighschoolDtoList(List<Highschool> highschools);
+
+    Highschool toHighschool(HighschoolDTO highschoolDTO);
 }
