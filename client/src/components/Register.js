@@ -57,8 +57,6 @@
      props.lastName = lastname;
      props.password = password;
      props.email = email;
-     console.log('test');
-     console.log(props);
      var user= new User(props);
      register(user);
   }
@@ -88,7 +86,7 @@ keyUpHandler(refName, e) {
     <form class="form-style-5" ref={(ref) => this.registerForm = ref}>
    
   <fieldset>
-  <legend><span class="number">1</span> Candidate Info</legend>
+  <legend><span class="number">!</span> User Info</legend>
   <input type="text" ref={(ref) => this.firstname = ref} name="field1" placeholder="First Name *" required/>
   <input type="text" ref={(ref) => this.lastname = ref} name="field2" placeholder="Last Name *" required/>
   <input type="email" ref={(ref) => this.email = ref} name="field3" placeholder="Email *" required/>

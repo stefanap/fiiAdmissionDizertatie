@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Announcement from './Announcement.js'
+const base64 = require('base-64');
 
 
 class Announcements extends Component {
@@ -26,7 +27,7 @@ class Announcements extends Component {
     this.handlePostAnnouncement = this.handlePostAnnouncement.bind(this);
     this.handleChange = this.handleChange.bind(this);
     var user = JSON.parse(localStorage.getItem('user'));
-    if(user.roles[0].roleName == 'STANDARD_USER')
+    if(user.roles[0].roleName == 'ADMIN_USER')
       this.state.showButton=true;
   }
 
@@ -46,27 +47,29 @@ class Announcements extends Component {
 
   handlePostAnnouncement () {
     this.setState({ showModal: false });
-    console.log(this.state.Date.format("X"));
     var description = this.description.value;
     var props ={}
     props.info = description;
     props.expiryDate = this.state.Date.format("X");
     var announcement= new Announcement(props);
-    var token = localStorage.getItem('token');
+    var token = base64.decode(localStorage.getItem('token'));
     let config = {
       method: 'POST',
       headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token},
       body:JSON.stringify(announcement.state)
     }
-    const API='https://localhost:8085/users'
+    const API='https://localhost:8085/fii/announcements'
     fetch(API, config)
     .then(response =>
       response.json()) .then((data) => { 
         {
+          console.log(data);
        if (typeof data.statusCode != 'undefined')
           {
             ReactDOM.render(<p>Could not create announcement. Please try again. </p>, document.getElementById('messageResult'));
           }
+          else
+             this.getAnnouncements();
         }
       })
   }
@@ -74,21 +77,15 @@ class Announcements extends Component {
 
   getAnnouncements()
     {
-      console.log('get');
-      var token =localStorage.getItem('token');
-      console.log(token);
-      const API = 'https://localhost:8085/fii/announcements';
+      const API = 'https://localhost:8085/announcements';
       let config = {
-      method: 'GET',
-      headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token}
+      method: 'GET'
       }
 
     fetch(API, config)
    .then(response =>
       response.json()) .then((data) => { 
-        console.log(data);
         this.setState( { announcements:data})}) 
-
     }
 
 

@@ -65,8 +65,11 @@ public class PopulateDb implements ApplicationRunner {
         }
 
         if(countryRepository.count() == 0){
-            Country romania = this.createCountry("Romania");
+        	Country romania = this.createCountry("Romania");
+            Country spania = this.createCountry("Spania");
             Region iasiR = this.createRegion("Iasi", romania);
+            Region catalunia = this.createRegion("Catalunia", spania);
+            City barcelona = this.createCity("Barcelona", catalunia);
             City pascani = this.createCity("Pascani", iasiR);
             this.createHighschool("Colegiul Pascani", iasiR);
 
