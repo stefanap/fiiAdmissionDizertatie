@@ -65,10 +65,9 @@ public class AdmissionData {
 	@OneToOne
 	@JoinColumn(name = "city_id")
 	private City city;
-	
-	@OneToOne
-	@JoinColumn(name = "document_type_id")
-	private DocumentType documentType;
+
+	@OneToMany(mappedBy = "admissionData")
+	private List<UploadedDocument> documents;
 
 	@OneToOne
 	@JoinColumn(name = "user_id")
@@ -104,14 +103,6 @@ public class AdmissionData {
 
 	public void setExamSubject(String examSubject) {
 		this.examSubject = examSubject;
-	}
-
-	public DocumentType getDocument_type() {
-		return documentType;
-	}
-
-	public void setDocuemnt_type(DocumentType document_type) {
-		this.documentType = document_type;
 	}
 
 	public String getTelephone() {
@@ -171,15 +162,12 @@ public class AdmissionData {
 		this.admissionType = admissionType;
 	}
 
-
-
-
-	public DocumentType getDocumentType() {
-		return documentType;
+	public List<UploadedDocument> getDocuments() {
+		return documents;
 	}
 
-	public void setDocumentType(DocumentType documentType) {
-		this.documentType = documentType;
+	public void setDocuments(List<UploadedDocument> documents) {
+		this.documents = documents;
 	}
 
 	public Highschool getHighschool() {

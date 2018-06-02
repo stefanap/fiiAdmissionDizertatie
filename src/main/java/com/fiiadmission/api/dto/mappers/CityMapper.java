@@ -5,6 +5,7 @@ import com.fiiadmission.api.dto.RegionDTO;
 import com.fiiadmission.domain.City;
 import com.fiiadmission.domain.Region;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.factory.Mappers;
 
@@ -17,4 +18,6 @@ public interface CityMapper {
     CityDTO toCityDto(City city);
 
     List<CityDTO> toCityDtoList(List<City> cities);
+
+    City toCity(CityDTO cityDTO);
 }

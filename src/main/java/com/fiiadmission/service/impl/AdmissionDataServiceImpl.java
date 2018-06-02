@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.fiiadmission.repository.AdmissionDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +16,11 @@ import com.fiiadmission.service.UserService;
 public class AdmissionDataServiceImpl implements AdmissionDataService {
 
 	@Autowired
-	private UserService userService;
+	AdmissionDataRepository admissionDataRepository;
+
 
 	@Override
-	public List<AdmissionData> findByName(Optional<String> firstName, Optional<String> lastName) {
-		List<AdmissionData> response=new ArrayList<AdmissionData>();
-		List<User> users =userService.findByName(firstName, lastName);
-		for(User user: users)
-			response.add(user.getAdmissionData());
-		return response;
+	public AdmissionData create(AdmissionData admissionData) {
+		return admissionDataRepository.save(admissionData);
 	}
-	
-	
-	
 }

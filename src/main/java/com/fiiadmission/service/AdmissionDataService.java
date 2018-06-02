@@ -8,6 +8,5 @@ import com.fiiadmission.domain.User;
 
 public interface AdmissionDataService {
 	
-	List<AdmissionData> findByName(Optional<String> firstName,Optional<String> lastName);
-
+	AdmissionData create(AdmissionData admissionData);
 }

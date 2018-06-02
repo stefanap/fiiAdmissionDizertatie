@@ -2,17 +2,7 @@ package com.fiiadmission.domain;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "uploaded_document")
@@ -38,14 +28,13 @@ public class UploadedDocument {
 	@Lob
 	@Column(name = "content")
 	private byte[] content;
-	
-	@OneToOne
-	@JoinColumn(name = "user_id")
-	private User user;
-	
-	@OneToOne
-	@JoinColumn(name = "document_type_id")
-	private DocumentType documentType;
+
+	@Column(name = "document_type")
+	private String documentType;
+
+	@ManyToOne
+	@JoinColumn(name = "admission_data")
+	private AdmissionData admissionData;
 
 	public Long getId() {
 		return id;
@@ -95,20 +84,19 @@ public class UploadedDocument {
 		this.content = content;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public DocumentType getDocumentType() {
+	public String getDocumentType() {
 		return documentType;
 	}
 
-	public void setDocumentType(DocumentType documentType) {
+	public void setDocumentType(String documentType) {
 		this.documentType = documentType;
 	}
-	
+
+	public AdmissionData getAdmissionData() {
+		return admissionData;
+	}
+
+	public void setAdmissionData(AdmissionData admissionData) {
+		this.admissionData = admissionData;
+	}
 }
