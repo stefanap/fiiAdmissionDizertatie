@@ -2,12 +2,21 @@
   import { Form, Text } from 'react-form';
   import "./Register.css";
   import AdmissionData from './AdmissionData.js'
+  const base64 = require('base-64');
   export default class admission extends Component {
   constructor(props) {
   	super(props);
   	this.state = {
-  		countries: []
+  		countries: [],
+  		regions: [],
+  		cities: [],
+  		highschools: [],
+  		countryId: '',
+  		regionId: '',
+  		cityId: '',
+  		highschoolId:''
     };
+    this.getCountries();
   }
 
   handleSubmit(e){
@@ -29,8 +38,95 @@
     fetch(API, config)
    .then(response =>
       response.json()) .then((data) => { 
+      	console.log(data.length);
+      	if(data.legth!=0){
+        this.setState( { countryId:data[0].id});
+        this.getRegions(data[0].id);
+    }
         this.setState( { countries:data})}) 
     }
+
+    getRegions(countryId)
+    {
+      var token = base64.decode(localStorage.getItem('token'));
+      const API = 'https://localhost:8085/fii/countries/'+countryId+'/regions';
+      let config = {
+      method: 'GET',
+      headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token}
+      }
+
+    fetch(API, config)
+   .then(response =>
+      response.json()) .then((data) => { 
+      	if(data.legth!=0){
+      	this.setState( { regionId:data[0].id});
+        this.getCities(data[0].id);
+        this.getHighschools(data[0].id);
+    }
+        this.setState( { regions:data})}) 
+    }
+
+
+    getCities(regionId)
+    {
+      var token = base64.decode(localStorage.getItem('token'));
+      const API = 'https://localhost:8085/fii/regions/'+regionId+'/cities';
+      let config = {
+      method: 'GET',
+      headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token}
+      }
+
+    fetch(API, config)
+   .then(response =>
+      response.json()) .then((data) => { 
+      	if(data.legth!=0)
+      	{this.setState( { cityId:data[0].id});}
+        this.setState( { cities:data})}) 
+    }
+
+    getHighschools(regionId)
+    {
+    	console.log('gethigh');
+      var token = base64.decode(localStorage.getItem('token'));
+      const API = 'https://localhost:8085/fii/regions/'+regionId+'/highschools';
+      let config = {
+      method: 'GET',
+      headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token}
+      }
+
+    fetch(API, config)
+   .then(response =>
+      response.json()) .then((data) => { 
+      	this.setState( { highschools:data});
+      	if(data.length!=0)
+      	{
+      		console.log(data);
+      	this.setState( { highschoolId:data[0].id});
+      }}) ;
+    }
+
+    handleCountryChange (e) {
+    var id = this.country.value;
+    this.setState( { countryId:id})
+    this.getRegions(id);
+  }
+
+   handleRegionChange (e) {
+    var id = this.region.value;
+    this.setState( { regionId:id})
+    this.getCities(id);
+    this.getHighschools(id);
+  }
+
+  handleCityChange (e) {
+    var id = this.city.value;
+    this.setState( { cityId:id})
+  }
+
+   handleHighschoolChange (e) {
+    var id = this.highschool.value;
+    this.setState( { highschoolId:id})
+  }
 
   render() { 
   return (
@@ -65,9 +161,28 @@
   <option value="1">Preadmitere</option>
   </select>
   Please select country
-  <select ref={(ref) => this.country = ref}>
-  {this.state.countries.map(function(country, i){
-       return <option value=i>{country.country}</option>
+  <select ref={(ref) => this.country = ref} onChange={(e) => {this.handleCountryChange(e)}}>
+  {this.state.countries.map(function(country){
+       return <option value={country.id}>{country.country}</option>
+     })}
+  </select>
+  Please select region
+  <select ref={(ref) => this.region = ref} onChange={(e) => {this.handleRegionChange(e)}}>
+  {this.state.regions.map(function(region){
+       return <option value={region.id}>{region.region}</option>
+     })}
+  </select>
+  Please select city
+  <select ref={(ref) => this.city = ref} onChange={(e) => {this.handleCityChange(e)}}>
+  {this.state.cities.map(function(city){
+       return <option value={city.id}>{city.city}</option>
+     })}
+  </select>
+  Please select highschool
+  {console.log(this.state)}
+   <select ref={(ref) => this.highschool = ref} onChange={(e) => {this.handleHighschoolChange(e)}}>
+  {this.state.highschools.map(function(highschool){
+       return <option value={highschool.id}>{highschool.highSchoolName}</option>
      })}
   </select>
  
