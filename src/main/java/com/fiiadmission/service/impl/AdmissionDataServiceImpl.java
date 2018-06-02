@@ -23,4 +23,9 @@ public class AdmissionDataServiceImpl implements AdmissionDataService {
 	public AdmissionData create(AdmissionData admissionData) {
 		return admissionDataRepository.save(admissionData);
 	}
+
+	@Override
+	public AdmissionData findById(Long id) {
+		return admissionDataRepository.findOne(id);
+	}
 }

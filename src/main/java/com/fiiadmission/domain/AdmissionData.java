@@ -1,7 +1,10 @@
 package com.fiiadmission.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
 import java.util.List;
@@ -65,9 +68,6 @@ public class AdmissionData {
 	@OneToOne
 	@JoinColumn(name = "city_id")
 	private City city;
-
-	@OneToMany(mappedBy = "admissionData")
-	private List<UploadedDocument> documents;
 
 	@OneToOne
 	@JoinColumn(name = "user_id")
@@ -160,14 +160,6 @@ public class AdmissionData {
 
 	public void setAdmissionType(String admissionType) {
 		this.admissionType = admissionType;
-	}
-
-	public List<UploadedDocument> getDocuments() {
-		return documents;
-	}
-
-	public void setDocuments(List<UploadedDocument> documents) {
-		this.documents = documents;
 	}
 
 	public Highschool getHighschool() {

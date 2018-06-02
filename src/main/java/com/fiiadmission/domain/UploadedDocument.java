@@ -24,7 +24,7 @@ public class UploadedDocument {
 	
 	@Column(name = "upload_date")
 	private Timestamp uploadDate;
-		
+
 	@Lob
 	@Column(name = "content")
 	private byte[] content;
@@ -33,7 +33,7 @@ public class UploadedDocument {
 	private String documentType;
 
 	@ManyToOne
-	@JoinColumn(name = "admission_data")
+	@JoinColumn(name = "admission_data_id")
 	private AdmissionData admissionData;
 
 	public Long getId() {

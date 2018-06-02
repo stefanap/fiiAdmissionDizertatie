@@ -1,9 +1,8 @@
 package com.fiiadmission.api.dto;
 
-import com.fiiadmission.domain.City;
-import com.fiiadmission.domain.Country;
-import com.fiiadmission.domain.Highschool;
-import com.fiiadmission.domain.Region;
+import com.fiiadmission.domain.UploadedDocument;
+
+import java.util.List;
 
 public class AdmissionDataDTO {
     private Long id;
@@ -150,4 +149,5 @@ public class AdmissionDataDTO {
     public void setCity(CityDTO city) {
         this.city = city;
     }
+
 }

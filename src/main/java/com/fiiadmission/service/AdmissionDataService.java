@@ -9,4 +9,6 @@ import com.fiiadmission.domain.User;
 public interface AdmissionDataService {
 	
 	AdmissionData create(AdmissionData admissionData);
+
+	AdmissionData findById(Long id);
 }
