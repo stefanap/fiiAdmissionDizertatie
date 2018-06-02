@@ -6,7 +6,7 @@
   } from "react-router-dom";
   import Register from "./Register";
   import Login from "./Login";
-  import Contact from "./Contact";
+  import Announcements from "./Announcements";
   import Profile from "./Profile";
   import "./Menu.css";
   import fii from '../fii.png';
@@ -51,7 +51,7 @@
                                         </div>
                                 </NavLink>
                         </li>
-                        <li class="var_nav"><NavLink to="/contact">
+                        <li class="var_nav"><NavLink to="/announcements">
                                 <div class="link_bg"></div>
                                 <div class="link_title">
                                         <div class="icon"> 
@@ -77,7 +77,7 @@
         <div className="content col-md-10">
                 <Route exact path="/" component={Register}/>
                 <Route path="/login" component={Login}/>
-                <Route path="/contact" component={Contact}/>
+                <Route path="/announcements" component={Announcements}/>
                  <Route path="/profile" component={Profile}/>
         </div>
         </div>

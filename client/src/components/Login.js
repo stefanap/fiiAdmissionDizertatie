@@ -3,7 +3,7 @@ import { Form, Text } from 'react-form';
 import "./Register.css";
 import "./Login.css";
 import ReactDOM from 'react-dom';
-import User from './user.js'
+import User from './User.js'
 const API = 'https://localhost:8085/oauth/token'
 const base64 = require('base-64');
 var qs = require('qs');
@@ -22,7 +22,6 @@ function getUser(token){
         {
              console.log(data);
              var user= new User(data);
-             console.log(JSON.stringify(user.state));
              localStorage.setItem('user',JSON.stringify(user.state));
         }
 })

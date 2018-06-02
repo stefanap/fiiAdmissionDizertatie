@@ -2,7 +2,7 @@
   import { Form, Text } from 'react-form';
   import "./Register.css";
   import ReactDOM from 'react-dom';
-  import User from './user.js'
+  import User from './User.js'
   const API = 'https://localhost:8085/register'
   const base64 = require('base-64');
   var qs = require('qs');
