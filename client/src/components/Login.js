@@ -103,7 +103,7 @@ let config = {
 
         if(typeof data.access_token!= 'undefined')
         {
-          localStorage.setItem('token', sha256(data.access_token));
+          localStorage.setItem('token', base64.encode(data.access_token));
           getUser(data.access_token);
           this.firstFieldset.className='hidden';
           this.secondFieldset.className='hidden';
@@ -139,7 +139,7 @@ let config = {
     <form class="form-style-5">
    
 <fieldset  ref={(ref) => this.firstFieldset = ref}>
-<legend><span class="number">1</span> Candidate Info</legend>
+<legend><span class="number">!</span> User Info</legend>
 <input type="text" ref={(ref) => this.uname = ref} name="field1" placeholder="Username*"/>
 <input type="password" ref={(ref) => this.password = ref} name="field2" placeholder="Password *"/>
 </fieldset>

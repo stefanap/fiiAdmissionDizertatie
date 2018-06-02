@@ -5,6 +5,7 @@
     HashRouter
   } from "react-router-dom";
   import Register from "./Register";
+  import Admission from "./Admission";
   import Login from "./Login";
   import Announcements from "./Announcements";
   import Profile from "./Profile";
@@ -71,6 +72,16 @@
                         </div>
                         </NavLink>
                 </li>
+                <li class="var_nav"><NavLink to="/admission">
+                        <div class="link_bg"></div>
+                        <div class="link_title">
+                                <div class="icon"> 
+                                        <i class="icon-briefcase icon-2x"></i>
+                                </div>
+                                <a href="#"><span>Register for admission</span></a>
+                        </div>
+                        </NavLink>
+                </li>
         </ul>
 
 </div>
@@ -78,7 +89,8 @@
                 <Route exact path="/" component={Register}/>
                 <Route path="/login" component={Login}/>
                 <Route path="/announcements" component={Announcements}/>
-                 <Route path="/profile" component={Profile}/>
+                <Route path="/profile" component={Profile}/>
+                <Route path="/admission" component={Admission}/>
         </div>
         </div>
 

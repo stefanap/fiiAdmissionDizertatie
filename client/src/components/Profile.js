@@ -3,6 +3,7 @@ import { Redirect } from 'react-router';
 import { Form, Text } from 'react-form';
 import "./Profile.css";
 var qs = require('qs');
+const base64 = require('base-64');
 
 // function refreshToken(username,password,code){
 
@@ -56,7 +57,7 @@ var qs = require('qs');
 
       handleSubmit(e){
         e.preventDefault();
-        var token =localStorage.getItem('token');
+        var token =base64.decode(localStorage.getItem('token'));
         if(token=='undefined'||token==null)
           return <Redirect to='/login'/>;
         token =  localStorage.getItem('token');
