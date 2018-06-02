@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/countries")
+@RequestMapping("/fii/countries")
 public class CountryController {
 
     @Autowired

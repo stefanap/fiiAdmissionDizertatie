@@ -1,6 +1,7 @@
 package com.fiiadmission.domain;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +33,10 @@ public class Announcement {
     @OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
+
+    public Announcement(){
+    	this.publish_date = new Timestamp(new Date().getTime());
+	}
 
 	public Long getId() {
 		return id;

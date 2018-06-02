@@ -9,4 +9,5 @@ public interface AnnouncementService {
 	
 	 List<Announcement> findAllAnnouncements();
 
+	 Announcement saveAnnouncement(Announcement announcement);
 }

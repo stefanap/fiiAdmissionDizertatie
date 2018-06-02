@@ -8,7 +8,10 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -95,6 +98,10 @@ public class PopulateDb implements ApplicationRunner {
     private void createAnnouncement(String info){
         Announcement announcement = new Announcement();
         announcement.setInfo(info);
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, 1);
+        announcement.setExpiry_date(new Timestamp(cal.getTime().getTime()));
         announcementRepository.save(announcement);
     }
 

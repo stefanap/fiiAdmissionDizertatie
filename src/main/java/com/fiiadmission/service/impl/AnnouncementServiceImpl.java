@@ -1,5 +1,8 @@
 package com.fiiadmission.service.impl;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,19 @@ public class AnnouncementServiceImpl implements AnnouncementService{
 
 	@Override
 	public List<Announcement> findAllAnnouncements() {
-		return (List<Announcement>)announcementRepository.findAll();
+		List<Announcement> announcements = new ArrayList<>();
+        Timestamp time = new Timestamp(new Date().getTime());
+		for(Announcement announcement : (List<Announcement>)announcementRepository.findAll()){
+		    if(announcement.getExpiry_date().after(time)){
+		        announcements.add(announcement);
+            }
+        }
+        return announcements;
+	}
+
+	@Override
+	public Announcement saveAnnouncement(Announcement announcement) {
+		return announcementRepository.save(announcement);
 	}
 
 }
