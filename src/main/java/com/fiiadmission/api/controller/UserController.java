@@ -15,12 +15,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.fiiadmission.domain.EmptyJsonResponse;
+import com.fiiadmission.domain.Role;
 import com.fiiadmission.domain.User;
 import com.fiiadmission.repository.RoleRepository;
 import com.fiiadmission.service.UserService;
 
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +31,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/fii/users")
 public class UserController {
+	
+	@Autowired
+	private RoleService roleService;
+	 
     @Autowired
     private UserService userService;
 
@@ -36,7 +42,6 @@ public class UserController {
     ShaPasswordEncoder passwordEncoder;
     
     @PutMapping("/{id}")
-    //@PreAuthorize("hasAuthority('ADMIN_USER')")
     public @ResponseBody UserDTO updateUser(@RequestBody UserDTO userDTO, @PathVariable("id") Long id) throws BadRequestException, NotFoundException {
         if(userDTO.getId() != id){
             throw new BadRequestException("Path id and user id do not match");
@@ -46,6 +51,20 @@ public class UserController {
             throw new NotFoundException("User with id=" + id + " was not found");
         }
     	searchedUser.setEmail(userDTO.getEmail());
+        return UserMapper.INSTANCE.toUserDTO(userService.save(searchedUser));
+    }
+    
+    @PostMapping("/updateRole/{id}")
+    //@PreAuthorize("hasAuthority('ADMIN_USER')")
+    public @ResponseBody UserDTO updateUserRole(@RequestBody String roleName, @PathVariable("id") Long id) throws BadRequestException, NotFoundException {
+    	User searchedUser = userService.findById(id);
+        if(searchedUser == null){
+            throw new NotFoundException("User with id=" + id + " was not found");
+        }
+        List<Role> roles= new ArrayList<Role>();
+        Role role=roleService.findByRoleName(roleName);
+        roles.add(role);
+        searchedUser.setRoles(roles);
         return UserMapper.INSTANCE.toUserDTO(userService.save(searchedUser));
     }
 
@@ -67,6 +86,7 @@ public class UserController {
     }
     
     @GetMapping
+    //@PreAuthorize("hasAuthority('ADMIN_USER')")
     public List<UserDTO> getUsers(){
         return UserMapper.INSTANCE.toUserDTOs(userService.findAllUsers());
     }

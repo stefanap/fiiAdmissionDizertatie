@@ -90,11 +90,17 @@ class Announcements extends Component {
 
 
   render() {
+    if(this.state.announcements.length ==0) 
+    { 
+    return null;
+    }
+    else 
+    {
     return (
       <div>
 <ul>
-
-     {this.state.announcements.map(function(announcement, i){
+     {
+     this.state.announcements.map(function(announcement, i){
        return <li class="announcement" key={i}>{announcement.info}</li>
      })}
    </ul>
@@ -124,7 +130,7 @@ class Announcements extends Component {
       </div>
 </div>
     )
-  }
+  }}
 }
 
 
