@@ -8,50 +8,8 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Announcement from './Announcement.js'
  import "./ManageUsers.css";
+  import User from './User.js'
 const base64 = require('base-64');
-
-
- function getUsers()
-    {
-      var token=base64.decode(localStorage.getItem('token'));
-      const API = 'https://localhost:8085/fii/users';
-      let config = {
-      method: 'GET',
-      headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token}
-      }
-
-    fetch(API, config)
-   .then(response =>
-      response.json()) .then((data) => { 
-        this.setState( { users:data})}) 
-    }
-
-function changeUserRole(id,role){
-  if(role=='STANDARD_USER') role='ADMIN_USER';
-  else role='STANDARD_USER';
- var token = base64.decode(localStorage.getItem('token'));
-    let config = {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token},
-      body:JSON.stringify({
-        'roleName': role
-      })
-    }
-    const API='https://localhost:8085/fii/users/updateRole/'+id;
-    fetch(API, config)
-    .then(response =>
-      response.json()) .then((data) => { 
-        {
-          console.log(data);
-       if (typeof data.statusCode != 'undefined')
-          {
-            ReactDOM.render(<p>Could not change user role. Please try again. </p>, document.getElementById('messageResult'));
-          }
-          else
-             getUsers();
-        }
-      })
-}
 
 class Announcements extends Component {
 
@@ -63,6 +21,39 @@ class Announcements extends Component {
     };
     this.getUsers();
   }
+
+  changeUserRole(id,role){
+  if(role=='STANDARD_USER') role='ADMIN_USER';
+  else role='STANDARD_USER';
+  var props ={}
+     var userRole={};
+     userRole.roleName=role;
+     console.log(userRole);
+     var roles=[userRole];
+     props.roles = roles;
+     var user= new User(props);
+     console.log(user);
+ var token = base64.decode(localStorage.getItem('token'));
+    let config = {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token},
+      body:JSON.stringify(user.state)
+    }
+    const API='https://localhost:8085/fii/users/updateRole/'+id;
+    fetch(API, config)
+    .then(response =>
+      response.json()) .then((data) => { 
+        {
+          console.log(data);
+       if (typeof data.statusCode != 'undefined')
+          {
+            //ReactDOM.render(<p>Could not change user role. Please try again. </p>, document.getElementById('messageResult'));
+          }
+          else
+             this.getUsers();
+        }
+      })
+}
 
   getUsers()
     {
@@ -76,6 +67,7 @@ class Announcements extends Component {
     fetch(API, config)
    .then(response =>
       response.json()) .then((data) => { 
+        console.log(data);
         this.setState( { users:data})}) 
     }
 
@@ -92,7 +84,8 @@ class Announcements extends Component {
     <th>Status</th>
     <th>Role Name</th>
   </tr>
-     {this.state.users.map(function(user, i){
+  {
+     this.state.users.map((user, i) => {
       console.log(user);
        return <tr key={i}>
        <td>{user.username}</td>
@@ -100,7 +93,7 @@ class Announcements extends Component {
        <td>{user.lastName}</td>
        <td>{user.email}</td>
        <td>{user.admissionStatus}</td>
-       <td>{user.roles[0].roleName} <button class='changeRoleButton' onClick={() => { changeUserRole(user.id,user.roles[0].roleName) }}>Change</button></td>
+       <td>{user.roles[0].roleName} <button class='changeRoleButton' onClick={() => { this.changeUserRole(user.id,user.roles[0].roleName) }}>Change</button></td>
        </tr>
      })}
    </table>
