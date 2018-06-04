@@ -73,6 +73,9 @@ public class AdmissionData {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@OneToMany(mappedBy = "admissionData")
+	private List<UploadedDocument> documents;
+
 	public Long getId() {
 		return id;
 	}
@@ -210,4 +213,11 @@ public class AdmissionData {
 		this.user = user;
 	}
 
+	public List<UploadedDocument> getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(List<UploadedDocument> documents) {
+		this.documents = documents;
+	}
 }

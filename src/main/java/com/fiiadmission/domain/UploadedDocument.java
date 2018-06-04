@@ -1,5 +1,7 @@
 package com.fiiadmission.domain;
 
+import org.hibernate.annotations.Type;
+
 import java.sql.Timestamp;
 
 import javax.persistence.*;
@@ -27,6 +29,7 @@ public class UploadedDocument {
 
 	@Lob
 	@Column(name = "content")
+	@Type(type="org.hibernate.type.BinaryType")
 	private byte[] content;
 
 	@Column(name = "document_type")

@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -68,14 +69,21 @@ public class DocumentController {
         uploadedDocument.setContent(uploadfile.getBytes());
         uploadedDocumentService.create(uploadedDocument);
 
-//        admissionData.getDocuments().add(uploadedDocument);
-//        admissionDataService.create(admissionData);
-
         return UploadedDocumentMapper.INSTANCE.toUploadedDocumentDTO(uploadedDocument);
     }
 
     @GetMapping(value = "/{id}")
     public UploadedDocumentDTO get(@PathVariable Long id){
         return UploadedDocumentMapper.INSTANCE.toUploadedDocumentDTO(uploadedDocumentService.findById(id));
+    }
+
+    @GetMapping(value = "/users/{id}")
+    public List<UploadedDocumentDTO> getAllDocuments(@PathVariable Long id){
+        User user = userService.findById(id);
+        List<UploadedDocument> documents = new ArrayList<>();
+        if(user.getAdmissionData() != null){
+            documents = user.getAdmissionData().getDocuments();
+        }
+        return UploadedDocumentMapper.INSTANCE.toUploadedDocumentDTOList(documents);
     }
 }
