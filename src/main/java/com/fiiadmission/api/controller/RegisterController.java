@@ -46,7 +46,7 @@ public class RegisterController {
             throw new BadRequestException("Email already used.");
         }
         //encode the password
-        user.setRoles(Arrays.asList(roleService.findByRoleName(Constants.STANDARD_USER)));
+        user.setRole(roleService.findByRoleName(Constants.STANDARD_USER));
         user.setPassword(passwordEncoder.encodePassword(userDTO.getPassword(), Constants.APP_SALT));
         user.setAdmissionStatus(Constants.ADMISION_STATUS_PENDING);
         user = userService.save(user);

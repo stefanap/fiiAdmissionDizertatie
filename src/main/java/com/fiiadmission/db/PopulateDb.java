@@ -53,9 +53,9 @@ public class PopulateDb implements ApplicationRunner {
         }
 
         if(userRepository.count() == 0){
-            this.createUser("John", "Doe", "jwtpass", "johndoe", Arrays.asList(standardRole), "PENDING", "john.doe@mail.com");
-            this.createUser("Andrei", "Popa", "jwtpass", "andrei.popa", Arrays.asList(standardRole),"PENDING", "andrei.popa@mail.com");
-            this.createUser("Admin", "Admin", "jwtpass", "admin.admin", Arrays.asList(adminRole), "", "admin.admin@mail.com");
+            this.createUser("John", "Doe", "jwtpass", "johndoe", standardRole, "PENDING", "john.doe@mail.com");
+            this.createUser("Andrei", "Popa", "jwtpass", "andrei.popa", standardRole,"PENDING", "andrei.popa@mail.com");
+            this.createUser("Admin", "Admin", "jwtpass", "admin.admin", adminRole, "", "admin.admin@mail.com");
         }
 
         if(announcementRepository.count() == 0){
@@ -86,13 +86,13 @@ public class PopulateDb implements ApplicationRunner {
         return roleRepository.save(role);
     }
 
-    private void createUser(String firstName, String lastName, String password, String username, List<Role> roles, String admissionStatus, String email){
+    private void createUser(String firstName, String lastName, String password, String username, Role role, String admissionStatus, String email){
         User user = new User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setPassword(shaPasswordEncoder.encodePassword(password,""));
         user.setUsername(username);
-        user.setRoles(roles);
+        user.setRole(role);
         user.setAdmissionStatus(admissionStatus);
         user.setEmail(email);
         userRepository.save(user);

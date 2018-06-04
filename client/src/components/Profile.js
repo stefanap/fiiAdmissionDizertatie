@@ -78,7 +78,7 @@ const base64 = require('base-64');
   <div class="standardField">name: {this.state.user.firstName}{' '}{this.state.user.lastName}</div>
   <div class="standardField">email: {this.state.user.email}</div>
   <div class="bio">
-  {this.state.user.roles[0].roleName}
+  {this.state.user.role.roleName}
   </div>
   <div class="description">{this.state.descriptionText}
   </div>

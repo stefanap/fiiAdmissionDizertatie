@@ -26,7 +26,7 @@ public class UserDTO {
 
     private Long registerNumber;
     
-    private List<Role> roles;
+    private Role role;
 
     public Long getId() {
         return id;
@@ -100,12 +100,12 @@ public class UserDTO {
         this.registerNumber = registerNumber;
     }
 
-	public List<Role> getRoles() {
-		return roles;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public void setRole(Role role) {
+		this.role = role;
 	}
     
     

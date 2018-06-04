@@ -62,12 +62,8 @@ public class UserController {
         if(searchedUser == null){
             throw new NotFoundException("User with id=" + id + " was not found");
         }
-        List<Role> userRoles= userDTO.getRoles();
-        List<Role> updatedRoles= new ArrayList<Role>();
-        for(Role role:userRoles) 
-        	{role=roleService.findByRoleName(role.getRoleName());
-            updatedRoles.add(role);}
-        searchedUser.setRoles(updatedRoles);
+        Role userRole= userDTO.getRole();
+        searchedUser.setRole(roleService.findByRoleName(userRole.getRoleName()));
         return UserMapper.INSTANCE.toUserDTO(userService.save(searchedUser));
     }
 

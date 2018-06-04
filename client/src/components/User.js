@@ -12,7 +12,7 @@
           admissionStatus: this.props.admissionStatus,
           registerDate : this.props.registerDate,
           registerNumber: this.props.registerNumber,
-          roles: this.props.roles
+          role: this.props.role
     };
   }
 

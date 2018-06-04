@@ -7,12 +7,23 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Announcement from './Announcement.js'
- import "./ManageUsers.css";
-  import User from './User.js'
+import "./ManageUsers.css";
+import User from './User.js'
+import ReactTable from "react-table";
+import "react-table/react-table.css";
+import { ReactTableDefaults } from "react-table";
+
+Object.assign(ReactTableDefaults, {
+  defaultPageSize: 10,
+  filterable:true,
+  style: {}
+});
+
+
 const base64 = require('base-64');
 
-class Announcements extends Component {
 
+class Announcements extends Component {
 
  constructor(props) {
     super(props);
@@ -22,7 +33,12 @@ class Announcements extends Component {
     this.getUsers();
   }
 
-  changeUserRole(id,role){
+  changeUserRole(value){
+    console.log(value);
+  var id=value.id;
+  var role;
+  if(typeof value.role!=='undefined')
+  role=value.role.roleName;
   if(role=='STANDARD_USER') role='ADMIN_USER';
   else role='STANDARD_USER';
   var props ={}
@@ -74,30 +90,47 @@ class Announcements extends Component {
 
   render() {
     return (
-      <div>
-<table>
-      <tr>
-    <th>Username</th>
-    <th>First Name</th>
-    <th>Last name</th>
-    <th>Email</th>
-    <th>Status</th>
-    <th>Role Name</th>
-  </tr>
-  {
-     this.state.users.map((user, i) => {
-      console.log(user);
-       return <tr key={i}>
-       <td>{user.username}</td>
-       <td>{user.firstName}</td>
-       <td>{user.lastName}</td>
-       <td>{user.email}</td>
-       <td>{user.admissionStatus}</td>
-       <td>{user.roles[0].roleName} <button class='changeRoleButton' onClick={() => { this.changeUserRole(user.id,user.roles[0].roleName) }}>Change</button></td>
-       </tr>
-     })}
-   </table>
-   </div>
+       <div>
+      <ReactTable
+          data={this.state.users}
+          columns={[
+            
+                {
+                  Header: "First Name",
+                  accessor: "firstName"
+                },
+                {
+                  Header: "Last Name",
+                  accessor: "firstName"
+                },
+                {
+                  Header: "User Name",
+                  accessor: "username"
+                },
+                 {
+                  Header: "Email",
+                  accessor: "email"
+                },
+                {
+                  Header: "Admission Status",
+                  accessor: "admissionStatus"
+                },
+                {
+                  Header: "Role",
+                  id: "roleName",
+                  accessor: d => d.role.roleName
+                },
+                 {
+        id: 'edit',
+        accessor: "row",
+        Cell: ({value}) => (<button onClick={console.log('clicked value', value)}>Change Role</button>)
+      }
+            ]}
+          defaultPageSize={10}
+          className="-striped -highlight"
+        />
+      </div>
+
     )
   }
 }

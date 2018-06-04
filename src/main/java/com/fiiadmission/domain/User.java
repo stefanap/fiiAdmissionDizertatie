@@ -61,15 +61,23 @@ public class User {
      * Roles are being eagerly loaded here because
      * they are a fairly small collection of items for this example.
      */
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns
             = @JoinColumn(name = "user_id",
             referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id",
                     referencedColumnName = "id"))
-    private List<Role> roles;
+    private Role role;
 
-    public Long getId() {
+    public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -109,13 +117,7 @@ public class User {
         this.lastName = lastName;
     }
 
-    public List<Role> getRoles() {
-        return roles;
-    }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
     
     public String getEmail() {
 		return email;
