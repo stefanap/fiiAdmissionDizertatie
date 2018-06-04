@@ -4,6 +4,7 @@ import com.fiiadmission.api.dto.UserDTO;
 import com.fiiadmission.api.dto.mappers.UserMapper;
 import com.fiiadmission.api.exceptions.BadRequestException;
 import com.fiiadmission.api.exceptions.NotFoundException;
+import com.fiiadmission.service.EmailService;
 import com.fiiadmission.service.RoleService;
 import com.fiiadmission.utils.Constants;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;

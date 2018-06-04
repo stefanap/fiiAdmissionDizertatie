@@ -4,6 +4,7 @@ import com.fiiadmission.api.dto.UserDTO;
 import com.fiiadmission.api.dto.mappers.UserMapper;
 import com.fiiadmission.api.exceptions.BadRequestException;
 import com.fiiadmission.domain.User;
+import com.fiiadmission.service.EmailService;
 import com.fiiadmission.service.RoleService;
 import com.fiiadmission.service.UserService;
 import com.fiiadmission.utils.Constants;
@@ -28,6 +29,9 @@ public class RegisterController {
     @Autowired
     ShaPasswordEncoder passwordEncoder;
 
+    @Autowired
+    EmailService emailService;
+
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public String createUser(@RequestBody UserDTO userDTO) throws UnsupportedEncodingException, BadRequestException {
@@ -46,7 +50,20 @@ public class RegisterController {
         user.setPassword(passwordEncoder.encodePassword(userDTO.getPassword(), Constants.APP_SALT));
         user.setAdmissionStatus(Constants.ADMISION_STATUS_PENDING);
         user = userService.save(user);
-        return userService.generateQRUrl(user);
+        String qrUrl = userService.generateQRUrl(user);
+
+        //send email with the qr url
+        this.sendRegistrationEmail(user, qrUrl);
+
+        return qrUrl;
+    }
+
+    private void sendRegistrationEmail(User user, String qrUrl){
+        String subject = "Fii Admission QR CODE";
+        String to = user.getEmail();
+        String bodyHtml = "<img src=\"" + qrUrl + "\">";
+
+        emailService.sendEmail(subject,to,"",bodyHtml);
     }
 
 //    @GetMapping(value = "/{id}/qr-code")
