@@ -9,6 +9,7 @@
   import Login from "./Login";
   import Announcements from "./Announcements";
   import Profile from "./Profile";
+  import ManageUsers from "./ManageUsers";
   import "./Menu.css";
   import fii from '../fii.png';
   require('react-bootstrap');
@@ -82,6 +83,16 @@
                         </div>
                         </NavLink>
                 </li>
+                <li class="var_nav"><NavLink to="/viewUsers">
+                        <div class="link_bg"></div>
+                        <div class="link_title">
+                                <div class="icon"> 
+                                        <i class="icon-briefcase icon-2x"></i>
+                                </div>
+                                <a href="#"><span>Manage users</span></a>
+                        </div>
+                        </NavLink>
+                </li>
         </ul>
 
 </div>
@@ -91,6 +102,7 @@
                 <Route path="/announcements" component={Announcements}/>
                 <Route path="/profile" component={Profile}/>
                 <Route path="/admission" component={Admission}/>
+                <Route path="/viewUsers" component={ManageUsers}/>
         </div>
         </div>
 

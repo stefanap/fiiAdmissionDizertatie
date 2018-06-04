@@ -100,7 +100,6 @@
       	this.setState( { highschools:data});
       	if(data.length!=0)
       	{
-      		console.log(data);
       	this.setState( { highschoolId:data[0].id});
       }}) ;
     }
@@ -179,7 +178,6 @@
      })}
   </select>
   Please select highschool
-  {console.log(this.state)}
    <select ref={(ref) => this.highschool = ref} onChange={(e) => {this.handleHighschoolChange(e)}}>
   {this.state.highschools.map(function(highschool){
        return <option value={highschool.id}>{highschool.highSchoolName}</option>
