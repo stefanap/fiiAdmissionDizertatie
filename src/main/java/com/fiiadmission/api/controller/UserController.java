@@ -57,14 +57,21 @@ public class UserController {
     
     @PostMapping("/updateRole/{id}")
     //@PreAuthorize("hasAuthority('ADMIN_USER')")
-    public @ResponseBody UserDTO updateUserRole(@RequestBody UserDTO userDTO, @PathVariable("id") Long id) throws BadRequestException, NotFoundException {
-    	User searchedUser = userService.findById(id);
-        if(searchedUser == null){
-            throw new NotFoundException("User with id=" + id + " was not found");
-        }
-        Role userRole= userDTO.getRole();
-        searchedUser.setRole(roleService.findByRoleName(userRole.getRoleName()));
-        return UserMapper.INSTANCE.toUserDTO(userService.save(searchedUser));
+    public @ResponseBody UserDTO updateUserRole(@PathVariable("id") Long id) throws BadRequestException, NotFoundException {
+		User searchedUser = userService.findById(id);
+		if (searchedUser == null) {
+			throw new NotFoundException("User with id=" + id + " was not found");
+		}
+		User user = userService.findById(id);
+		Role role = user.getRole();
+		Role newRole=null;
+		if (role.getRoleName().equals("STANDARD_USER")) {
+			newRole = roleService.findByRoleName("ADMIN_USER");
+		} else if (role.getRoleName().equals("ADMIN_USER")) {
+			newRole = roleService.findByRoleName("STANDARD_USER");
+		}
+		user.setRole(newRole);
+		return UserMapper.INSTANCE.toUserDTO(userService.save(searchedUser));
     }
 
     @GetMapping(value ="/search")

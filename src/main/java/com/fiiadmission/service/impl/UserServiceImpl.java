@@ -11,6 +11,7 @@ import com.fiiadmission.service.UserService;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAllUsers() {
-        return (List<User>)userRepository.findAll();
+        return (List<User>)userRepository.findAllByOrderByIdAsc();
     }
 
 	@Override
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
 		String firstName = firstname.isPresent()? firstname.get():null;
 		String lastName = lastname.isPresent()? lastname.get():null;
 		if(firstName!=null&&lastName!=null)
-		return userRepository.findByFirstNameAndLastName(firstName, lastName);
+			return userRepository.findByFirstNameAndLastName(firstName, lastName);
 		else if(firstName!=null)
 			return userRepository.findByFirstName(firstName);
 		else if(lastName!=null)

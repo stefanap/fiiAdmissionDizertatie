@@ -22,7 +22,6 @@ Object.assign(ReactTableDefaults, {
 
 const base64 = require('base-64');
 
-
 class Announcements extends Component {
 
  constructor(props) {
@@ -33,27 +32,13 @@ class Announcements extends Component {
     this.getUsers();
   }
 
-  changeUserRole(value){
-    console.log(value);
-  var id=value.id;
-  var role;
-  if(typeof value.role!=='undefined')
-  role=value.role.roleName;
-  if(role=='STANDARD_USER') role='ADMIN_USER';
-  else role='STANDARD_USER';
-  var props ={}
-     var userRole={};
-     userRole.roleName=role;
-     console.log(userRole);
-     var roles=[userRole];
-     props.roles = roles;
-     var user= new User(props);
-     console.log(user);
+ changeUserRole(id){
+  console.log('here',id);
  var token = base64.decode(localStorage.getItem('token'));
     let config = {
       method: 'POST',
       headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token},
-      body:JSON.stringify(user.state)
+      body:{}
     }
     const API='https://localhost:8085/fii/users/updateRole/'+id;
     fetch(API, config)
@@ -83,7 +68,6 @@ class Announcements extends Component {
     fetch(API, config)
    .then(response =>
       response.json()) .then((data) => { 
-        console.log(data);
         this.setState( { users:data})}) 
     }
 
@@ -122,8 +106,8 @@ class Announcements extends Component {
                 },
                  {
         id: 'edit',
-        accessor: "row",
-        Cell: ({value}) => (<button onClick={console.log('clicked value', value)}>Change Role</button>)
+        accessor: "id",
+        Cell: ({value}) => (<button class='changeRoleButton' onClick={() => { this.changeUserRole(value) }}>Change Role</button>)
       }
             ]}
           defaultPageSize={10}
