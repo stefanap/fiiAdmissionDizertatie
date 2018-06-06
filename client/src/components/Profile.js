@@ -34,9 +34,13 @@ const base64 = require('base-64');
       descriptionText: 'Please confirm your admission status below',
       user: JSON.parse(localStorage.getItem('user'))
     };
-
-    //var buttonStyle = {'background-color':'blue'};
+if(localStorage.getItem('user')==null)
+      this.redirect();
       }
+
+       redirect() {
+        this.props.history.push("/login")
+    }
 
    updateStatus(user,token){
     let config = {
@@ -58,8 +62,6 @@ const base64 = require('base-64');
       handleSubmit(e){
         e.preventDefault();
         var token =base64.decode(localStorage.getItem('token'));
-        if(token=='undefined'||token==null)
-          return <Redirect to='/login'/>;
         token =  localStorage.getItem('token');
         var newStatus;
         if(this.status.value==1) newStatus='Confirmed';
@@ -69,16 +71,27 @@ const base64 = require('base-64');
       }}
 
         render() {
-          if (typeof this.state.user=='undefined')  return <Redirect to='/login'/>; //???
-          else return (
+          var role;
+          var username;
+          var firstName;
+          var lastName;
+          var email;
+          if(this.state.user!=null&&this.state.user.role) 
+            {role=this.state.user.role.roleName;
+              username=this.state.user.username;
+              firstName=this.state.user.firstName;
+              lastName=this.state.user.lastName;
+              email=this.state.user.email;
+            }
+         return (
   <div>
   <div class="user-profile">
   <img class="avatar" src="https://cdn2.iconfinder.com/data/icons/reading/512/round-level-phd-avatar-university-student-512.png" alt="Ash" />
-  <div class="username">username: {this.state.user.username}</div>
-  <div class="standardField">name: {this.state.user.firstName}{' '}{this.state.user.lastName}</div>
-  <div class="standardField">email: {this.state.user.email}</div>
+  <div class="username">username: {username}</div>
+  <div class="standardField">name: {firstName}{' '}{lastName}</div>
+  <div class="standardField">email: {email}</div>
   <div class="bio">
-  {this.state.user.role.roleName}
+  {role}
   </div>
   <div class="description">{this.state.descriptionText}
   </div>

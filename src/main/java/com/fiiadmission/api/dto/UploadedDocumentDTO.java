@@ -8,7 +8,6 @@ public class UploadedDocumentDTO {
     private Long id;
     private String mimeType;
     private String filename;
-    private String notes;
     private Timestamp uploadDate;
     private byte[] content;
     private String documentType;
@@ -35,14 +34,6 @@ public class UploadedDocumentDTO {
 
     public void setFilename(String filename) {
         this.filename = filename;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
     }
 
     public Timestamp getUploadDate() {

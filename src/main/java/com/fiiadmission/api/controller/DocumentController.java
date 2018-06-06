@@ -24,7 +24,6 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/fii/documents")
 public class DocumentController {
 
     @Value("${documents.max-document-size}")
@@ -43,9 +42,10 @@ public class DocumentController {
     AdmissionDataService admissionDataService;
 
     @PostMapping
+    @RequestMapping("/fii/documents")
     @ResponseStatus(value = HttpStatus.CREATED)
     public UploadedDocumentDTO uploadFile(
-            @RequestParam("file") MultipartFile uploadfile, @RequestParam("documentType") String documentType, @RequestParam("notes") String notes, Principal principal) throws BadRequestException, IOException {
+            @RequestParam("file") MultipartFile uploadfile, @RequestParam("documentType") String documentType, Principal principal) throws BadRequestException, IOException {
 
         int fileSizeInMb = (int) (uploadfile.getSize() / (1024 * 1024));
 
@@ -63,7 +63,6 @@ public class DocumentController {
         uploadedDocument.setAdmissionData(admissionData);
         uploadedDocument.setUploadDate(new Timestamp(new Date().getTime()));
         uploadedDocument.setDocumentType(documentType);
-        uploadedDocument.setNotes(notes);
         uploadedDocument.setMimeType(uploadfile.getContentType());
         uploadedDocument.setFilename(uploadfile.getOriginalFilename());
         uploadedDocument.setContent(uploadfile.getBytes());

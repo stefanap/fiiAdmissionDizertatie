@@ -3,9 +3,21 @@
   import "./Register.css";
   import ReactDOM from 'react-dom';
   import User from './User.js'
+  import LocalizedStrings from 'react-localization';
   const API = 'https://localhost:8085/register'
   const base64 = require('base-64');
   var qs = require('qs');
+
+  let strings = new LocalizedStrings({
+ en:{
+   userData:"User Data",
+   apply:"Register"
+ },
+ ro: {
+   userData:"Date utilizator",
+   apply:"Inregistreaza-te"
+ }
+});
 
     function register(user){
       console.log(JSON.stringify(user.state));
@@ -38,6 +50,11 @@
 
   constructor(props) {
     super(props);
+    var language=localStorage.getItem('language');
+    if(language=='ro')
+    strings.setLanguage('ro');
+    else 
+    strings.setLanguage('en');
     this.handlePassKeyUp = this.keyUpHandler.bind(this, 'checkPassword');
     this.state = {};
   }
@@ -45,7 +62,6 @@
   handleSubmit(e){
 
       this.registerForm.className='hidden';
-      e.preventDefault();
   	 var username = this.uname.value;
   	 var firstname = this.firstname.value;
      var lastname = this.lastname.value;
@@ -64,15 +80,9 @@
 keyUpHandler(refName, e) {
         var password = this.password.value;
         var checkpassword= this.checkpassword.value;
-        //var goodColor = "#85AD33";
-        //var badColor = "#DB4D4D";
         if(password === checkpassword){
-        //checkpassword.style.backgroundColor = goodColor;
-        //message.style.color = goodColor;
         ReactDOM.render(<p>Paswords match</p>, document.getElementById('passwordValidation'));
     }else{
-        //checkpassword.style.backgroundColor = badColor;
-        //message.style.color = badColor;
         ReactDOM.render(<p>Passwords don't match</p>, document.getElementById('passwordValidation'));
     }
     }
@@ -86,7 +96,7 @@ keyUpHandler(refName, e) {
     <form class="form-style-5" ref={(ref) => this.registerForm = ref}>
    
   <fieldset>
-  <legend><span class="number">!</span> User Info</legend>
+  <legend><span class="number">!</span>{strings.userData}</legend>
   <input type="text" ref={(ref) => this.firstname = ref} name="field1" placeholder="First Name *" required/>
   <input type="text" ref={(ref) => this.lastname = ref} name="field2" placeholder="Last Name *" required/>
   <input type="email" ref={(ref) => this.email = ref} name="field3" placeholder="Email *" required/>
@@ -95,7 +105,7 @@ keyUpHandler(refName, e) {
   <input id="checkpassword" ref={(ref) => this.checkpassword = ref} type="password" name="field6" placeholder="Retype Password *" onKeyUp={this.handlePassKeyUp} required/> 
   <span id="passwordValidation"></span> 
   </fieldset>
-  <input type="submit" onClick={this.handleSubmit.bind(this)} value="Apply" />      
+  <input type="submit" onClick={this.handleSubmit.bind(this)} value={strings.apply} />      
     </form>
   )}
   </Form>

@@ -1,4 +1,4 @@
-table {
+/*table {
 	margin-top:30px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
@@ -22,8 +22,28 @@ th {
     text-align: left;
     background-color: #0086b3;
     color: white;
+}*/
+
+.rt-th{
+    background-color: rgba(0,134,179);
+}
+
+.rt-tr-group{
+    background-color: rgba(242,242,242,0.7);
+}
+
+.rt-tr-group:nth-child(even){
+    background-color: #D0D0D0;
 }
 
 .changeRoleButton{
 	float:right;
+}
+
+button.-btn{
+    background-color: #b3d9ff !important;
+}
+
+.pagination-bottom{
+    background-color: rgba(0,134,179);
 }
