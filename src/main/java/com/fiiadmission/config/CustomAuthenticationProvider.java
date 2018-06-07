@@ -27,14 +27,15 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
         if ((user == null)) {
             throw new BadCredentialsException("Invalid username or password");
         }
-        // to verify verification code
-        LinkedHashMap<String, String> details = (LinkedHashMap<String, String>) auth.getDetails();
-        final String verificationCode = details.get("verificationCode");
-        final Totp totp = new Totp(user.getSecret());
-        if (!isValidLong(verificationCode) || !totp.verify(verificationCode)) {
-            throw new BadCredentialsException("Invalid verification code");
+        // to verify verification code only if the user has 2FA
+        if(user.getHas2FA().equals(Boolean.TRUE)) {
+            LinkedHashMap<String, String> details = (LinkedHashMap<String, String>) auth.getDetails();
+            final String verificationCode = details.get("verificationCode");
+            final Totp totp = new Totp(user.getSecret());
+            if (!isValidLong(verificationCode) || !totp.verify(verificationCode)) {
+                throw new BadCredentialsException("Invalid verification code");
+            }
         }
-
         //Let the authentication continue
         final Authentication result = super.authenticate(auth);
         return new UsernamePasswordAuthenticationToken(user.getUsername(), result.getCredentials(), result.getAuthorities());

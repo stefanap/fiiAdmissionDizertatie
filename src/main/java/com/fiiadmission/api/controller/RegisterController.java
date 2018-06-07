@@ -53,8 +53,9 @@ public class RegisterController {
         String qrUrl = userService.generateQRUrl(user);
 
         //send email with the qr url
-        this.sendRegistrationEmail(user, qrUrl);
-
+        if(user.getHas2FA().equals(Boolean.TRUE)) {
+            this.sendRegistrationEmail(user, qrUrl);
+        }
         return qrUrl;
     }
 

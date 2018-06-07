@@ -28,6 +28,8 @@ public class UserDTO {
     
     private Role role;
 
+    private Boolean has2FA;
+
     public Long getId() {
         return id;
     }
@@ -107,6 +109,12 @@ public class UserDTO {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-    
-    
+
+    public Boolean getHas2FA() {
+        return has2FA;
+    }
+
+    public void setHas2FA(Boolean has2FA) {
+        this.has2FA = has2FA;
+    }
 }

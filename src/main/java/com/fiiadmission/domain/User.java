@@ -55,6 +55,9 @@ public class User {
     
     @Column(name="register_number")
     private Long registerNumber;
+
+    @Column(name="has2FA")
+    private Boolean has2FA;
     
     
 	/**
@@ -166,7 +169,13 @@ public class User {
     public String getSecret() {
         return secret;
     }
-    
-    
+
+    public Boolean getHas2FA() {
+        return has2FA;
+    }
+
+    public void setHas2FA(Boolean has2FA) {
+        this.has2FA = has2FA;
+    }
 }
 
