@@ -4,10 +4,22 @@ import "./Register.css";
 import "./Login.css";
 import ReactDOM from 'react-dom';
 import User from './User.js'
+import LocalizedStrings from 'react-localization';
 const API = 'https://localhost:8085/oauth/token'
 const base64 = require('base-64');
 var qs = require('qs');
 var sha256 = require('sha256');
+
+let strings = new LocalizedStrings({
+ en:{
+   userData:"User Data",
+   login:"Login"
+ },
+ ro: {
+   userData:"Date utilizator",
+   login:"Logare"
+ }
+});
 
 function getUser(token){
   const API = 'https://localhost:8085/fii/users/principal';
@@ -40,6 +52,12 @@ export default class Login extends Component {
 
   constructor(props) {
     super(props);
+    var language=localStorage.getItem('language');
+    console.log(language);
+    if(language=='ro')
+    strings.setLanguage('ro');
+    else 
+    strings.setLanguage('en');
 
     // this.state = {
     //   users: [], data: []
@@ -139,7 +157,7 @@ let config = {
     <form class="form-style-5">
    
 <fieldset  ref={(ref) => this.firstFieldset = ref}>
-<legend><span class="number">!</span> User Info</legend>
+<legend><span class="number">!</span>{strings.userData}</legend>
 <input type="text" ref={(ref) => this.uname = ref} name="field1" placeholder="Username*"/>
 <input type="password" ref={(ref) => this.password = ref} name="field2" placeholder="Password *"/>
 </fieldset>
@@ -147,7 +165,7 @@ let config = {
     </fieldset>
 <fieldset id="secondStep" ref={(ref) => this.secondFieldset = ref}>
         <input type="text"  ref={(ref) => this.code = ref} name="field3" placeholder="Validation Code" />
-        <input type="submit" onClick={this.handleSubmit.bind(this)} value="Apply" />
+        <input type="submit" onClick={this.handleSubmit.bind(this)} value={strings.login} />
            </fieldset>
         <fieldset id="thirdStep" ref={(ref) => this.thirdFieldset = ref}>
     </fieldset>      

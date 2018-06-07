@@ -21,9 +21,6 @@ public class UploadedDocument {
 	@Column(name = "file_name")
 	private String filename;
 	
-	@Column(name = "notes")
-	private String notes;
-	
 	@Column(name = "upload_date")
 	private Timestamp uploadDate;
 
@@ -61,14 +58,6 @@ public class UploadedDocument {
 
 	public void setFilename(String filename) {
 		this.filename = filename;
-	}
-
-	public String getNotes() {
-		return notes;
-	}
-
-	public void setNotes(String notes) {
-		this.notes = notes;
 	}
 
 	public Timestamp getUploadDate() {

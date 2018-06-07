@@ -27,7 +27,7 @@ class Announcements extends Component {
     this.handlePostAnnouncement = this.handlePostAnnouncement.bind(this);
     this.handleChange = this.handleChange.bind(this);
     var user = JSON.parse(localStorage.getItem('user'));
-    if(user.roles[0].roleName == 'ADMIN_USER')
+    if(user!=null&&user.role.roleName == 'ADMIN_USER')
       this.state.showButton=true;
   }
 

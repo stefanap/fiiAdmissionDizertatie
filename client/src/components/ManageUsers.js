@@ -14,7 +14,7 @@ import "react-table/react-table.css";
 import { ReactTableDefaults } from "react-table";
 
 Object.assign(ReactTableDefaults, {
-  defaultPageSize: 10,
+  defaultPageSize: 7,
   filterable:true,
   style: {}
 });
