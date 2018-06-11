@@ -10,16 +10,22 @@
   import Announcements from "./Announcements";
   import Profile from "./Profile";
   import ManageUsers from "./ManageUsers";
+  import Settings from "./Settings";
   import "./Menu.css";
   import fii from '../fii.png';
+  import sweetAlert from 'sweetalert';
 import LocalizedStrings from 'react-localization';
+
+
 var english={
    login:"Login",
    register:"Register",
    profile:"Profile",
    announcements:"Announcements",
    manage:"Manage users",
-   registerAdmission:"Register for admission"
+   registerAdmission:"Register for admission",
+   logout:"Logout",
+   settings:"Settings"
  }
 
  var romanian={
@@ -28,7 +34,9 @@ var english={
    profile:"Profil",
    announcements:"Anunturi",
    manage:"Administreaza userii",
-   registerAdmission:"Inregistrare pentru admitere"
+   registerAdmission:"Inregistrare pentru admitere",
+   logout:"Delogare",
+   ettings:"Setari"
  }
 let strings = new LocalizedStrings({
  en:english,
@@ -37,17 +45,36 @@ let strings = new LocalizedStrings({
 
   require('react-bootstrap');
 
+ function logout()
+ {
+    console.log('logout');
+localStorage.clear();
+window.location.reload();
+
+ }
+
   class Main extends Component {
 
     constructor(props) {
     super(props);
+    document.onmousemove = this.resetTimer;
+    document.onclick = this.resetTimer;
     var language=localStorage.getItem('language');
+     this.resetTimer = this.resetTimer.bind(this);
     console.log(language);
     if(language=='ro')
     strings.setLanguage('ro');
     else 
     strings.setLanguage('en');
     }
+
+
+resetTimer() {
+  var timeout;
+  clearTimeout(timeout);
+  timeout = setTimeout(function(){localStorage.clear();  sweetAlert('Your session has expired, please log in again!'); window.location.reload();}, 30*60*1000);
+  //this.forceUpdate();
+}
 
     changeLanguage()
     {
@@ -91,7 +118,7 @@ let strings = new LocalizedStrings({
                                                         <div class="icon"> 
                                                                 <i class="glyphicons glyphicons-unlock"></i>
                                                         </div>
-                                                        <a href="#"><span>{strings.login}</span></a>
+                                                        <a ><span>{strings.login}</span></a>
                                                 </div>
                                         </NavLink>
                                 </li>
@@ -101,7 +128,7 @@ let strings = new LocalizedStrings({
                                                 <div class="icon"> 
                                                         <i class="icon-lightbulb icon-2x"></i>
                                                 </div>
-                                                <a href="#"><span>{strings.register}</span></a>
+                                                <a ><span>{strings.register}</span></a>
                                         </div>
                                 </NavLink>
                         </li>
@@ -111,7 +138,7 @@ let strings = new LocalizedStrings({
                                         <div class="icon"> 
                                                 <i class="icon-wrench icon-2x"></i>
                                         </div>
-                                        <a href="#"><span>{strings.announcements}</span></a>
+                                        <a ><span>{strings.announcements}</span></a>
                                 </div>
                         </NavLink>
                 </li>
@@ -121,7 +148,7 @@ let strings = new LocalizedStrings({
                                 <div class="icon"> 
                                         <i class="icon-briefcase icon-2x"></i>
                                 </div>
-                                <a href="#"><span>{strings.profile}</span></a>
+                                <a ><span>{strings.profile}</span></a>
                         </div>
                         </NavLink>
                 </li>
@@ -131,7 +158,7 @@ let strings = new LocalizedStrings({
                                 <div class="icon"> 
                                         <i class="icon-briefcase icon-2x"></i>
                                 </div>
-                                <a href="#"><span>{strings.registerAdmission}</span></a>
+                                <a ><span>{strings.registerAdmission}</span></a>
                         </div>
                         </NavLink>
                 </li>
@@ -141,9 +168,28 @@ let strings = new LocalizedStrings({
                                 <div class="icon"> 
                                         <i class="icon-briefcase icon-2x"></i>
                                 </div>
-                                <a href="#"><span>{strings.manage}</span></a>
+                                <a ><span>{strings.manage}</span></a>
                         </div>
                         </NavLink>
+                </li>
+                <li class="var_nav"><NavLink to="/settings">
+                        <div class="link_bg"></div>
+                        <div class="link_title">
+                                <div class="icon"> 
+                                        <i class="icon-briefcase icon-2x"></i>
+                                </div>
+                                <a ><span>{strings.settings}</span></a>
+                        </div>
+                        </NavLink>
+                </li>
+                <li class="var_nav">
+                        <div class="link_bg"></div>
+                        <div class="link_title">
+                                <div class="icon"> 
+                                        <i class="icon-briefcase icon-2x"></i>
+                                </div>
+                                <a onClick={() => { logout() }}><span>{strings.logout}</span></a>
+                        </div>
                 </li>
         </ul>
 
@@ -155,8 +201,9 @@ let strings = new LocalizedStrings({
                 <Route path="/profile" component={Profile}/>
                 <Route path="/admission" component={Admission}/>
                 <Route path="/viewUsers" component={ManageUsers}/>
+                 <Route path="/settings" component={Settings}/>
         </div>
-               <button class='changeLanguageButton' onClick={() => { this.changeLanguage() }}>Translate</button>
+               <button class='changeLanguageButton' onClick={() => {  this.changeLanguage() }}>Translate</button>
         </div>
 
 </HashRouter>

@@ -64,8 +64,8 @@ if(localStorage.getItem('user')==null)
         var token =base64.decode(localStorage.getItem('token'));
         token =  localStorage.getItem('token');
         var newStatus;
-        if(this.status.value==1) newStatus='Confirmed';
-        if(this.status.value==2) newStatus='Withdrawal';
+        if(this.status.value==1) newStatus='PENDING';
+        if(this.status.value==2) newStatus='WITHDRAWAL';
         if(typeof newStatus!="undefined"){
           this.updateStatus(this.state.user,token);
       }}

@@ -19,7 +19,21 @@
  }
 });
 
-    function register(user){
+  class Register extends Component {
+
+  constructor(props) {
+    super(props);
+    var language=localStorage.getItem('language');
+    if(language=='ro')
+    strings.setLanguage('ro');
+    else 
+    strings.setLanguage('en');
+    this.handlePassKeyUp = this.keyUpHandler.bind(this, 'checkPassword');
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.state = { twoFA: true};
+  }
+
+  register(user){
       console.log(JSON.stringify(user.state));
   let config = {
       method: 'POST',
@@ -32,7 +46,10 @@
       response.text()) .then((data) => { 
           if (typeof data.statusCode == 'undefined')
           {
-             ReactDOM.render(<h1><img id='qr' src={data}></img></h1>, document.getElementById('QRCode'));
+            if(this.state.twoFA==true)
+             ReactDOM.render(<h3>Login successfull<img id='qr' src={data}></img></h3>, document.getElementById('QRCode'));
+           else
+            ReactDOM.render(<h3>Login successfull</h3>, document.getElementById('QRCode'));
           }
           else if(data.statusCode == '400')
           {
@@ -46,35 +63,36 @@
     })
   }
 
-  class Register extends Component {
+ handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
 
-  constructor(props) {
-    super(props);
-    var language=localStorage.getItem('language');
-    if(language=='ro')
-    strings.setLanguage('ro');
-    else 
-    strings.setLanguage('en');
-    this.handlePassKeyUp = this.keyUpHandler.bind(this, 'checkPassword');
-    this.state = {};
+    this.setState({
+      [name]: value
+    });
   }
 
   handleSubmit(e){
 
+     e.preventDefault();
       this.registerForm.className='hidden';
   	 var username = this.uname.value;
   	 var firstname = this.firstname.value;
      var lastname = this.lastname.value;
      var password = this.password.value;
      var email = this.email.value;
+     var twoFA=this.state.twoFA;
+     console.log(twoFA);
      var props ={}
      props.username = username;
      props.firstName = firstname;
      props.lastName = lastname;
      props.password = password;
      props.email = email;
+     props.has2FA=twoFA;
      var user= new User(props);
-     register(user);
+     this.register(user);
   }
 
 keyUpHandler(refName, e) {
@@ -104,6 +122,14 @@ keyUpHandler(refName, e) {
   <input type="password" ref={(ref) => this.password = ref} name="field5" placeholder="Password *" required/>
   <input id="checkpassword" ref={(ref) => this.checkpassword = ref} type="password" name="field6" placeholder="Retype Password *" onKeyUp={this.handlePassKeyUp} required/> 
   <span id="passwordValidation"></span> 
+ <label>
+          I want to enable two factor authentication with my mobile device:
+          <input
+            name="twoFA"
+            type="checkbox"
+            checked={this.state.twoFA}
+            onChange={this.handleInputChange} />
+        </label>
   </fieldset>
   <input type="submit" onClick={this.handleSubmit.bind(this)} value={strings.apply} />      
     </form>

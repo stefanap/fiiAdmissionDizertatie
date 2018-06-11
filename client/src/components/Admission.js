@@ -4,6 +4,7 @@
   import ReactDOM from 'react-dom';
   import AdmissionData from './AdmissionData.js'
   import superagent from 'superagent';
+  import axios from 'axios';
   import LocalizedStrings from 'react-localization';
 
   let strings = new LocalizedStrings({
@@ -21,40 +22,48 @@
   const API = 'https://localhost:8085/fii/admission'
   const UploadDocumentsAPI='https://localhost:8085/fii/documents'
 
- function uploadDocuments(file){
- 	 var token = base64.decode(localStorage.getItem('token'));
-  let config = {
-      method: 'POST',
-      headers: { 'Content-Type':'form-data','Authorization': 'Bearer '+ token},
-      body: JSON.stringify({
-        documentType:'pdf',
-        file: file
-      })
-    }
 
-   //  superagent.post(UploadDocumentsAPI)
-   //  .set({'Authorization': 'Bearer ' + token})
-   // .attach('file',file) // file_object can be File or Blob
-   // .then(result => {})
+function createCompleteFileType(ext)
+{
+	switch (ext.toLowerCase()) {
+    case 'pdf': return 'application/pdf';
+    case 'png': return 'image/png';
+    case 'jpg' : return 'image/jpg'
+    case 'jpeg' : return 'image/jpeg'
+        return true;
+}}
 
-     fetch(UploadDocumentsAPI, config)
-    .then(response =>
-      response.text()) .then((data) => { 
-          if (typeof data.statusCode == 'undefined')
-          {
-             ReactDOM.render(<h1><img id='qr' src={data}></img></h1>, document.getElementById('QRCode'));
-          }
-          else if(data.statusCode == '400')
-          {
-            ReactDOM.render(<p>{data.message}</p>, document.getElementById('messageResult'));
-          }
-         else
-          {
-            ReactDOM.render(<p>Something went wrong, please try again</p>, document.getElementById('messageResult'));
-          }
+ function uploadDocument(file){
+var token = base64.decode(localStorage.getItem('token'));
+const data = new FormData();
+var ext=file.split('.').pop();
+var fileType= createCompleteFileType(ext);
+data.append('action', 'ADD');
+data.append('param', 0);
+data.append('secondParam', 0);
+data.append('file', new Blob([file], { 'type': fileType }));
+data.append('documentType',fileType );
+axios.post(UploadDocumentsAPI, data, { headers: {  Authorization: "Bearer " + token } });
+}
 
-    })
-  }
+  //    fetch(UploadDocumentsAPI, config)
+  //   .then(response =>
+  //     response.text()) .then((data) => { 
+  //         if (typeof data.statusCode == 'undefined')
+  //         {
+  //            ReactDOM.render(<h1><img id='qr' src={data}></img></h1>, document.getElementById('QRCode'));
+  //         }
+  //         else if(data.statusCode == '400')
+  //         {
+  //           ReactDOM.render(<p>{data.message}</p>, document.getElementById('messageResult'));
+  //         }
+  //        else
+  //         {
+  //           ReactDOM.render(<p>Something went wrong, please try again</p>, document.getElementById('messageResult'));
+  //         }
+
+  //   })
+  // }
 
 
    function register(admissionData){
@@ -145,9 +154,15 @@
      props.highschool=highschool
      props.additionalInformation=this.additionalInformation.value
      var admissionData= new AdmissionData(props);
-     /*register(admissionData);*/
+     register(admissionData);
      var bacDiploma= this.bac.value;
-     uploadDocuments(bacDiploma);
+     var birthCertificate = this.birthCert.value;
+     var idCard=this.idCard.value;
+     var marriageCert=this.marriageCert.value;
+     uploadDocument(bacDiploma);
+     uploadDocument(birthCertificate);
+     uploadDocument(idCard);
+      uploadDocument(marriageCert);
      }
 
      getCountries()

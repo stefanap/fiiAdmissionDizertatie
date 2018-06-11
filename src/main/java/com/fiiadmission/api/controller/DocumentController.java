@@ -11,10 +11,15 @@ import com.fiiadmission.service.UploadedDocumentService;
 import com.fiiadmission.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.MultipartFilter;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -22,6 +27,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.MultipartConfigElement;
 
 @RestController
 public class DocumentController {
@@ -40,7 +47,7 @@ public class DocumentController {
 
     @Autowired
     AdmissionDataService admissionDataService;
-
+    
     @PostMapping
     @RequestMapping("/fii/documents")
     @ResponseStatus(value = HttpStatus.CREATED)

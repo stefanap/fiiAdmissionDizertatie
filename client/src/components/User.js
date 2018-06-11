@@ -12,7 +12,8 @@
           admissionStatus: this.props.admissionStatus,
           registerDate : this.props.registerDate,
           registerNumber: this.props.registerNumber,
-          role: this.props.role
+          role: this.props.role,
+          has2FA :this.props.has2FA
     };
   }
 
