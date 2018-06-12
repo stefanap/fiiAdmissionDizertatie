@@ -26,7 +26,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
                 http
-                .csrf().disable().cors().disable()
+                .csrf().disable()
                 .requestMatchers()
                 .and()
                 .authorizeRequests()
