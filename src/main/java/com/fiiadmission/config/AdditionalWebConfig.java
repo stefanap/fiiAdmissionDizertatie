@@ -30,18 +30,18 @@ public class AdditionalWebConfig {
      *
      */
 	
-	@Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("*"); // @Value: http://localhost:7001
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        config.addExposedHeader("Content-Disposition");
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config /*new CorsConfiguration().applyPermitDefaultValues()*/);
-        return source;
-    }
+//	@Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration config = new CorsConfiguration();
+//        config.setAllowCredentials(true);
+//        config.addAllowedOrigin("*"); // @Value: http://localhost:7001
+//        config.addAllowedHeader("*");
+//        config.addAllowedMethod("*");
+//        config.addExposedHeader("Content-Disposition");
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", config /*new CorsConfiguration().applyPermitDefaultValues()*/);
+//        return source;
+//    }
 	
 //    @Bean
 //    public FilterRegistrationBean corsFilter() {
