@@ -141,7 +141,7 @@ color: #007bff;
 .content{
  
 
-  background: url(../images/back.jpg) fixed; 
+  background: url(../images/back.jpg);
   background-size: cover;
   background-position: center center;
 }
