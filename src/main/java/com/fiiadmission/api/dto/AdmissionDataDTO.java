@@ -2,6 +2,7 @@ package com.fiiadmission.api.dto;
 
 import com.fiiadmission.domain.UploadedDocument;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class AdmissionDataDTO {
@@ -21,6 +22,8 @@ public class AdmissionDataDTO {
     private CountryDTO country;
     private RegionDTO region;
     private CityDTO city;
+    private Timestamp createDate;
+
 
     public Long getId() {
         return id;
@@ -150,4 +153,11 @@ public class AdmissionDataDTO {
         this.city = city;
     }
 
+    public Timestamp getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
+    }
 }
