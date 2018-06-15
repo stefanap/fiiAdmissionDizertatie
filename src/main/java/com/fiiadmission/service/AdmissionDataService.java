@@ -11,4 +11,6 @@ public interface AdmissionDataService {
 	AdmissionData create(AdmissionData admissionData);
 
 	AdmissionData findById(Long id);
+
+	List<AdmissionData> findAll();
 }

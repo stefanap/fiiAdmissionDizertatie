@@ -7,7 +7,7 @@ import java.util.List;
 public class AdmissionDataDTO {
     private Long id;
     private String cnp;
-    private String adress;
+    private String address;
     private String examSubject;
     private String telephone;
     private Float bacGrade;
@@ -38,12 +38,12 @@ public class AdmissionDataDTO {
         this.cnp = cnp;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getExamSubject() {

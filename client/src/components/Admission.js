@@ -4,6 +4,7 @@
   import ReactDOM from 'react-dom';
   import AdmissionData from './AdmissionData.js'
   import superagent from 'superagent';
+  import sweetAlert from 'sweetalert';
   import axios from 'axios';
   import LocalizedStrings from 'react-localization';
 
@@ -28,72 +29,36 @@ function createCompleteFileType(ext)
 	switch (ext.toLowerCase()) {
     case 'pdf': return 'application/pdf';
     case 'png': return 'image/png';
-    case 'jpg' : return 'image/jpg'
+    case 'jpg' : return 'image/jpg';
     case 'jpeg' : return 'image/jpeg'
         return true;
 }}
 
  function uploadDocument(file){
+  console.log('test');
 var token = base64.decode(localStorage.getItem('token'));
-const data = new FormData();
 var ext=file.split('.').pop();
-var fileType= createCompleteFileType(ext);
-data.append('action', 'ADD');
-data.append('param', 0);
-data.append('secondParam', 0);
-data.append('file', new Blob([file], { 'type': fileType }));
-data.append('documentType',fileType );
-axios.post(UploadDocumentsAPI, data, { headers: {  Authorization: "Bearer " + token } });
+var formData = new FormData();
+formData.append("file", file);
+formData.append("documentType", ext);
+var xhr = new XMLHttpRequest();
+xhr.open("POST", UploadDocumentsAPI);
+xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+xhr.setRequestHeader( 'Accept','application/json, text/plain, */*');
+xhr.send(formData);
+// const data = new FormData();
+// var ext=file.split('.').pop();
+// var fileType= createCompleteFileType(ext);
+// console.log(fileType);
+// data.append('action', 'ADD');
+// data.append('param', 0);
+// data.append('secondParam', 0);
+// data.append('file', new Blob([file], { 'type': fileType }));
+// data.append('documentType',fileType );
+// axios.post(UploadDocumentsAPI, data, { headers: {  Authorization: "Bearer " + token } });
 }
 
-  //    fetch(UploadDocumentsAPI, config)
-  //   .then(response =>
-  //     response.text()) .then((data) => { 
-  //         if (typeof data.statusCode == 'undefined')
-  //         {
-  //            ReactDOM.render(<h1><img id='qr' src={data}></img></h1>, document.getElementById('QRCode'));
-  //         }
-  //         else if(data.statusCode == '400')
-  //         {
-  //           ReactDOM.render(<p>{data.message}</p>, document.getElementById('messageResult'));
-  //         }
-  //        else
-  //         {
-  //           ReactDOM.render(<p>Something went wrong, please try again</p>, document.getElementById('messageResult'));
-  //         }
-
-  //   })
-  // }
-
-
-   function register(admissionData){
-   	var token= base64.decode(localStorage.getItem('token'));
-      console.log(JSON.stringify(admissionData.state));
-  let config = {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token},
-      body: JSON.stringify(admissionData.state)
-    }
-
-     fetch(API, config)
-    .then(response =>
-      response.text()) .then((data) => { 
-          if (typeof data.statusCode == 'undefined')
-          {
-             ReactDOM.render(<p>'Register successfull'</p>, document.getElementById('messageResult'));
-          }
-          else if(data.statusCode == '400')
-          {
-            ReactDOM.render(<p>{data.message}</p>, document.getElementById('messageResult'));
-          }
-         else
-          {
-            ReactDOM.render(<p>Something went wrong, please try again</p>, document.getElementById('messageResult'));
-          }
-
-    })
-  }
-
+  
   export default class admission extends Component {
   constructor(props) {
   	super(props);
@@ -118,15 +83,47 @@ axios.post(UploadDocumentsAPI, data, { headers: {  Authorization: "Bearer " + to
 
   }
 
+   register(admissionData){
+   	var token= base64.decode(localStorage.getItem('token'));
+      console.log(JSON.stringify(admissionData.state));
+  let config = {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token},
+      body: JSON.stringify(admissionData.state)
+    }
+
+     fetch(API, config)
+    .then(response =>
+      response.json()) .then((data) => { 
+      	var code=data.statusCode;
+          if (typeof code == 'undefined')
+          {
+             ReactDOM.render(<p>Register successfull</p>, document.getElementById('messageResult'));
+          }
+          else if(code == 400)
+          {
+          	console.log('aSDDSDSSDSD');
+            sweetAlert("Error","You have already submitted admission data","error");
+            this.registerForm.className='hidden';
+          }
+         else
+          {
+            ReactDOM.render(<p>Something went wrong, please try again</p>, document.getElementById('messageResult'));
+          }
+
+    })
+  }
+
+
+
    redirect() {
         this.props.history.push("/login")
     }
 
   handleSubmit(e){
-  	 e.preventDefault();
      var props ={}
      props.cnp=this.cnp.value
-     props.adress=this.adress.value
+     props.address=this.address.value
      props.examSubject=this.examSubject.value
      props.telephone=this.telephone.value
      props.bacGrade=this.bacGrade.value
@@ -154,7 +151,8 @@ axios.post(UploadDocumentsAPI, data, { headers: {  Authorization: "Bearer " + to
      props.highschool=highschool
      props.additionalInformation=this.additionalInformation.value
      var admissionData= new AdmissionData(props);
-     register(admissionData);
+     console.log('props',props);
+     this.register(admissionData);
      var bacDiploma= this.bac.value;
      var birthCertificate = this.birthCert.value;
      var idCard=this.idCard.value;
@@ -163,6 +161,7 @@ axios.post(UploadDocumentsAPI, data, { headers: {  Authorization: "Bearer " + to
      uploadDocument(birthCertificate);
      uploadDocument(idCard);
       uploadDocument(marriageCert);
+      	 this.registerForm.className='hidden';
      }
 
      getCountries()
@@ -276,7 +275,7 @@ axios.post(UploadDocumentsAPI, data, { headers: {  Authorization: "Bearer " + to
   <fieldset>
   <legend><span class="number">!</span>{strings.admissionData}</legend>
   <input type="number" ref={(ref) => this.cnp = ref} name="cnp" placeholder="Cnp *" required/>
-  <input type="text" ref={(ref) => this.adress = ref} name="address" placeholder="Adress *" required/>
+  <input type="text" ref={(ref) => this.address = ref} name="address" placeholder="Address *" required/>
   <input type="text" ref={(ref) => this.examSubject = ref} name="examSubject" placeholder="Exam Subject *" required/>
   <input type="number" ref={(ref) => this.telephone = ref} name="telephone" placeholder="Telephone *" required/>
   <input type="number" ref={(ref) => this.bacGrade = ref} name="bacGrade" placeholder="Bacalaureat Grade *" required/>

@@ -10,6 +10,7 @@
   import Announcements from "./Announcements";
   import Profile from "./Profile";
   import ManageUsers from "./ManageUsers";
+  import ViewUsers from "./ViewUsers";
   import Settings from "./Settings";
   import "./Menu.css";
   import fii from '../fii.png';
@@ -25,7 +26,8 @@ var english={
    manage:"Manage users",
    registerAdmission:"Register for admission",
    logout:"Logout",
-   settings:"Settings"
+   settings:"Settings",
+   welcome:"Welcome"
  }
 
  var romanian={
@@ -34,9 +36,10 @@ var english={
    profile:"Profil",
    announcements:"Anunturi",
    manage:"Administreaza userii",
-   registerAdmission:"Inregistrare pentru admitere",
+   registerAdmission:"Inregistrare penru admitere",
    logout:"Delogare",
-   ettings:"Setari"
+   settings:"Setari",
+   welcome:"Bun venit"
  }
 let strings = new LocalizedStrings({
  en:english,
@@ -47,8 +50,9 @@ let strings = new LocalizedStrings({
 
  function logout()
  {
-    console.log('logout');
+var language=localStorage.getItem('language');
 localStorage.clear();
+localStorage.setItem('language',language);
 window.location.reload();
 
  }
@@ -107,6 +111,9 @@ resetTimer() {
   <div className="App">
                         <header className="App-header">
                                 <img src={fii} className="App-logo" alt="logo" />
+                                <br/>
+                                 <br/>
+                                <p>{strings.welcome} {localStorage.getItem('username')}</p>
                         </header>
                         <p className="App-intro">
                         </p>

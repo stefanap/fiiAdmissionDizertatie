@@ -73,9 +73,18 @@ class Settings extends Component {
     fetch(API, config)
    .then(response =>
       response.json()) .then((data) => { 
+        console.log(data);
+        console.log(data.message);
+        if(typeof data.message == 'undefined')
+        {
         var start=this.convertTimestampToMoment(data.startDate);
         var end=this.convertTimestampToMoment(data.endDate);
         this.setState( { startDate:start, endDate:end})
+      }
+        else
+        {
+          this.setState( { startDate:moment(), endDate:moment()})
+        }
       }) 
     }
 

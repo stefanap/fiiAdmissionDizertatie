@@ -24,7 +24,7 @@ public class AdmissionData {
 	private String cnp;
 
 	@Column(name = "address", length=200)
-	private String adress;
+	private String address;
 
 	@Column(name = "exam_subject", length=30)
 	private String examSubject;
@@ -92,12 +92,12 @@ public class AdmissionData {
 		this.cnp = cnp;
 	}
 
-	public String getAdress() {
-		return adress;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setAdress(String adress) {
-		this.adress = adress;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getExamSubject() {

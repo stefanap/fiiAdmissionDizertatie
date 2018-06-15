@@ -4,7 +4,7 @@
   	super(props);
   	this.state = {
   		    cnp: this.props.cnp,
-          adress : this.props.adress,
+          address : this.props.address,
           examSubject : this.props.examSubject,
           telephone : this.props.telephone,
           bacGrade : this.props.bacGrade, 

@@ -4,6 +4,7 @@
   import ReactDOM from 'react-dom';
   import User from './User.js'
   import LocalizedStrings from 'react-localization';
+  import sweetAlert from 'sweetalert';
   const API = 'https://localhost:8085/register'
   const base64 = require('base-64');
   var qs = require('qs');
@@ -11,11 +12,17 @@
   let strings = new LocalizedStrings({
  en:{
    userData:"User Data",
-   apply:"Register"
+   apply:"Register",
+   success: "Register successfull",
+   failed :"Register failed",
+   somethingWrong:"Something went wrong, please try again"
  },
  ro: {
    userData:"Date utilizator",
-   apply:"Inregistreaza-te"
+   apply:"Inregistreaza-te",
+   success: "Inregistrarea a fost facuta cu succes",
+   failed :"Inregistrarea a esuat",
+   somethingWrong:"A aparut o eroare, va rugam incercati din nou"
  }
 });
 
@@ -43,21 +50,28 @@
 
      fetch(API, config)
     .then(response =>
-      response.text()) .then((data) => { 
-          if (typeof data.statusCode == 'undefined')
+      response.text()) .then((data) => {
+          if(data.statusCode == 400)
+          {
+            var failed=strings.failed;
+            var message=data.message;
+            sweetAlert(failed,message,"error");
+          }
+          else if (typeof data.statusCode == 'undefined')
           {
             if(this.state.twoFA==true)
              ReactDOM.render(<h3>Login successfull<img id='qr' src={data}></img></h3>, document.getElementById('QRCode'));
            else
-            ReactDOM.render(<h3>Login successfull</h3>, document.getElementById('QRCode'));
+           {
+            var success=strings.success;
+            sweetAlert(success,"","success");
           }
-          else if(data.statusCode == '400')
-          {
-            ReactDOM.render(<p>{data.message}</p>, document.getElementById('messageResult'));
           }
          else
           {
-            ReactDOM.render(<p>Something went wrong, please try again</p>, document.getElementById('messageResult'));
+            var failed=strings.failed;
+            var somethingWrong=strings.somethingWrong;
+             sweetAlert(failed,somethingWrong,"error");
           }
 
     })
@@ -75,8 +89,7 @@
 
   handleSubmit(e){
 
-     e.preventDefault();
-      this.registerForm.className='hidden';
+     this.registerForm.className='hidden';
   	 var username = this.uname.value;
   	 var firstname = this.firstname.value;
      var lastname = this.lastname.value;

@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.fiiadmission.api.dto.AdmissionDataDTO;
+import com.fiiadmission.api.dto.UserDTO;
 import com.fiiadmission.api.dto.mappers.AdmissionDataMapper;
+import com.fiiadmission.api.dto.mappers.UserMapper;
 import com.fiiadmission.api.exceptions.BadRequestException;
 import com.fiiadmission.api.exceptions.NotFoundException;
 import com.fiiadmission.domain.User;
@@ -35,7 +37,17 @@ public class AdmissionDataController {
 		if(admissionData == null){
 			throw new NotFoundException("Admission data does not exist");
 		}
-		return AdmissionDataMapper.INSTANCE.toAdmissionDataDto(admissionData);
+		return AdmissionDataMapper.INSTANCE.toAdmissionDataDtO(admissionData);
+	}
+	
+	@GetMapping(value="/{userId}")
+	public AdmissionDataDTO getAdmissionDataByUserId(@PathVariable Long userId) throws NotFoundException {
+		User user = userService.findById(userId);
+		AdmissionData admissionData = user.getAdmissionData();
+		if(admissionData == null){
+			throw new NotFoundException("Admission data does not exist");
+		}
+		return AdmissionDataMapper.INSTANCE.toAdmissionDataDtO(admissionData);
 	}
 
 	@PostMapping
@@ -48,7 +60,14 @@ public class AdmissionDataController {
 		}
 		admissionData.setUser(user);
 		admissionData = admissionService.create(admissionData);
-		return AdmissionDataMapper.INSTANCE.toAdmissionDataDto(admissionData);
+		AdmissionDataDTO data=AdmissionDataMapper.INSTANCE.toAdmissionDataDtO(admissionData);
+		return data;
 	}
+	
+	 @GetMapping(value ="/all")
+	    //@PreAuthorize("hasAuthority('ADMIN_USER')")
+	    public List<AdmissionDataDTO> getAllAdmissionData(){
+	        return AdmissionDataMapper.INSTANCE.toAdmissionDataDTOs(admissionService.findAll());
+	    }
 
 }

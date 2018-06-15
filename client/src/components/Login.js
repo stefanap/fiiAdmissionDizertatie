@@ -5,6 +5,7 @@ import "./Login.css";
 import ReactDOM from 'react-dom';
 import User from './User.js'
 import LocalizedStrings from 'react-localization';
+import sweetAlert from 'sweetalert';
 const API = 'https://localhost:8085/oauth/token'
 const base64 = require('base-64');
 var qs = require('qs');
@@ -13,11 +14,15 @@ var sha256 = require('sha256');
 let strings = new LocalizedStrings({
  en:{
    userData:"User Data",
-   login:"Login"
+   login:"Login",
+   loginSuccessfull: "Login successfull",
+   loginFailed: "Login failed"
  },
  ro: {
    userData:"Date utilizator",
-   login:"Logare"
+   login:"Logare",
+   loginSuccessfull: "Logare realizata cu success",
+   loginFailed: "Login esuat"
  }
 });
 
@@ -53,7 +58,6 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     var language=localStorage.getItem('language');
-    console.log(language);
     if(language=='ro')
     strings.setLanguage('ro');
     else 
@@ -125,11 +129,13 @@ let config = {
           getUser(data.access_token);
           this.firstFieldset.className='hidden';
           this.secondFieldset.className='hidden';
-          ReactDOM.render(<h1>Login successfull</h1>, document.getElementById('thirdStep'));
+          var succ=strings.loginSuccessfull
+          sweetAlert(succ,"","success");
         }
           else
           {
-            ReactDOM.render(<h1>Login failed</h1>, document.getElementById('thirdStep'));
+            var failure=strings.loginFailed
+            sweetAlert(failure,"","error");
           }     
 
     })
@@ -166,9 +172,7 @@ let config = {
 <fieldset id="secondStep" ref={(ref) => this.secondFieldset = ref}>
         <input type="text"  ref={(ref) => this.code = ref} name="field3" placeholder="Validation Code" />
         <input type="submit" onClick={this.handleSubmit.bind(this)} value={strings.login} />
-           </fieldset>
-        <fieldset id="thirdStep" ref={(ref) => this.thirdFieldset = ref}>
-    </fieldset>      
+           </fieldset>      
     </form>
   )}
 </Form>

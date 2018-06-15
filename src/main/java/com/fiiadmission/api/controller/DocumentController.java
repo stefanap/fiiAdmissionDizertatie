@@ -31,6 +31,7 @@ import java.util.List;
 import javax.servlet.MultipartConfigElement;
 
 @RestController
+@RequestMapping("/fii/documents")
 public class DocumentController {
 
     @Value("${documents.max-document-size}")
@@ -49,7 +50,6 @@ public class DocumentController {
     AdmissionDataService admissionDataService;
     
     @PostMapping
-    @RequestMapping("/fii/documents")
     @ResponseStatus(value = HttpStatus.CREATED)
     public UploadedDocumentDTO uploadFile(
             @RequestParam("file") MultipartFile uploadfile, @RequestParam("documentType") String documentType, Principal principal) throws BadRequestException, IOException {

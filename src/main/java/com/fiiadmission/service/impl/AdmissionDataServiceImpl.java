@@ -28,4 +28,9 @@ public class AdmissionDataServiceImpl implements AdmissionDataService {
 	public AdmissionData findById(Long id) {
 		return admissionDataRepository.findOne(id);
 	}
+
+	@Override
+	public List<AdmissionData> findAll() {
+		return (List<AdmissionData>) admissionDataRepository.findAll();
+	}
 }
