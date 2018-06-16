@@ -50,7 +50,7 @@
 
      fetch(API, config)
     .then(response =>
-      response.text()) .then((data) => {
+      response.json()) .then((data) => {
           if(data.statusCode == 400)
           {
             var failed=strings.failed;
@@ -60,7 +60,7 @@
           else if (typeof data.statusCode == 'undefined')
           {
             if(this.state.twoFA==true)
-             ReactDOM.render(<h3>Login successfull<img id='qr' src={data}></img></h3>, document.getElementById('QRCode'));
+             ReactDOM.render(<img id='qr' src={data.url}></img>, document.getElementById('QRCode'));
            else
            {
             var success=strings.success;
@@ -88,7 +88,8 @@
   }
 
   handleSubmit(e){
-
+    
+     e.preventDefault();
      this.registerForm.className='hidden';
   	 var username = this.uname.value;
   	 var firstname = this.firstname.value;
@@ -96,7 +97,6 @@
      var password = this.password.value;
      var email = this.email.value;
      var twoFA=this.state.twoFA;
-     console.log(twoFA);
      var props ={}
      props.username = username;
      props.firstName = firstname;
@@ -124,13 +124,13 @@ keyUpHandler(refName, e) {
     	<div>
       <Form>
   {formApi => (
-    <form class="form-style-5" ref={(ref) => this.registerForm = ref}>
+    <form onSubmit={this.handleSubmit.bind(this)} class="form-style-5" ref={(ref) => this.registerForm = ref}>
    
   <fieldset>
   <legend><span class="number">!</span>{strings.userData}</legend>
   <input type="text" ref={(ref) => this.firstname = ref} name="field1" placeholder="First Name *" required/>
   <input type="text" ref={(ref) => this.lastname = ref} name="field2" placeholder="Last Name *" required/>
-  <input type="email" ref={(ref) => this.email = ref} name="field3" placeholder="Email *" required/>
+  <input type="email" ref={(ref) => this.email = ref} placeholder="Email *" required="required"/>
   <input type="text" ref={(ref) => this.uname = ref} name="field4" placeholder="Username*" required/>
   <input type="password" ref={(ref) => this.password = ref} name="field5" placeholder="Password *" required/>
   <input id="checkpassword" ref={(ref) => this.checkpassword = ref} type="password" name="field6" placeholder="Retype Password *" onKeyUp={this.handlePassKeyUp} required/> 
@@ -144,7 +144,7 @@ keyUpHandler(refName, e) {
             onChange={this.handleInputChange} />
         </label>
   </fieldset>
-  <input type="submit" onClick={this.handleSubmit.bind(this)} value={strings.apply} />      
+  <input type="submit" value={strings.apply} />      
     </form>
   )}
   </Form>

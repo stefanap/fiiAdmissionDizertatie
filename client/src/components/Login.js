@@ -129,7 +129,7 @@ let config = {
           getUser(data.access_token);
           this.firstFieldset.className='hidden';
           this.secondFieldset.className='hidden';
-          var succ=strings.loginSuccessfull
+          var succ=strings.loginSuccessfull;
           sweetAlert(succ,"","success");
         }
           else
@@ -160,18 +160,16 @@ let config = {
     return (
       <Form>
   {formApi => (
-    <form class="form-style-5">
+    <form onSubmit={this.handleSubmit.bind(this)} class="form-style-5">
    
 <fieldset  ref={(ref) => this.firstFieldset = ref}>
 <legend><span class="number">!</span>{strings.userData}</legend>
-<input type="text" ref={(ref) => this.uname = ref} name="field1" placeholder="Username*"/>
-<input type="password" ref={(ref) => this.password = ref} name="field2" placeholder="Password *"/>
+<input type="text" ref={(ref) => this.uname = ref} name="field1" placeholder="Username*" required/>
+<input type="password" ref={(ref) => this.password = ref} name="field2" placeholder="Password *" required/>
 </fieldset>
-<fieldset id="QRCode" ref={(ref) => this.qr = ref}>
-    </fieldset>
 <fieldset id="secondStep" ref={(ref) => this.secondFieldset = ref}>
         <input type="text"  ref={(ref) => this.code = ref} name="field3" placeholder="Validation Code" />
-        <input type="submit" onClick={this.handleSubmit.bind(this)} value={strings.login} />
+        <input type="submit" value={strings.login} />
            </fieldset>      
     </form>
   )}

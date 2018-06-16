@@ -98,17 +98,16 @@ xhr.send(formData);
       	var code=data.statusCode;
           if (typeof code == 'undefined')
           {
-             ReactDOM.render(<p>Register successfull</p>, document.getElementById('messageResult'));
+             sweetAlert("Admission data submitted","","success");
           }
           else if(code == 400)
           {
-          	console.log('aSDDSDSSDSD');
             sweetAlert("Error","You have already submitted admission data","error");
             this.registerForm.className='hidden';
           }
          else
           {
-            ReactDOM.render(<p>Something went wrong, please try again</p>, document.getElementById('messageResult'));
+           sweetAlert("Error","Something went wrong, please try again","error");
           }
 
     })
@@ -121,6 +120,7 @@ xhr.send(formData);
     }
 
   handleSubmit(e){
+    e.preventDefault();
      var props ={}
      props.cnp=this.cnp.value
      props.address=this.address.value
@@ -160,8 +160,8 @@ xhr.send(formData);
      uploadDocument(bacDiploma);
      uploadDocument(birthCertificate);
      uploadDocument(idCard);
-      uploadDocument(marriageCert);
-      	 this.registerForm.className='hidden';
+     uploadDocument(marriageCert);
+     this.registerForm.className='hidden';
      }
 
      getCountries()
@@ -270,7 +270,7 @@ xhr.send(formData);
     	<div>
       <Form>
   {formApi => (
-    <form class="form-style-5" ref={(ref) => this.registerForm = ref}>
+    <form onSubmit={this.handleSubmit.bind(this)} class="form-style-5" ref={(ref) => this.registerForm = ref}>
    
   <fieldset>
   <legend><span class="number">!</span>{strings.admissionData}</legend>
@@ -334,7 +334,7 @@ xhr.send(formData);
   <input type="file"  ref={(ref) => this.marriageCert = ref} name="pic" accept="application/pdf,image/png,image/jpeg,image/jpg"/>
  
   </fieldset>
-  <input type="submit" onClick={this.handleSubmit.bind(this)} value={strings.apply} />      
+  <input type="submit" value={strings.apply} />      
     </form>
   )}
   </Form>

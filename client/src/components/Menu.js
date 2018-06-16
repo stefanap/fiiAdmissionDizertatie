@@ -12,6 +12,7 @@
   import ManageUsers from "./ManageUsers";
   import ViewUsers from "./ViewUsers";
   import Settings from "./Settings";
+  import Reports from "./Reports";
   import "./Menu.css";
   import fii from '../fii.png';
   import sweetAlert from 'sweetalert';
@@ -27,7 +28,9 @@ var english={
    registerAdmission:"Register for admission",
    logout:"Logout",
    settings:"Settings",
-   welcome:"Welcome"
+   welcome:"Welcome",
+   notLoggedIn:"You are not logged in",
+   reports:"Reports"
  }
 
  var romanian={
@@ -39,7 +42,9 @@ var english={
    registerAdmission:"Inregistrare penru admitere",
    logout:"Delogare",
    settings:"Setari",
-   welcome:"Bun venit"
+   welcome:"Bun venit",
+   notLoggedIn:"utilizator nelogat",
+   reports:"Rapoarte"
  }
 let strings = new LocalizedStrings({
  en:english,
@@ -61,6 +66,9 @@ window.location.reload();
 
     constructor(props) {
     super(props);
+    this.state = {
+      show:strings.notLoggedIn
+    };
     document.onmousemove = this.resetTimer;
     document.onclick = this.resetTimer;
     var language=localStorage.getItem('language');
@@ -70,7 +78,9 @@ window.location.reload();
     strings.setLanguage('ro');
     else 
     strings.setLanguage('en');
+    if (localStorage.getItem('username')!= null) this.state.show=strings.welcome;
     }
+
 
 
 resetTimer() {
@@ -113,7 +123,7 @@ resetTimer() {
                                 <img src={fii} className="App-logo" alt="logo" />
                                 <br/>
                                  <br/>
-                                <p>{strings.welcome} {localStorage.getItem('username')}</p>
+                                <p> {this.state.show} </p>
                         </header>
                         <p className="App-intro">
                         </p>
@@ -189,6 +199,16 @@ resetTimer() {
                         </div>
                         </NavLink>
                 </li>
+                 <li class="var_nav"><NavLink to="/reports">
+                        <div class="link_bg"></div>
+                        <div class="link_title">
+                                <div class="icon"> 
+                                        <i class="icon-briefcase icon-2x"></i>
+                                </div>
+                                <a ><span>{strings.reports}</span></a>
+                        </div>
+                        </NavLink>
+                </li>
                 <li class="var_nav">
                         <div class="link_bg"></div>
                         <div class="link_title">
@@ -208,7 +228,8 @@ resetTimer() {
                 <Route path="/profile" component={Profile}/>
                 <Route path="/admission" component={Admission}/>
                 <Route path="/viewUsers" component={ManageUsers}/>
-                 <Route path="/settings" component={Settings}/>
+                <Route path="/settings" component={Settings}/>
+                <Route path="/reports" component={Reports}/>
         </div>
                <button class='changeLanguageButton' onClick={() => {  this.changeLanguage() }}>Translate</button>
         </div>

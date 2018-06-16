@@ -5,6 +5,7 @@ import utils.AdmissionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fiiadmission.api.dto.QrDTO;
 import com.fiiadmission.domain.User;
 import com.fiiadmission.repository.UserRepository;
 import com.fiiadmission.service.UserService;
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String generateQRUrl(User user) throws UnsupportedEncodingException {
-		return QR_PREFIX + URLEncoder.encode(String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s", APP_NAME, user.getEmail(), user.getSecret(), APP_NAME), "UTF-8");
+	public QrDTO generateQRUrl(User user) throws UnsupportedEncodingException {
+		return new QrDTO(QR_PREFIX + URLEncoder.encode(String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s", APP_NAME, user.getEmail(), user.getSecret(), APP_NAME), "UTF-8"));
 	}
 }

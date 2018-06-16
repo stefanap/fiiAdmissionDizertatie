@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
+import com.fiiadmission.api.dto.QrDTO;
 import com.fiiadmission.domain.User;
 
 /**
@@ -26,6 +27,6 @@ public interface UserService {
 
 	User findByEmail(String email);
 
-    String generateQRUrl(User user) throws UnsupportedEncodingException;
+    QrDTO generateQRUrl(User user) throws UnsupportedEncodingException;
 
 }

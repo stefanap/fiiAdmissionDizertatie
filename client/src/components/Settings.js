@@ -37,8 +37,8 @@ class Settings extends Component {
       }
       else{
         var props ={}
-    props.startDate = this.state.startDate.format("X");
-    props.endDate = this.state.endDate.format("X");
+    props.startDate = this.state.startDate.format("X")*1000;
+    props.endDate = this.state.endDate.format("X")*1000;
     var setting= new Setting(props);
     var token = base64.decode(localStorage.getItem('token'));
     let config = {
@@ -89,7 +89,7 @@ class Settings extends Component {
     }
 
     convertTimestampToMoment(date){
-    var newdate= new Date(date*1000);
+    var newdate= new Date(date);
     return moment(newdate);
     }
 

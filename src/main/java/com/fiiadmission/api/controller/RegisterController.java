@@ -1,5 +1,6 @@
 package com.fiiadmission.api.controller;
 
+import com.fiiadmission.api.dto.QrDTO;
 import com.fiiadmission.api.dto.UserDTO;
 import com.fiiadmission.api.dto.mappers.UserMapper;
 import com.fiiadmission.api.exceptions.BadRequestException;
@@ -34,7 +35,7 @@ public class RegisterController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public String createUser(@RequestBody UserDTO userDTO) throws UnsupportedEncodingException, BadRequestException {
+    public QrDTO createUser(@RequestBody UserDTO userDTO) throws UnsupportedEncodingException, BadRequestException {
         User user = UserMapper.INSTANCE.toUser(userDTO);
 
         // validate that the username is not used
@@ -50,13 +51,13 @@ public class RegisterController {
         user.setPassword(passwordEncoder.encodePassword(userDTO.getPassword(), Constants.APP_SALT));
         user.setAdmissionStatus(Constants.ADMISION_STATUS_PENDING);
         user = userService.save(user);
-        String qrUrl = userService.generateQRUrl(user);
+        QrDTO qr = userService.generateQRUrl(user);
 
         //send email with the qr url
         if(user.getHas2FA().equals(Boolean.TRUE)) {
-            this.sendRegistrationEmail(user, qrUrl);
+            this.sendRegistrationEmail(user, qr.getUrl());
         }
-        return qrUrl;
+        return qr;
     }
 
     private void sendRegistrationEmail(User user, String qrUrl){
