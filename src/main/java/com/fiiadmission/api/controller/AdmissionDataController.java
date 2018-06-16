@@ -1,6 +1,8 @@
 package com.fiiadmission.api.controller;
 
 import java.security.Principal;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +56,7 @@ public class AdmissionDataController {
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public AdmissionDataDTO createAdmissionData(@RequestBody AdmissionDataDTO admissionDataDTO, Principal principal) throws BadRequestException {
 		AdmissionData admissionData = AdmissionDataMapper.INSTANCE.toAdmissionData(admissionDataDTO);
+		admissionData.setCreateDate(new Timestamp(new Date().getTime()));
 		User user = userService.findByUsername(principal.getName());
 		if(user.getAdmissionData() != null){
 			throw new BadRequestException("User already has admission data");

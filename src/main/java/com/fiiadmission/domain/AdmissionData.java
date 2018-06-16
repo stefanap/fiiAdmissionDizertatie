@@ -81,9 +81,6 @@ public class AdmissionData {
 	@OneToMany(mappedBy = "admissionData")
 	private List<UploadedDocument> documents;
 
-	public AdmissionData(){
-		this.createDate = new Timestamp(new Date().getTime());
-	}
 	public Long getId() {
 		return id;
 	}

@@ -168,3 +168,9 @@ color: #007bff;
   display: flex;
   flex-direction: column;
   }
+
+
+button.changeLanguageButton{
+  color:#fff;
+  background: #0086b3;
+}
