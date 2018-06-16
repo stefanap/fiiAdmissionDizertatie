@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -73,9 +75,15 @@ public class AdmissionData {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@Column(name ="create_date")
+	private Timestamp createDate;
+
 	@OneToMany(mappedBy = "admissionData")
 	private List<UploadedDocument> documents;
 
+	public AdmissionData(){
+		this.createDate = new Timestamp(new Date().getTime());
+	}
 	public Long getId() {
 		return id;
 	}
@@ -219,5 +227,13 @@ public class AdmissionData {
 
 	public void setDocuments(List<UploadedDocument> documents) {
 		this.documents = documents;
+	}
+
+	public Timestamp getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Timestamp createDate) {
+		this.createDate = createDate;
 	}
 }
