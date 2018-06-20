@@ -36,10 +36,10 @@ function createCompleteFileType(ext)
 
  function uploadDocument(file){
 var token = base64.decode(localStorage.getItem('token'));
-var ext=file.split('.').pop();
+var ext=file.value.split('.').pop();
 var fileType= createCompleteFileType(ext);
 const formData = new FormData();
-formData.append('file', file)
+formData.append('file', file.files[0])
 formData.append('documentType',fileType);
 const config = {
     headers: {
@@ -47,7 +47,7 @@ const config = {
             'Authorization': 'Bearer ' + token
     }
     }
-    return  post(UploadDocumentsAPI, formData,config)
+    return  post(UploadDocumentsAPI+'?documentType=certificat&notes=cert', formData,config)
 
 
 
@@ -171,10 +171,11 @@ const config = {
      var admissionData= new AdmissionData(props);
      console.log('props',props);
      this.register(admissionData);
-     var bacDiploma= this.bac.value;
-     var birthCertificate = this.birthCert.value;
-     var idCard=this.idCard.value;
-     var marriageCert=this.marriageCert.value;
+
+     var bacDiploma= this.bac;
+     var birthCertificate = this.birthCert;
+     var idCard=this.idCard;
+     var marriageCert=this.marriageCert;
      uploadDocument(bacDiploma);
      uploadDocument(birthCertificate);
      uploadDocument(idCard);
