@@ -5,7 +5,7 @@
   import AdmissionData from './AdmissionData.js'
   import superagent from 'superagent';
   import sweetAlert from 'sweetalert';
-  import axios from 'axios';
+  import axios, { post } from 'axios';
   import LocalizedStrings from 'react-localization';
 
   let strings = new LocalizedStrings({
@@ -35,17 +35,35 @@ function createCompleteFileType(ext)
 }}
 
  function uploadDocument(file){
-  console.log('test');
 var token = base64.decode(localStorage.getItem('token'));
 var ext=file.split('.').pop();
-var formData = new FormData();
-formData.append("file", file);
-formData.append("documentType", ext);
-var xhr = new XMLHttpRequest();
-xhr.open("POST", UploadDocumentsAPI);
-xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-xhr.setRequestHeader( 'Accept','application/json, text/plain, */*');
-xhr.send(formData);
+var fileType= createCompleteFileType(ext);
+const formData = new FormData();
+formData.append('file', file)
+formData.append('documentType',fileType);
+const config = {
+    headers: {
+            'Content-type': 'multipart/form-data',
+            'Authorization': 'Bearer ' + token
+    }
+    }
+    return  post(UploadDocumentsAPI, formData,config)
+
+
+
+
+
+// var formData = new FormData();
+// formData.append("file", file);
+// formData.append("documentType", ext);
+// var xhr = new XMLHttpRequest();
+// xhr.open("POST", UploadDocumentsAPI);
+// xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+// xhr.setRequestHeader( 'Accept','application/json, text/plain, */*');
+// xhr.send(formData);
+
+
+
 // const data = new FormData();
 // var ext=file.split('.').pop();
 // var fileType= createCompleteFileType(ext);

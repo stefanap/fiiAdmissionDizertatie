@@ -9,6 +9,7 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.web.cors.CorsConfiguration;
@@ -31,6 +32,27 @@ public class AdditionalWebConfig {
      * necessary to your use case.
      *
      */
+//	@Bean
+//	@Order(Ordered.HIGHEST_PRECEDENCE)
+//	public MultipartResolver multipartResolver()
+//	{
+//		// return new StandardServletMultipartResolver();
+//		return new CommonsMultipartResolver();
+//	}
+//	@Bean
+//    public CommonsMultipartResolver commonsMultipartResolver() {
+//        final CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+//        commonsMultipartResolver.setMaxUploadSize(-1);
+//        return commonsMultipartResolver;
+//    }
+//
+//    @Bean
+//    public FilterRegistrationBean multipartFilterRegistrationBean() {
+//        final MultipartFilter multipartFilter = new MultipartFilter();
+//        final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(multipartFilter);
+//        filterRegistrationBean.addInitParameter("multipartResolverBeanName", "commonsMultipartResolver");
+//        return filterRegistrationBean;
+//    }
 
     
     @Bean

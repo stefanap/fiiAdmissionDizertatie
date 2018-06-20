@@ -48,7 +48,7 @@ public class DocumentController {
 
     @Autowired
     AdmissionDataService admissionDataService;
-    
+	
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public UploadedDocumentDTO uploadFile(
@@ -63,6 +63,7 @@ public class DocumentController {
         if (!allowedMimeTypes.contains(uploadfile.getContentType())) {
             throw new BadRequestException("Mime type is not allowed");
         }
+        
         User user = userService.findByUsername(principal.getName());
         AdmissionData admissionData = user.getAdmissionData();
 

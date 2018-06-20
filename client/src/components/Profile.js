@@ -98,7 +98,7 @@ if(localStorage.getItem('user')==null)
   <Form>
   <form class="statusForm">
   <select ref={(ref) => this.status = ref}>
-  <option value="0">Confirmed</option>
+  <option value="0">Pending</option>
   <option value="1">Withdrawal</option>
   </select>
   <button type="submit" ref={(ref) => this.submitButton = ref} onClick={this.handleSubmit.bind(this)} className="btn btn-primary">
