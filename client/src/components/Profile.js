@@ -2,36 +2,43 @@ import React, { Component } from "react";
 import { Redirect } from 'react-router';
 import { Form, Text } from 'react-form';
 import "./Profile.css";
+import moment from 'moment';
+import LocalizedStrings from 'react-localization';
 var qs = require('qs');
 const base64 = require('base-64');
+let strings = new LocalizedStrings({
+ en:{
+   confirm: "Please confirm your admission status below",
+   pending:"Pending",
+   withdrawal:"Withdrawal",
+   username:"Username",
+   name:"Name"
+ },
+ ro: {
+ confirm: "Va rugam confirmati statusul inscrierii la admitere",
+ pending:"In asteptare",
+ withdrawal:"Retras",
+ username:"Nume utilizator",
+ name:"Nume"
+ }
+});
 
-// function refreshToken(username,password,code){
-
-//   let config = {
-//     method: 'POST',
-//     headers: { 'Content-Type':'application/x-www-form-urlencoded', 'Authorization': 'Basic '+btoa('testjwtclientid:XY7kmzoNzl100')},
-//     body: qs.stringify({
-//       'grant_type': 'password',
-//       'username': username,
-//       'password': password,
-//       'verificationCode': code
-//     })
-//   }
-
-//   const tokenAPI = 'https://localhost:8085/oauth/token'
-
-//   fetch(tokenAPI, config)
-//   .then(response =>
-//     response.json()) .then((data) => { 
-//       console.log(data); localStorage.setItem('token', data.access_token)})     
-
-//   }
 
     class Profile extends Component {
       constructor(props) {
         super(props);
+        var language=localStorage.getItem('language');
+    if(language=='ro')
+    strings.setLanguage('ro');
+    else 
+    strings.setLanguage('en');
+    this.state = {
+      announcements: [],
+      showModal: false,
+      Date: moment(),
+      showButton : false
+    };
         this.state = {
-      descriptionText: 'Please confirm your admission status below',
       user: JSON.parse(localStorage.getItem('user'))
     };
 if(localStorage.getItem('user')==null)
@@ -87,19 +94,19 @@ if(localStorage.getItem('user')==null)
   <div>
   <div class="user-profile">
   <img class="avatar" src="https://cdn2.iconfinder.com/data/icons/reading/512/round-level-phd-avatar-university-student-512.png" alt="Ash" />
-  <div class="username">username: {username}</div>
-  <div class="standardField">name: {firstName}{' '}{lastName}</div>
-  <div class="standardField">email: {email}</div>
+  <div class="username">{strings.username}: {username}</div>
+  <div class="standardField">{strings.name}: {firstName}{' '}{lastName}</div>
+  <div class="standardField">Email: {email}</div>
   <div class="bio">
   {role}
   </div>
-  <div class="description">{this.state.descriptionText}
+  <div class="description">{strings.confirm}
   </div>
   <Form>
   <form class="statusForm">
   <select ref={(ref) => this.status = ref}>
-  <option value="0">Pending</option>
-  <option value="1">Withdrawal</option>
+  <option value="0">{strings.pending}</option>
+  <option value="1">{strings.withdrawal}</option>
   </select>
   <button type="submit" ref={(ref) => this.submitButton = ref} onClick={this.handleSubmit.bind(this)} className="btn btn-primary">
   Submit

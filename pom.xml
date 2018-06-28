@@ -4,13 +4,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.nouhoun.springboot.jwt.integration</groupId>
-	<artifactId>springboot-jwt</artifactId>
+	<groupId>springboot.facultyAdmission</groupId>
+	<artifactId>FacultyAdmission</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
-	<name>springboot-jwt</name>
-	<description>Demo project for Spring Boot</description>
+	<name>FacultyAdmission</name>
+	<description>Spring boot project for faculty admission</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -164,8 +164,8 @@
 				<configuration>
 					<images>
 						<image>
-							<name>springboot-jwt</name>
-							<alias>springboot-jwt</alias>
+							<name>FacultyAdmission</name>
+							<alias>FacultyAdmission</alias>
 							<build>
 								<filter>@</filter>
 								<dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>

@@ -7,14 +7,35 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import Announcement from './Announcement.js'
+import LocalizedStrings from 'react-localization';
 const base64 = require('base-64');
-
+let strings = new LocalizedStrings({
+ en:{
+   close: "Close",
+   post:"Post announcement",
+   new: "New announcement",
+   enter:"Enter announcement here...",
+   selectexp:"Select expiry date"
+ },
+ ro: {
+ close: "Inchidere",
+ post:"Postare anunt",
+ new: "Anunt nou",
+ enter:"Introduceti anuntul aici...",
+ selectexp:"Selectati data expirarii"
+ }
+});
 
 class Announcements extends Component {
 
 
  constructor(props) {
     super(props);
+     var language=localStorage.getItem('language');
+    if(language=='ro')
+    strings.setLanguage('ro');
+    else 
+    strings.setLanguage('en');
     this.state = {
       announcements: [],
       showModal: false,
@@ -105,26 +126,26 @@ class Announcements extends Component {
      })}
    </ul>
   <div>
-        <button id="create" className={this.state.showButton ? '' : 'hidden'} onClick={this.handleOpenModal}>Create announcement</button>
+        <button id="create" className={this.state.showButton ? '' : 'hidden'} onClick={this.handleOpenModal}>{strings.new}</button>
         <Modal
            isOpen={this.state.showModal}
            contentLabel="Modal"
            style={{
               content: {
-                width: '300px',
+                width: '600px',
                 height:'350px',
                 left: '700px'
               }
             }}
         >
            <textarea ref={(ref) => this.description = ref} name="comment" placeholder=
-           "Enter announcement here..."></textarea>
-           Select expiry date <DatePicker
+           {strings.enter}></textarea>
+           <br/>{strings.selectexp}<DatePicker
         selected={this.state.Date}
         onChange={this.handleChange}
     />
-          <button onClick={this.handleCloseModal}>Close Modal</button>
-          <button onClick={this.handlePostAnnouncement}>Post</button>
+          <button onClick={this.handleCloseModal}>{strings.close}</button>
+          <button onClick={this.handlePostAnnouncement}>{strings.post}</button>
         </Modal>
           <span id="messageResult"></span> 
       </div>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Form, Text } from 'react-form';
 import "./Register.css";
 import "./Login.css";
+import {updateParent} from './Menu'
 import ReactDOM from 'react-dom';
 import User from './User.js'
 import LocalizedStrings from 'react-localization';
@@ -16,15 +17,22 @@ let strings = new LocalizedStrings({
    userData:"User Data",
    login:"Login",
    loginSuccessfull: "Login successfull",
-   loginFailed: "Login failed"
+   loginFailed: "Login failed",
+   username:"Username *",
+   password:"Password *",
+   verificationCode:"Validation code"
  },
  ro: {
    userData:"Date utilizator",
    login:"Logare",
    loginSuccessfull: "Logare realizata cu success",
-   loginFailed: "Login esuat"
+   loginFailed: "Login esuat",
+   username:"Username *",
+   password:"Parola *",
+   verificationCode:"Cod validare"
  }
 });
+
 
 function getUser(token){
   const API = 'https://localhost:8085/fii/users/principal';
@@ -39,19 +47,11 @@ function getUser(token){
         {
              console.log(data);
              var user= new User(data);
+             updateParent(user.state);
              localStorage.setItem('user',JSON.stringify(user.state));
         }
 })
 }
-
-// function proceedWithToken(username,password,code)
-// {var token =localStorage.getItem('token');
-//     if(typeof token == 'undefined')
-//     refreshToken(username,password,code);
-//     token =  localStorage.getItem('token');
-//     if(typeof token == 'undefined')
-//       ReactDOM.render(<h1>Login failed</h1>, document.getElementById('thirdStep'));
-// }
 
 export default class Login extends Component {
 
@@ -62,49 +62,8 @@ export default class Login extends Component {
     strings.setLanguage('ro');
     else 
     strings.setLanguage('en');
-
-    // this.state = {
-    //   users: [], data: []
-    // };
-
      this.state = { firstStepState: 'shown' };
   }
-
-//   checkUser(){
-//     console.log('check');
-//   const GETAPI = 'https://localhost:8085/fii/users/'+this.uname.value;
-//       let config = {
-//       method: 'GET',
-//       }
-// console.log('check2');
-//     fetch(GETAPI, config)
-//    .then(response =>
-//       response.json()) .then((data) => { 
-//         if(data.statusCode == '400'||data.statusCode == '404'){
-//           //this.secondFieldset.className='hidden';
-//             //this.thirdFieldset.className='';
-//             ReactDOM.render(<h3>Invalid username</h3>, document.getElementById('validation'));
-//           }
-//         else if (typeof data.statusCode == 'undefined')
-//           {
-//              var user= new User(data);
-//            if(user.state.password != sha256(this.password.value)){
-//             //this.secondFieldset.className='hidden';
-//             //this.thirdFieldset.className='';
-//             ReactDOM.render(<h3>Invalid password</h3>, document.getElementById('validation'));}
-//            else {
-//             console.log('else');
-//            this.firstFieldset.className='hidden';
-//            this.secondFieldset.className='';
-//            localStorage.setItem('role',data.roles[0].roleName)
-//          }}
-//         else {
-//            ReactDOM.render(<h3>Something went wrong, please try again</h3>, document.getElementById('validation'));
-//         }
-// })
-// }
-
-
 
     getToken(username,password,code){
 
@@ -142,9 +101,7 @@ let config = {
 }
 
     handleSubmit(e){
-    /*this.secondFieldset.className='hidden';
-    this.thirdFieldset.className='';*/
-    e.preventDefault();
+      e.preventDefault();
     var username = this.uname.value;
     var password = this.password.value;
     var code = this.code.value;
@@ -164,11 +121,11 @@ let config = {
    
 <fieldset  ref={(ref) => this.firstFieldset = ref}>
 <legend><span class="number">!</span>{strings.userData}</legend>
-<input type="text" ref={(ref) => this.uname = ref} name="field1" placeholder="Username*" required/>
-<input type="password" ref={(ref) => this.password = ref} name="field2" placeholder="Password *" required/>
+<input type="text" ref={(ref) => this.uname = ref} name="field1" placeholder={strings.username} required/>
+<input type="password" ref={(ref) => this.password = ref} name="field2" placeholder={strings.password} required/>
 </fieldset>
 <fieldset id="secondStep" ref={(ref) => this.secondFieldset = ref}>
-        <input type="text"  ref={(ref) => this.code = ref} name="field3" placeholder="Validation Code" />
+        <input type="text"  ref={(ref) => this.code = ref} name="field3" placeholder={strings.verificationCode} />
         <input type="submit" value={strings.login} />
            </fieldset>      
     </form>

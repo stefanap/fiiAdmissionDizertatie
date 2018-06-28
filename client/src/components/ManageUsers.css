@@ -1,28 +1,18 @@
-/*table {
-	margin-top:30px;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
+
+.left{
+    color:#0086b3;
+    font-weight:bold; 
 }
 
-td, th {
-    border: 1px solid #ddd;
-    padding: 8px;
+.document{
+    width:200px;
 }
 
-tr:nth-child(even){background-color: #f2f2f2;}
-
-tr:nth-child(odd){background-color: #D8D8D8;}
-
-tr:hover {background-color: #ddd;}
-
-th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #0086b3;
-    color: white;
-}*/
+.download{
+    margin-left: -30px;
+    color:#0086b3!important;
+    width:300px;
+}
 
 .rt-th{
     background-color: rgba(0,134,179);
@@ -38,6 +28,9 @@ th {
 
 .changeRoleButton{
 	float:right;
+    width:190px;
+    background-color: #0086b3;
+    color:#ffffff;
 }
 
 button.-btn{

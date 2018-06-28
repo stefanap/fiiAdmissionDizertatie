@@ -7,6 +7,7 @@ import com.fiiadmission.service.SettingService;
 import com.fiiadmission.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/fii/statistics")
+@PreAuthorize("hasAuthority('ADMIN_USER')")
 public class StatisticsController {
 
     @Autowired

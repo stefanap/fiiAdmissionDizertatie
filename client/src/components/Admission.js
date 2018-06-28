@@ -11,11 +11,49 @@
   let strings = new LocalizedStrings({
  en:{
    admissionData:"Admission Data",
-   apply:"Register"
+   apply:"Register",
+   math: "Mathematics",
+   address: "Address *",
+   examSubject: "Exam subject *",
+   telephone: "Telephone number *",
+   selectCivilState: "Select civil state *",
+    selectLanguage: "Select language *",
+    selectAdmissionType: "Select admission type *",
+    selectCountry: "Select country",
+    selectRegion: "Select region",
+    selectCity: "Select city",
+    selectHighschool: "Select highschool",
+    uploadBac: "Upload bacalaureat diploma *",
+    uploadBirth: "Upload birth certificate *",
+    uploadIdentity: "Upload identity card *",
+    uploadMarriage: "Upload marriage certificate ",
+    bacGrade: "Bacalaureat grade",
+    generalGrade : "General grade",
+    selectDisabilities: "Please select wether te candidate has disabilities",
+    additionalInformation : "Additional information"
  },
  ro: {
    admissionData:"Date pentru admitere",
-   apply:"Inregistreaza-te"
+   apply:"Inregistreaza-te",
+   math:"Matematica",
+   address: "Adresa *",
+   examSubject: "Subiect examen *",
+   telephone: "Numar de telefon",
+   selectCivilState: "Selectati starea civila *",
+    selectLanguage: "Selectati sectia *",
+    selectAdmissionType: "Selectati tipul admiterii *",
+    selectCountry: "Selectati tara",
+    selectRegion: "Selectati regiunea",
+    selectCity: "Selectati orasul",
+    selectHighschool: "Selectati liceul",
+    uploadBac: "Incarcati diploma de bacalaureat *",
+    uploadBirth: "Incarcati certificatul de nastere *",
+    uploadIdentity: "Incarcati documentul de identitate *",
+    uploadMarriage: "Incarcati certificatul de casatorie ",
+    bacGrade: "Nota bacalaureat",
+    generalGrade : "Media generala",
+    selectDisabilities: "Va rugam selectati daca candidatul are dizabilitati",
+    additionalInformation : "Informatii aditionale"
  }
 });
 
@@ -35,6 +73,7 @@ function createCompleteFileType(ext)
 }}
 
  function uploadDocument(file){
+  console.log(file);
 var token = base64.decode(localStorage.getItem('token'));
 var ext=file.value.split('.').pop();
 var fileType= createCompleteFileType(ext);
@@ -49,31 +88,6 @@ const config = {
     }
     return  post(UploadDocumentsAPI+'?documentType=certificat&notes=cert', formData,config)
 
-
-
-
-
-// var formData = new FormData();
-// formData.append("file", file);
-// formData.append("documentType", ext);
-// var xhr = new XMLHttpRequest();
-// xhr.open("POST", UploadDocumentsAPI);
-// xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-// xhr.setRequestHeader( 'Accept','application/json, text/plain, */*');
-// xhr.send(formData);
-
-
-
-// const data = new FormData();
-// var ext=file.split('.').pop();
-// var fileType= createCompleteFileType(ext);
-// console.log(fileType);
-// data.append('action', 'ADD');
-// data.append('param', 0);
-// data.append('secondParam', 0);
-// data.append('file', new Blob([file], { 'type': fileType }));
-// data.append('documentType',fileType );
-// axios.post(UploadDocumentsAPI, data, { headers: {  Authorization: "Bearer " + token } });
 }
 
   
@@ -114,6 +128,7 @@ const config = {
     .then(response =>
       response.json()) .then((data) => { 
       	var code=data.statusCode;
+        console.log(data);
           if (typeof code == 'undefined')
           {
              sweetAlert("Admission data submitted","","success");
@@ -142,14 +157,14 @@ const config = {
      var props ={}
      props.cnp=this.cnp.value
      props.address=this.address.value
-     props.examSubject=this.examSubject.value
+     props.examSubject=this.examSubject.options[this.examSubject.selectedIndex].text
      props.telephone=this.telephone.value
      props.bacGrade=this.bacGrade.value
      props.generalGrade=this.generalGrade.value
      props.language=this.language.options[this.language.selectedIndex].text
      var hasDisabilities = this.hasDisabilities.options[this.hasDisabilities.selectedIndex].text
-     props.hasDisabilities=(hasDisabilities == 'true');
-     props.civilState=this.civilState.options[this.civilState.selectedIndex].text
+     props.hasDisabilities=(hasDisabilities=='true');
+     props.civil_state=this.civilState.options[this.civilState.selectedIndex].text
      props.admissionType=this.admissionType.options[this.admissionType.selectedIndex].text
      var country={}
      country.id=this.country.value;
@@ -294,64 +309,67 @@ const config = {
   <fieldset>
   <legend><span class="number">!</span>{strings.admissionData}</legend>
   <input type="number" ref={(ref) => this.cnp = ref} name="cnp" placeholder="Cnp *" required/>
-  <input type="text" ref={(ref) => this.address = ref} name="address" placeholder="Address *" required/>
-  <input type="text" ref={(ref) => this.examSubject = ref} name="examSubject" placeholder="Exam Subject *" required/>
-  <input type="number" ref={(ref) => this.telephone = ref} name="telephone" placeholder="Telephone *" required/>
-  <input type="number" ref={(ref) => this.bacGrade = ref} name="bacGrade" placeholder="Bacalaureat Grade *" required/>
-  <input type="number" ref={(ref) => this.generalGrade = ref} name="generalGrade" placeholder="General Grade *" required/>
-   Please select whether the candidate has disabilities<select ref={(ref) => this.hasDisabilities = ref}>
+  <input type="text" ref={(ref) => this.address = ref} name="address" placeholder={strings.address} required/>
+  {strings.examSubject}<select ref={(ref) => this.examSubject = ref}>
+  <option value="0">{strings.math}</option>
+  <option value="1">C/C++</option>
+  <option value="2">Pascal</option>
+  </select>
+  <input type="number" ref={(ref) => this.telephone = ref} name="telephone" placeholder={strings.telephone} required/>
+  <input type="number" ref={(ref) => this.bacGrade = ref} name="bacGrade" placeholder={strings.bacGrade} required/>
+  <input type="number" ref={(ref) => this.generalGrade = ref} name="generalGrade" placeholder={strings.generalGrade} required/>
+   {strings.selectDisabilities}<select ref={(ref) => this.hasDisabilities = ref}>
   <option value="0">Yes</option>
   <option value="1">No</option>
   </select>
-  <input type="text" ref={(ref) => this.additionalInformation = ref} name="additionalInformation" placeholder="Additional Information"/>
-   Please select civil state<select ref={(ref) => this.civilState = ref}>
+  <input type="text" ref={(ref) => this.additionalInformation = ref} name="additionalInformation" placeholder={strings.additionalInformation}/>
+  {strings.selectCivilState}<select ref={(ref) => this.civilState = ref}>
   <option value="0">Single</option>
   <option value="1">Married</option>
   </select>
-  Please select section based on language<select ref={(ref) => this.language = ref}>
+  {strings.selectLanguage}<select ref={(ref) => this.language = ref}>
   <option value="0">English</option>
   <option value="1">Romanian</option>
   </select>
-  Please select admission type<select ref={(ref) => this.admissionType = ref}>
-  <option value="0">Admitere</option>
-  <option value="1">Preadmitere</option>
+  {strings.selectAdmissionType}<select ref={(ref) => this.admissionType = ref}>
+  <option value="0">Admission</option>
+  <option value="1">Preadmission</option>
   </select>
-  Please select country
+  {strings.selectCountry}
   <select ref={(ref) => this.country = ref} onChange={(e) => {this.handleCountryChange(e)}}>
   {this.state.countries.map(function(country){
        return <option value={country.id}>{country.country}</option>
      })}
   </select>
-  Please select region
+  {strings.selectRegion}
   <select ref={(ref) => this.region = ref} onChange={(e) => {this.handleRegionChange(e)}}>
   {this.state.regions.map(function(region){
        return <option value={region.id}>{region.region}</option>
      })}
   </select>
-  Please select city
+  {strings.selectCity}
   <select ref={(ref) => this.city = ref} onChange={(e) => {this.handleCityChange(e)}}>
   {this.state.cities.map(function(city){
        return <option value={city.id}>{city.city}</option>
      })}
   </select>
-  Please select highschool
+  {strings.selectHighschool}
    <select ref={(ref) => this.highschool = ref} onChange={(e) => {this.handleHighschoolChange(e)}}>
   {this.state.highschools.map(function(highschool){
        return <option value={highschool.id}>{highschool.highSchoolName}</option>
      })}
   </select>
-    <p>Upload bac diploma *</p>
   <input ref={(ref) => this.bac = ref} multiple type="file" name="pic" accept='application/pdf,image/png,image/jpeg,image/jpg' />
   <br/>
-  <p>Upload birth certificate *</p>
+  <p>{strings.uploadBac}</p>
   <input type="file" ref={(ref) => this.birthCert = ref} name="pic" accept="application/pdf,image/png,image/jpeg,image/jpg" />
   <br/>
-  <p>Upload identity card *</p>
+  <p>{strings.uploadBirth}</p>
   <input type="file" ref={(ref) => this.idCard = ref} name="pic" accept="application/pdf,image/png,image/jpeg,image/jpg"/>
   <br/>
-  <p>Upload marriage certificate</p>
+  <p>{strings.uploadIdentity}</p>
   <input type="file"  ref={(ref) => this.marriageCert = ref} name="pic" accept="application/pdf,image/png,image/jpeg,image/jpg"/>
- 
+  <p>{strings.uploadMarriage}</p>
   </fieldset>
   <input type="submit" value={strings.apply} />      
     </form>

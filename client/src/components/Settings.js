@@ -3,12 +3,33 @@ import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import Setting from './Setting.js'
 import sweetAlert from 'sweetalert';
+import "./Settings.css";
+import LocalizedStrings from 'react-localization';
 const base64 = require('base-64');
+
+let strings = new LocalizedStrings({
+ en:{
+   start:"Select start date",
+   end: "Select end date",
+   done:"Done"
+
+ },
+ ro: {
+   start:"Selectati data de inceput",
+   end:"Selectati data de final",
+   done:"Finalizat"
+ }
+});
 
 
 class Settings extends Component {
       constructor(props) {
         super(props);
+        var language=localStorage.getItem('language');
+    if(language=='ro')
+    strings.setLanguage('ro');
+    else 
+    strings.setLanguage('en');
          this.state = {
       startDate: moment(),
       endDate: moment()
@@ -73,8 +94,6 @@ class Settings extends Component {
     fetch(API, config)
    .then(response =>
       response.json()) .then((data) => { 
-        console.log(data);
-        console.log(data.message);
         if(typeof data.message == 'undefined')
         {
         var start=this.convertTimestampToMoment(data.startDate);
@@ -100,16 +119,16 @@ class Settings extends Component {
 
 
  render() { 
-    return <div>Select start date <DatePicker
+    return <div class="form">{strings.start}<DatePicker
         selected={this.state.startDate}
         onChange={this.handleStartDateChange}
     />
 
-    Select start date <DatePicker
+    {strings.end}<DatePicker
         selected={this.state.endDate}
         onChange={this.handleEndDateChange}
     />
-     <button onClick={this.handlePostDate}>Done</button>
+     <button class= "button" onClick={this.handlePostDate}>{strings.done}</button>
     </div>
       }
     }

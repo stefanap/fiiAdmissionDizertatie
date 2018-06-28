@@ -25,12 +25,14 @@ var english={
    profile:"Profile",
    announcements:"Announcements",
    manage:"Manage users",
-   registerAdmission:"Register for admission",
+   registerAdmission:"Admission form",
    logout:"Logout",
    settings:"Settings",
    welcome:"Welcome",
    notLoggedIn:"You are not logged in",
-   reports:"Reports"
+   reports:"Reports",
+   translate:"Translate to",
+   expiredSession:'Your session has expired, please log in again!'
  }
 
  var romanian={
@@ -39,12 +41,14 @@ var english={
    profile:"Profil",
    announcements:"Anunturi",
    manage:"Administreaza userii",
-   registerAdmission:"Inregistrare penru admitere",
+   registerAdmission:"Formular admitere",
    logout:"Delogare",
    settings:"Setari",
    welcome:"Bun venit",
    notLoggedIn:"utilizator nelogat",
-   reports:"Rapoarte"
+   reports:"Rapoarte",
+   translate:"Traducere in",
+   expiredSession:'Sesiunea dumneavoastra a expirat, va rugam logati-va din nou!'
  }
 let strings = new LocalizedStrings({
  en:english,
@@ -62,49 +66,61 @@ window.location.reload();
 
  }
 
+export var updateParent = function(user) {
+  console.log(user.role.roleName);
+  var showAdmin=false;
+    if(user.role.roleName=='ADMIN_USER')
+      var showAdmin=true;
+    this.setState({ user:user, show:strings.welcome+' '+user.username,showAdminButtons:showAdmin});
+}
+
   class Main extends Component {
 
     constructor(props) {
     super(props);
     this.state = {
-      show:strings.notLoggedIn
+      translateTo:{},
+      showAdminButtons:false
     };
+    updateParent = updateParent.bind(this);
     document.onmousemove = this.resetTimer;
     document.onclick = this.resetTimer;
     var language=localStorage.getItem('language');
      this.resetTimer = this.resetTimer.bind(this);
-    console.log(language);
     if(language=='ro')
+    {
     strings.setLanguage('ro');
-    else 
-    strings.setLanguage('en');
-    if (localStorage.getItem('username')!= null) this.state.show=strings.welcome;
+    this.state.translateTo='engleza';
     }
-
+    else 
+    {
+    strings.setLanguage('en');
+    this.state.translateTo='romanian';
+    }
+  }
 
 
 resetTimer() {
   var timeout;
   clearTimeout(timeout);
-  timeout = setTimeout(function(){localStorage.clear();  sweetAlert('Your session has expired, please log in again!'); window.location.reload();}, 30*60*1000);
-  //this.forceUpdate();
+  timeout = setTimeout(function(){localStorage.clear();  if(!sweetAlert(strings.expiredSession)) window.location.reload();}, 30*60*1000);
 }
 
     changeLanguage()
     {
     var language=localStorage.getItem('language');
-    if(language=='en')//strings._language=='en')
+    if(language=='en')
     {
     language='ro';
     }
     else
-    {//strings.setLanguage('en');
+    {
     language='en';
     }
     localStorage.setItem('language',language);
     strings.setLanguage(language);
+    var state=this.state;
     window.location.reload();
-    //this.forceUpdate();
     }
 
 
@@ -179,33 +195,33 @@ resetTimer() {
                         </div>
                         </NavLink>
                 </li>
-                <li class="var_nav"><NavLink to="/viewUsers">
+                <li className={this.state.showAdminButtons ? 'var_nav' : 'hidden'}><NavLink to="/viewUsers">
                         <div class="link_bg"></div>
                         <div class="link_title">
                                 <div class="icon"> 
                                         <i class="icon-briefcase icon-2x"></i>
                                 </div>
-                                <a ><span>{strings.manage}</span></a>
+                                <a><span>{strings.manage}</span></a>
                         </div>
                         </NavLink>
                 </li>
-                <li class="var_nav"><NavLink to="/settings">
+                <li className={this.state.showAdminButtons ? 'var_nav' : 'hidden'}><NavLink to="/settings">
                         <div class="link_bg"></div>
                         <div class="link_title">
                                 <div class="icon"> 
                                         <i class="icon-briefcase icon-2x"></i>
                                 </div>
-                                <a ><span>{strings.settings}</span></a>
+                                <a><span>{strings.settings}</span></a>
                         </div>
                         </NavLink>
                 </li>
-                 <li class="var_nav"><NavLink to="/reports">
+                 <li className={this.state.showAdminButtons ? 'var_nav' : 'hidden'}><NavLink to="/reports">
                         <div class="link_bg"></div>
                         <div class="link_title">
                                 <div class="icon"> 
                                         <i class="icon-briefcase icon-2x"></i>
                                 </div>
-                                <a ><span>{strings.reports}</span></a>
+                                <a><span>{strings.reports}</span></a>
                         </div>
                         </NavLink>
                 </li>
@@ -231,7 +247,7 @@ resetTimer() {
                 <Route path="/settings" component={Settings}/>
                 <Route path="/reports" component={Reports}/>
         </div>
-               <button class='changeLanguageButton' onClick={() => {  this.changeLanguage() }}>Translate</button>
+               <button class='changeLanguageButton' onClick={() => {  this.changeLanguage() }}>{strings.translate} {this.state.translateTo}</button>
         </div>
 
 </HashRouter>
@@ -247,3 +263,6 @@ resetTimer() {
     }
 
     export default Main;
+
+
+

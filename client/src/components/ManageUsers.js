@@ -28,7 +28,13 @@ let strings = new LocalizedStrings({
    admissionType:"Admission type",
    country:"Country",
    region:"Region",
-   city:"City"
+   city:"City",
+   bacDiploma: "Bacalaureat Diploma",
+   idCard: "Identity document",
+   birthCert:"Birth certificate",
+   marriageCert: "Marriage certificate",
+   changeRole: "Change Role",
+   viewAdmissionData: "View admission data"
 
  },
  ro: {
@@ -44,7 +50,13 @@ let strings = new LocalizedStrings({
    admissionType:"Tip admitere",
    country:"Tara",
    region:"Regiune",
-   city:"Oras"
+   city:"Oras",
+   bacDiploma: "Diploma Bacalaureat",
+   idCard: "Document de identitate",
+   birthCert:"Certificat de nastere",
+   marriageCert: "Certificat de casatorie",
+   changeRole: "Modifica rol",
+   viewAdmissionData: "Vizualizare date admitere"
  }
 });
 
@@ -70,7 +82,11 @@ class Announcements extends Component {
     this.state = {
       showModal: false,
       users: [],
-      admission: {}
+      admission: {},
+      bac:{},
+      idCard:{},
+      birthCert:{},
+      marriageCert:{}
     };
     this.getUsers();
      this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -99,13 +115,17 @@ class Announcements extends Component {
     fetch(API, config)
    .then(response =>
       response.json()) .then((data) => { 
-        console.log('bbbbbb',data);
         var adm =data;
+        if(adm!=null && typeof adm.statusCode=='undefined')
+        {
         adm.country=data.country.country;
         adm.region=data.region.region;
         adm.city=data.city.city;
-        adm.highschool=adm.highschool.highSchoolName;
+        adm.highschool=data.highschool.highSchoolName;
         adm.hasDisabilities=data.hasDisabilities;
+        console.log(data);
+        adm.civil_state=data.civil_state;
+      }
         this.setState( { admission:adm})}) 
     }
 
@@ -122,12 +142,8 @@ class Announcements extends Component {
     fetch(API, config)
    .then(response =>
       response.json()) .then((data) => { 
-        //var plswork=btoa(String.fromCharCode.apply(null, new Uint8Array(data[0].content)));
-        console.log('bytes',(data[0].content));
-        var plswork=base64js.fromByteArray(data[0].content);
-        console.log('toString64',plswork);
- ReactDOM.render(<img src={"data:image/png;base64,"+plswork}></img>, document.getElementById('messageResult'));
-       })
+        console.log(data);
+        this.setState( { bac:data[2], birthCert: data[3], idCard:data[0], marriageCert:data[1]})}) 
     }
   
 
@@ -171,10 +187,30 @@ class Announcements extends Component {
     }
 
 
+    downloadBac(image){
+    this.download1.href= image;
+    }
+
+    downloadIdCard(image){
+    this.download2.href= image;
+    }
+
+    downloadBirthCert(image){
+    this.download3.href= image;
+    }
+
+    downloadMarriageCert(image){
+    this.download4.href= image;
+    }
+
+
   render() {
+    var bac=''; if(typeof this.state.bac!='undefined' && this.state.bac!=null) bac=this.state.bac;
+    var idCard=''; if(typeof this.state.idCard!='undefined' && this.state.idCard!=null) idCard=this.state.idCard;
+    var birthCert=''; if(typeof this.state.birthCert!='undefined' && this.state.birthCert!=null) birthCert=this.state.birthCert;
+    var marriageCert=''; if(typeof this.state.marriageCert!='undefined' && this.state.marriageCert!=null) marriageCert=this.state.marriageCert;
     return (
        <div>
-         <span id="messageResult"></span> 
       <ReactTable
           data={this.state.users}
           columns={[
@@ -208,7 +244,7 @@ class Announcements extends Component {
         id: 'edit',
         accessor: "id",
         filterable: false,
-        Cell: ({value}) => (<div><button class='changeRoleButton' onClick={() => { this.changeUserRole(value) }}>Change Role</button> <button class='changeRoleButton' onClick={() => { this.handleOpenModal(value) }}>View complete data</button></div>)
+        Cell: ({value}) => (<div><button class='changeRoleButton' onClick={() => { this.changeUserRole(value) }}>{strings.changeRole}</button> <button class='changeRoleButton' onClick={() => { this.handleOpenModal(value) }}>{strings.viewAdmissionData}</button></div>)
       }
             ]}
           defaultPageSize={10}
@@ -220,30 +256,37 @@ class Announcements extends Component {
            contentLabel="Modal"
            style={{
               content: {
-                width: '400px',
-                height:'500px',
+                width: '800px',
+                height:'600px',
                 left: '600px'
               }
             }}
         >
            <table>
-       <tr><td>Cnp:</td><td> {this.state.admission.cnp}</td></tr>
-       <tr><td>{strings.address}:</td><td> {this.state.admission.address}</td></tr>
-        <tr><td>{strings.examSubject}:</td><td> {this.state.admission.examSubject}</td></tr>
-         <tr><td>{strings.telephone}: </td><td>{this.state.admission.telephone}</td></tr>
-        <tr><td>{strings.bacGrade}: </td><td>{this.state.admission.bacGrade}</td></tr>
-         <tr><td>{strings.highschool}:</td><td> {this.state.admission.highschool}</td></tr>
-        <tr><td>{strings.civil_state}: </td><td>{this.state.admission.civil_state}</td></tr>
-         <tr><td>{strings.section}: </td><td>{this.state.admission.language}</td></tr>
-        <tr><td>{strings.hasDisabilities}: </td><td>{this.state.admission.hasDisabilities}</td></tr>
-        <tr><td>{strings.additionalInformation}: </td><td>{this.state.admission.additionalInformation}</td></tr>
-        <tr><td>{strings.admissionType}: </td><td>{this.state.admission.admissionType}</td></tr>
-        <tr><td>{strings.country}: </td><td>{this.state.admission.country}</td></tr>
-        <tr><td>{strings.region}: </td><td>{this.state.admission.region}</td></tr>
-        <tr><td>{strings.city}: </td><td>{this.state.admission.city}</td></tr>
-       
-      </table>
-          <button onClick={this.handleCloseModal}>Close Modal</button>
+       <tr><td class="left">Cnp:</td><td> {this.state.admission.cnp}</td></tr>
+       <tr><td class="left">{strings.address}:</td><td> {this.state.admission.address}</td></tr>
+        <tr><td class="left">{strings.examSubject}:</td><td> {this.state.admission.examSubject}</td></tr>
+         <tr><td class="left">{strings.telephone}: </td><td>{this.state.admission.telephone}</td></tr>
+        <tr><td class="left">{strings.bacGrade}: </td><td>{this.state.admission.bacGrade}</td></tr>
+         <tr><td class="left">{strings.highschool}:</td><td> {this.state.admission.highschool}</td></tr>
+        <tr><td class="left">{strings.civil_state}: </td><td>{this.state.admission.civil_state}</td></tr>
+         <tr><td class="left">{strings.section}: </td><td>{this.state.admission.language}</td></tr>
+        <tr><td class="left">{strings.hasDisabilities}: </td><td>{String(this.state.admission.hasDisabilities)}</td></tr>
+        <tr><td class="left">{strings.additionalInformation}: </td><td>{this.state.admission.additionalInformation}</td></tr>
+        <tr><td class="left">{strings.admissionType}: </td><td>{this.state.admission.admissionType}</td></tr>
+        <tr><td class="left">{strings.country}: </td><td>{this.state.admission.country}</td></tr>
+        <tr><td class="left">{strings.region}: </td><td>{this.state.admission.region}</td></tr>
+        <tr><td class="left">{strings.city}: </td><td>{this.state.admission.city}</td></tr>
+        <tr><td class="left">{strings.bacDiploma}: </td><td><img class="document" src={"data:"+bac.mimeType+";base64,"+bac.content}></img><a class="download" ref={(ref) => this.download1 = ref} download="BacDiploma.jpg" onClick={() => { this.downloadBac("data:"+bac.mimeType+";base64,"+bac.content) }}>Download</a></td></tr>
+        <br/>
+        <tr><td class="left">{strings.idCard}: </td><td><img class="document" src={"data:"+idCard.mimeType+";base64,"+idCard.content}></img><a class="download" ref={(ref) => this.download2 = ref} download="IdentityCard.jpg" onClick={() => { this.downloadIdCard("data:"+idCard.mimeType+";base64,"+idCard.content) }}>Download</a></td></tr>
+        <br/>
+        <tr><td class="left">{strings.birthCert}: </td><td><img class="document" src={"data:"+birthCert.mimeType+";base64,"+birthCert.content}></img><a class="download" ref={(ref) => this.download3 = ref} download="BirthCertificate.jpg" onClick={() => { this.downloadBirthCert("data:"+birthCert.mimeType+";base64,"+birthCert.content) }}>Download</a></td></tr>
+        <br/>
+        <tr><td class="left">{strings.marriageCert}: </td><td><img class="document" src={"data:"+marriageCert.mimeType+";base64,"+marriageCert.content}></img><a class="download" ref={(ref) => this.download4 = ref} download="MarriageCertificate.jpg" onClick={() => { this.downloadMarriageCert("data:"+marriageCert.mimeType+";base64,"+marriageCert.content) }}>Download</a></td></tr>
+        </table>
+      <br/>
+          <button class='changeRoleButton' onClick={this.handleCloseModal}>Close Modal</button>
         </Modal>
           <span id="messageResult"></span> 
       </div>

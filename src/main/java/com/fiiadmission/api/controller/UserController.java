@@ -92,7 +92,7 @@ public class UserController {
     }
     
     @GetMapping
-    //@PreAuthorize("hasAuthority('ADMIN_USER')")
+    @PreAuthorize("hasAuthority('ADMIN_USER')")
     public List<UserDTO> getUsers(){
         return UserMapper.INSTANCE.toUserDTOs(userService.findAllUsers());
     }

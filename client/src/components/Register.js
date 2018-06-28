@@ -15,14 +15,26 @@
    apply:"Register",
    success: "Register successfull",
    failed :"Register failed",
-   somethingWrong:"Something went wrong, please try again"
+   somethingWrong:"Something went wrong, please try again",
+   enable: "I want to enable two factor authentication with my mobile device",
+   firstName: "First Name *",
+   lastName: "Last Name *",
+   username: "Username *",
+   password: "Password *",
+   retypepass: "Re-type password *"
  },
  ro: {
    userData:"Date utilizator",
    apply:"Inregistreaza-te",
    success: "Inregistrarea a fost facuta cu succes",
    failed :"Inregistrarea a esuat",
-   somethingWrong:"A aparut o eroare, va rugam incercati din nou"
+   somethingWrong:"A aparut o eroare, va rugam incercati din nou",
+   enable: "Vreau sa permit autentificarea in 2 factori cu dispozitivul mobil",
+   firstName: "Prenume *",
+   lastName: "Nume *",
+   username: "Nume utilizator *",
+   password: "Parola *",
+   retypepass: "Reintroduceti parola *"
  }
 });
 
@@ -128,15 +140,15 @@ keyUpHandler(refName, e) {
    
   <fieldset>
   <legend><span class="number">!</span>{strings.userData}</legend>
-  <input type="text" ref={(ref) => this.firstname = ref} name="field1" placeholder="First Name *" required/>
-  <input type="text" ref={(ref) => this.lastname = ref} name="field2" placeholder="Last Name *" required/>
+  <input type="text" ref={(ref) => this.firstname = ref} name="field1" placeholder={strings.firstName} required/>
+  <input type="text" ref={(ref) => this.lastname = ref} name="field2" placeholder={strings.lastName} required/>
   <input type="email" ref={(ref) => this.email = ref} placeholder="Email *" required="required"/>
-  <input type="text" ref={(ref) => this.uname = ref} name="field4" placeholder="Username*" required/>
-  <input type="password" ref={(ref) => this.password = ref} name="field5" placeholder="Password *" required/>
-  <input id="checkpassword" ref={(ref) => this.checkpassword = ref} type="password" name="field6" placeholder="Retype Password *" onKeyUp={this.handlePassKeyUp} required/> 
+  <input type="text" ref={(ref) => this.uname = ref} name="field4" placeholder={strings.username} required/>
+  <input type="password" ref={(ref) => this.password = ref} name="field5" placeholder={strings.password} required/>
+  <input id="checkpassword" ref={(ref) => this.checkpassword = ref} type="password" name="field6" placeholder={strings.retypepass} onKeyUp={this.handlePassKeyUp} required/> 
   <span id="passwordValidation"></span> 
  <label>
-          I want to enable two factor authentication with my mobile device:
+          {strings.enable}
           <input
             name="twoFA"
             type="checkbox"
