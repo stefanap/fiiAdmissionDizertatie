@@ -13,6 +13,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { ReactTableDefaults } from "react-table";
 import LocalizedStrings from 'react-localization';
+import {CSVLink, CSVDownload} from 'react-csv';
 
 let strings = new LocalizedStrings({
  en:{
@@ -86,9 +87,11 @@ class Announcements extends Component {
       bac:{},
       idCard:{},
       birthCert:{},
-      marriageCert:{}
+      marriageCert:{},
+      csvData:''
     };
     this.getUsers();
+    this.getExportedCsv();
      this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
@@ -145,6 +148,23 @@ class Announcements extends Component {
         console.log(data);
         this.setState( { bac:data[2], birthCert: data[3], idCard:data[0], marriageCert:data[1]})}) 
     }
+
+    getExportedCsv()
+    {
+      var token=base64.decode(localStorage.getItem('token'));
+      const API = 'https://localhost:8085/fii/admission/export';
+      let config = {
+      method: 'GET',
+      headers: { 'Content-Type':'application/json','Authorization': 'Bearer '+ token}
+      }
+
+    fetch(API, config)
+   .then(response =>
+      response.text()) .then((data) => { 
+        var dataString = String(data);
+        this.setState( { csvData:dataString});
+    })
+  }
   
 
  changeUserRole(id){
@@ -288,7 +308,7 @@ class Announcements extends Component {
       <br/>
           <button class='changeRoleButton' onClick={this.handleCloseModal}>Close Modal</button>
         </Modal>
-          <span id="messageResult"></span> 
+          <CSVLink data={this.state.csvData}>Download full admission data</CSVLink>
       </div>
 
     )
