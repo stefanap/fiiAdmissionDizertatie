@@ -1,5 +1,6 @@
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -8,6 +9,7 @@ import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLContext;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -16,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -30,75 +33,48 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import com.fiiadmission.SpringbootJwtApplication;
 import com.fiiadmission.api.dto.UserDTO;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = SpringbootJwtApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+		classes = SpringbootJwtApplication.class)
+@AutoConfigureMockMvc
 public class RegisterControllerIntegrationTest {
 
-	@LocalServerPort
-	private int port;
-
-	HttpHeaders headers = new HttpHeaders();
-
-	@TestConfiguration
-	static class TestContextConfiguration {
-
-		@Bean
-		public RestTemplate restTemplate() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-			TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
-
-			SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
-					.loadTrustMaterial(null, acceptingTrustStrategy).build();
-
-			SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext,
-					SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-			CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf)
-					.setHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER).build();
-
-			HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-
-			requestFactory.setHttpClient(httpClient);
-			RestTemplate restTemplate = new RestTemplate(requestFactory);
-			return restTemplate;
-		}
-	}
+	@Autowired
+	private MockMvc mvc;
 
 	@Autowired
-	private RestTemplate restTemplate;
+	ObjectMapper objectMapper;
 
 	private UserDTO generateUser() {
 
 		UserDTO user = new UserDTO();
 		user.setFirstName("Ion");
 		user.setLastName("Popa");
-		user.setEmail("IonP@gmail.com");
-		user.setUsername("IonP");
+		user.setEmail("IonP2@gmail.com");
+		user.setUsername("IonP2");
 		user.setPassword("bla");
 		user.setHas2FA(false);
 		return user;
 	}
 
 	@Test
-	public void registerUser() {
+	public void registerUser() throws Exception {
 
-		headers.setContentType(MediaType.APPLICATION_JSON);
+		mvc.perform(post("/register")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsBytes(generateUser())))
+				.andExpect(status().isCreated());
+//				.andExpect(content()
+//						.contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+//				.andExpect(jsonPath("$[0].name", is("bob")));
 
-		UserDTO user = generateUser();
-
-		HttpEntity<UserDTO> entity = new HttpEntity<UserDTO>(user, headers);
-
-		ResponseEntity<String> response = restTemplate.exchange(createURLWithPort("/register"), HttpMethod.POST, entity,
-				String.class);
-		assertThat(response.getStatusCode(), is(HttpStatus.OK));
-
-	}
-
-	private String createURLWithPort(String uri) {
-		return "https://localhost:" + port + uri;
 	}
 
 }
