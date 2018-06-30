@@ -56,7 +56,7 @@ public class UserController {
     }
     
     @PostMapping("/updateRole/{id}")
-    //@PreAuthorize("hasAuthority('ADMIN_USER')")
+    @PreAuthorize("hasAuthority('ADMIN_USER')")
     public @ResponseBody UserDTO updateUserRole(@PathVariable("id") Long id) throws BadRequestException, NotFoundException {
 		User searchedUser = userService.findById(id);
 		if (searchedUser == null) {
