@@ -45,7 +45,7 @@ function getUser(token){
       response.json()) .then((data) => { 
      if (typeof data.statusCode == 'undefined')
         {
-             console.log(data);
+             console.log("user",data);
              var user= new User(data);
              updateParent(user.state);
              localStorage.setItem('user',JSON.stringify(user.state));
@@ -82,6 +82,8 @@ let config = {
     .then(response =>
       response.json()) .then((data) => { 
 
+        this.formLogin.className='hidden';
+
         if(typeof data.access_token!= 'undefined')
         {
           localStorage.setItem('token', base64.encode(data.access_token));
@@ -117,7 +119,7 @@ let config = {
     return (
       <Form>
   {formApi => (
-    <form onSubmit={this.handleSubmit.bind(this)} class="form-style-5">
+    <form onSubmit={this.handleSubmit.bind(this)} ref={(ref) => this.formLogin = ref} class="form-style-5" autocomplete="off">
    
 <fieldset  ref={(ref) => this.firstFieldset = ref}>
 <legend><span class="number">!</span>{strings.userData}</legend>

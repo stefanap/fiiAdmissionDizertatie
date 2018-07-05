@@ -5,7 +5,7 @@
   	this.state = {
   		  id: this.props.id,
         info : this.props.info,
-        expiryDate : this.props.expiryDate,
+        expiry_date : this.props.expiry_date,
         publishdate : this.props.publishDate
     };
   }

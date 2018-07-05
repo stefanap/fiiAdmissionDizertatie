@@ -104,6 +104,8 @@ public class AdmissionDataController {
 					//new OutputStreamWriter(new FileOutputStream("admissionData.csv"), "UTF-8"));
 			for (AdmissionData admissionData : admissionDatas) {
 				User user=admissionData.getUser();
+				if(user!=null)
+				{
 				StringBuilder line = new StringBuilder();
 				line.append(user.getFirstName());
 				line.append(CSV_SEPARATOR);
@@ -133,17 +135,25 @@ public class AdmissionDataController {
 				line.append(CSV_SEPARATOR);
 				line.append(admissionData.getGeneralGrade());
 				line.append(CSV_SEPARATOR);
+				if(admissionData.getCountry()!=null)
 				line.append(admissionData.getCountry().getCountry());
+				else line.append("-");
 				line.append(CSV_SEPARATOR);
+				if(admissionData.getRegion()!=null)
 				line.append(admissionData.getRegion().getRegion());
+				else line.append("-");
 				line.append(CSV_SEPARATOR);
+				if(admissionData.getCity()!=null)
 				line.append(admissionData.getCity().getCity());
+				else line.append("-");
 				line.append(CSV_SEPARATOR);
+				if(admissionData.getHighschool()!=null)
 				line.append(admissionData.getHighschool().getHighSchoolName());
+				else line.append("-");
 				out.write(line.toString());//print
 				//bw.newLine();
 				out.write("\n");
-			}
+			}}
 			//bw.flush();
 			//bw.close();
 			out.flush();

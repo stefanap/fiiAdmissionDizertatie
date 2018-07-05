@@ -146,7 +146,7 @@ class Announcements extends Component {
    .then(response =>
       response.json()) .then((data) => { 
         console.log(data);
-        this.setState( { bac:data[2], birthCert: data[3], idCard:data[0], marriageCert:data[1]})}) 
+        this.setState( { bac:data[3], birthCert: data[1], idCard:data[0], marriageCert:data[3]})}) 
     }
 
     getExportedCsv()
@@ -297,13 +297,13 @@ class Announcements extends Component {
         <tr><td class="left">{strings.country}: </td><td>{this.state.admission.country}</td></tr>
         <tr><td class="left">{strings.region}: </td><td>{this.state.admission.region}</td></tr>
         <tr><td class="left">{strings.city}: </td><td>{this.state.admission.city}</td></tr>
-        <tr><td class="left">{strings.bacDiploma}: </td><td><img class="document" src={"data:"+bac.mimeType+";base64,"+bac.content}></img><a class="download" ref={(ref) => this.download1 = ref} download="BacDiploma.jpg" onClick={() => { this.downloadBac("data:"+bac.mimeType+";base64,"+bac.content) }}>Download</a></td></tr>
+        <tr><td class="left">{strings.bacDiploma1} </td><td><img class="document" src={"data:"+bac.mimeType+";base64,"+bac.content}></img><a class="download" ref={(ref) => this.download1 = ref} download="Doc1.jpg" onClick={() => { this.downloadBac("data:"+bac.mimeType+";base64,"+bac.content) }}>Download</a></td></tr>
         <br/>
-        <tr><td class="left">{strings.idCard}: </td><td><img class="document" src={"data:"+idCard.mimeType+";base64,"+idCard.content}></img><a class="download" ref={(ref) => this.download2 = ref} download="IdentityCard.jpg" onClick={() => { this.downloadIdCard("data:"+idCard.mimeType+";base64,"+idCard.content) }}>Download</a></td></tr>
+        <tr><td class="left">{strings.idCard1} </td><td><img class="document" src={"data:"+idCard.mimeType+";base64,"+idCard.content}></img><a class="download" ref={(ref) => this.download2 = ref} download="Doc2.jpg" onClick={() => { this.downloadIdCard("data:"+idCard.mimeType+";base64,"+idCard.content) }}>Download</a></td></tr>
         <br/>
-        <tr><td class="left">{strings.birthCert}: </td><td><img class="document" src={"data:"+birthCert.mimeType+";base64,"+birthCert.content}></img><a class="download" ref={(ref) => this.download3 = ref} download="BirthCertificate.jpg" onClick={() => { this.downloadBirthCert("data:"+birthCert.mimeType+";base64,"+birthCert.content) }}>Download</a></td></tr>
+        <tr><td class="left">{strings.birthCert1} </td><td><img class="document" src={"data:"+birthCert.mimeType+";base64,"+birthCert.content}></img><a class="download" ref={(ref) => this.download3 = ref} download="Doc3.jpg" onClick={() => { this.downloadBirthCert("data:"+birthCert.mimeType+";base64,"+birthCert.content) }}>Download</a></td></tr>
         <br/>
-        <tr><td class="left">{strings.marriageCert}: </td><td><img class="document" src={"data:"+marriageCert.mimeType+";base64,"+marriageCert.content}></img><a class="download" ref={(ref) => this.download4 = ref} download="MarriageCertificate.jpg" onClick={() => { this.downloadMarriageCert("data:"+marriageCert.mimeType+";base64,"+marriageCert.content) }}>Download</a></td></tr>
+        <tr><td class="left">{strings.marriageCert1} </td><td><img class="document" src={"data:"+marriageCert.mimeType+";base64,"+marriageCert.content}></img><a class="download" ref={(ref) => this.download4 = ref} download="Doc4.jpg" onClick={() => { this.downloadMarriageCert("data:"+marriageCert.mimeType+";base64,"+marriageCert.content) }}>Download</a></td></tr>
         </table>
       <br/>
           <button class='changeRoleButton' onClick={this.handleCloseModal}>Close Modal</button>

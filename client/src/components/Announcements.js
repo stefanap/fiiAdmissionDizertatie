@@ -71,8 +71,9 @@ class Announcements extends Component {
     var description = this.description.value;
     var props ={}
     props.info = description;
-    props.expiryDate = this.state.Date.format("X");
+    props.expiry_date = this.state.Date.format("X");
     var announcement= new Announcement(props);
+    console.log("ann",announcement);
     var token = base64.decode(localStorage.getItem('token'));
     let config = {
       method: 'POST',

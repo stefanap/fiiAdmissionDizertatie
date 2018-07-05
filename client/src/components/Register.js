@@ -136,7 +136,7 @@ keyUpHandler(refName, e) {
     	<div>
       <Form>
   {formApi => (
-    <form onSubmit={this.handleSubmit.bind(this)} class="form-style-5" ref={(ref) => this.registerForm = ref}>
+    <form onSubmit={this.handleSubmit.bind(this)} class="form-style-5" ref={(ref) => this.registerForm = ref} autocomplete="off">
    
   <fieldset>
   <legend><span class="number">!</span>{strings.userData}</legend>

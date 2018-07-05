@@ -304,7 +304,7 @@ const config = {
     	<div>
       <Form>
   {formApi => (
-    <form onSubmit={this.handleSubmit.bind(this)} class="form-style-5" ref={(ref) => this.registerForm = ref}>
+    <form onSubmit={this.handleSubmit.bind(this)} class="form-style-5" ref={(ref) => this.registerForm = ref} autocomplete="off">
    
   <fieldset>
   <legend><span class="number">!</span>{strings.admissionData}</legend>
@@ -316,12 +316,12 @@ const config = {
   <option value="2">Pascal</option>
   </select>
   <input type="number" ref={(ref) => this.telephone = ref} name="telephone" placeholder={strings.telephone} required/>
-  <input type="number" ref={(ref) => this.bacGrade = ref} name="bacGrade" placeholder={strings.bacGrade} required/>
-  <input type="number" ref={(ref) => this.generalGrade = ref} name="generalGrade" placeholder={strings.generalGrade} required/>
+  <input type="number" step="0.01" ref={(ref) => this.bacGrade = ref} name="bacGrade" placeholder={strings.bacGrade} required/>
+  <input type="number" step="0.01" ref={(ref) => this.generalGrade = ref} name="generalGrade" placeholder={strings.generalGrade} required/>
    {strings.selectDisabilities}<select ref={(ref) => this.hasDisabilities = ref}>
   <option value="0">Yes</option>
   <option value="1">No</option>
-  </select>
+  </select> 
   <input type="text" ref={(ref) => this.additionalInformation = ref} name="additionalInformation" placeholder={strings.additionalInformation}/>
   {strings.selectCivilState}<select ref={(ref) => this.civilState = ref}>
   <option value="0">Single</option>

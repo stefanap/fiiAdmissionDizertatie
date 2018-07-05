@@ -44,7 +44,7 @@ public class StatisticsController {
         Long day;
         Integer count;
         for(AdmissionData admissionData : admissionDataList){
-            if(admissionData.getCreateDate().after(setting.getStartDate()) && admissionData.getCreateDate().before(setting.getEndDate())) {
+            //if(admissionData.getCreateDate().after(setting.getStartDate()) && admissionData.getCreateDate().before(setting.getEndDate())) {
                 day = getDayMillisecons(admissionData.getCreateDate().getTime());
                 count = result.get(day);
                 if (count != null) {
@@ -52,7 +52,7 @@ public class StatisticsController {
                     result.put(day, count);
                 } else {
                     result.put(day, 1);
-                }
+//                /}
             }
         }
         return result;

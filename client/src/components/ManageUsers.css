@@ -40,3 +40,11 @@ button.-btn{
 .pagination-bottom{
     background-color: rgba(0,134,179);
 }
+
+span.-pageInfo{
+    color:black !important;
+}
+
+span.-totalPages{
+    color:black !important;
+}

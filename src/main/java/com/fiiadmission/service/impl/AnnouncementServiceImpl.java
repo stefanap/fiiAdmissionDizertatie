@@ -25,7 +25,7 @@ public class AnnouncementServiceImpl implements AnnouncementService{
 		List<Announcement> announcements = new ArrayList<>();
         Timestamp time = new Timestamp(new Date().getTime());
 		for(Announcement announcement : (List<Announcement>)announcementRepository.findAll()){
-		    if(announcement.getExpiry_date().after(time))
+		    if(announcement.getExpiry_date()!=null)// && announcement.getExpiry_date().after(time))
 			{
 		        announcements.add(announcement);
             }

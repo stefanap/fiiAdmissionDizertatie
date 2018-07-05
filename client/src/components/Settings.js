@@ -57,6 +57,8 @@ class Settings extends Component {
         sweetAlert ("End date must be after start date");
       }
       else{
+        this.formLogin.className='hidden';
+        sweetAlert ("Successfully changed admission period");
         var props ={}
     props.startDate = this.state.startDate.format("X")*1000;
     props.endDate = this.state.endDate.format("X")*1000;
@@ -119,7 +121,7 @@ class Settings extends Component {
 
 
  render() { 
-    return <div class="form">{strings.start}<DatePicker
+    return <div class="form" ref={(ref) => this.formLogin = ref}>{strings.start}<DatePicker
         selected={this.state.startDate}
         onChange={this.handleStartDateChange}
     />

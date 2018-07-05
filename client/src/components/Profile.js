@@ -8,14 +8,14 @@ var qs = require('qs');
 const base64 = require('base-64');
 let strings = new LocalizedStrings({
  en:{
-   confirm: "Please confirm your admission status below",
+   confirm: "Modify your admission status below",
    pending:"Pending",
    withdrawal:"Withdrawal",
    username:"Username",
    name:"Name"
  },
  ro: {
- confirm: "Va rugam confirmati statusul inscrierii la admitere",
+ confirm: "Modificati statusul inscrierii la admitere",
  pending:"In asteptare",
  withdrawal:"Retras",
  username:"Nume utilizator",
